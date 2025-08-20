@@ -8,11 +8,13 @@ import {
   ImageBackground,
   TouchableOpacity,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { StatusBar } from "expo-status-bar";
 import * as Font from "expo-font";
 import { BlurView } from "expo-blur";
 import { useNavigation } from "@react-navigation/native"; 
-import agriangatLogo from "../../assets/images/agriangat-nobg-logo.png";
-import terraces from "../../assets/images/rice-terraces.png";
+import agriangatLogo from "../assets/images/agriangat-nobg-logo.png";
+import terraces from "../assets/images/rice-terraces.png";
 
 const App = () => {
   const [fontsLoaded, setFontsLoaded] = useState(false);
@@ -26,9 +28,9 @@ const App = () => {
   useEffect(() => {
     async function loadFonts() {
       await Font.loadAsync({
-        "Poppins-Bold": require("../../assets/fonts/Poppins-Bold.ttf"),
-        "Poppins-Regular": require("../../assets/fonts/Poppins-Regular.ttf"),
-        "Poppins-ExtraBold": require("../../assets/fonts/Poppins-ExtraBold.ttf"),
+        "Poppins-Bold": require("../assets/fonts/Poppins-Bold.ttf"),
+        "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
+        "Poppins-ExtraBold": require("../assets/fonts/Poppins-ExtraBold.ttf"),
       });
       setFontsLoaded(true);
     }
@@ -37,21 +39,19 @@ const App = () => {
 
   if (!fontsLoaded) return null;
 
-  const handleLogoPress = () => {
-    navigation.navigate("Home"); 
-  };
+  // Logo tap disabled per request
 
   return (
-    <ScrollView style={styles.scroll}>
-      <View style={styles.container}>
-        {/* Tappable Logo */}
-        <TouchableOpacity onPress={handleLogoPress}>
-          <Image
-            source={agriangatLogo}
-            style={styles.logoImage}
-            resizeMode="contain"
-          />
-        </TouchableOpacity>
+    <SafeAreaView style={styles.safeArea} edges={["top"]}>
+      <StatusBar style="dark" translucent backgroundColor="transparent" />
+      <ScrollView style={styles.scroll} contentInsetAdjustmentBehavior="automatic">
+        <View style={styles.container}>
+        {/* Static Logo (not tappable) */}
+        <Image
+          source={agriangatLogo}
+          style={styles.logoImage}
+          resizeMode="contain"
+        />
 
         {/* Terraces Image with Text and Blurred Pill Button */}
         <ImageBackground
@@ -68,7 +68,7 @@ const App = () => {
             <BlurView intensity={10} tint="light" style={styles.blurButtonWrapper}>
               <TouchableOpacity
                 style={styles.pillButton}
-                onPress={() => navigation.navigate("SignUp")}
+                onPress={() => navigation.replace("login")}
               >
                 <Text style={styles.pillButtonText}>Log In / Sign In</Text>
               </TouchableOpacity>
@@ -99,14 +99,19 @@ const App = () => {
           climate-smart network — making each connection count toward a more
           sustainable and inclusive future.
         </Text>
-      </View>
-    </ScrollView>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
 export default App;
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: "#fff",
+  },
   scroll: {
     flex: 1,
     backgroundColor: "#fff",
@@ -121,7 +126,7 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 10,
     marginBottom: 15,
-    marginTop: 37,
+    marginTop: -10,
   },
   terracesImage: {
     width: "100%",
