@@ -12,8 +12,9 @@ import {
 } from "react-native";
 import * as Font from "expo-font";
 import { useRouter } from "expo-router";
-// Maps
 import MapView, { Marker } from "react-native-maps";
+import CustomDatePicker from "../../components/CustomDatePicker";
+import CustomPicker from "../../components/CustomPicker";
 // @ts-ignore
 import agriangatLogo from "../../assets/images/agriangat-nobg-logo.png";
 
@@ -25,7 +26,8 @@ const FarmerRegistrationScreen = () => {
   const [firstName, setFirstName] = useState("");
   const [middleName, setMiddleName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [birthdate, setBirthdate] = useState("");
+  const [birthdate, setBirthdate] = useState(null);
+  const [showDatePicker, setShowDatePicker] = useState(false);
   const [nationality, setNationality] = useState("");
   const [sex, setSex] = useState("");
   const [contactNumber, setContactNumber] = useState("");
@@ -59,16 +61,34 @@ const FarmerRegistrationScreen = () => {
 
   if (!fontsLoaded) return null;
 
-  const handleBack = () => router.replace("/login");
+  const handleBack = () => router.back();
   const handleSubmit = () => {
     // Placeholder submission handler; wire to API later
     router.replace("/register/welcome-farmer");
   };
 
+  const handleDateChange = (selectedDate) => {
+    setBirthdate(selectedDate);
+  };
+
+  const handleDatePress = () => {
+    setShowDatePicker(true);
+  };
+
+  const formatDate = (date) => {
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
+
   const handleMapPress = (e) => {
     const { latitude, longitude } = e.nativeEvent.coordinate;
     setPin({ latitude, longitude });
-    setLandLocation(`${latitude.toFixed(6)}, ${longitude.toFixed(6)}`);
+    // For now, we'll use a placeholder location name
+    // In a real app, you'd use reverse geocoding to get the actual address
+    setLandLocation("Selected Location");
   };
 
   return (
@@ -117,13 +137,14 @@ const FarmerRegistrationScreen = () => {
             onChangeText={setLastName}
           />
           <View style={styles.row}>
-            <TextInput
-              style={[styles.input, styles.rowItem]}
-              placeholder="Birthdate"
-              placeholderTextColor="#9aa0a6"
-              value={birthdate}
-              onChangeText={setBirthdate}
-            />
+            <TouchableOpacity
+              style={[styles.input, styles.rowItem, styles.dateInput]}
+              onPress={handleDatePress}
+            >
+              <Text style={birthdate ? styles.dateText : styles.placeholderText}>
+                {birthdate ? formatDate(birthdate) : "Birthdate"}
+              </Text>
+            </TouchableOpacity>
             <TextInput
               style={[styles.input, styles.rowItem]}
               placeholder="Nationality"
@@ -133,12 +154,16 @@ const FarmerRegistrationScreen = () => {
             />
           </View>
           <View style={styles.row}>
-            <TextInput
-              style={[styles.input, styles.rowItem]}
-              placeholder="Sex"
-              placeholderTextColor="#9aa0a6"
-              value={sex}
-              onChangeText={setSex}
+            <CustomPicker
+              selectedValue={sex}
+              onValueChange={setSex}
+              items={[
+                { label: "Select Sex", value: "" },
+                { label: "Male", value: "male" },
+                { label: "Female", value: "female" }
+              ]}
+              placeholder="Select Sex"
+              style={[styles.rowItem, styles.pickerField]}
             />
             <TextInput
               style={[styles.input, styles.rowItem]}
@@ -182,7 +207,7 @@ const FarmerRegistrationScreen = () => {
           />
           <TextInput
             style={styles.input}
-            placeholder="Land Location (enter or pin on map)"
+            placeholder="Land Location (tap on map to select)"
             placeholderTextColor="#9aa0a6"
             value={landLocation}
             onChangeText={setLandLocation}
@@ -229,6 +254,16 @@ const FarmerRegistrationScreen = () => {
           </View>
         </View>
       </ScrollView>
+
+      {/* Custom Date Picker */}
+      <CustomDatePicker
+        value={birthdate}
+        onChange={handleDateChange}
+        visible={showDatePicker}
+        onClose={() => setShowDatePicker(false)}
+        maximumDate={new Date()}
+        placeholder="Birthdate"
+      />
     </KeyboardAvoidingView>
   );
 };
@@ -344,6 +379,15 @@ const styles = StyleSheet.create({
   rowItem: {
     flex: 1,
   },
+  pickerField: {
+    borderWidth: 1,
+    borderColor: "#e5e5e5",
+    borderRadius: 10,
+    paddingHorizontal: 12,
+    paddingVertical: 12,
+    backgroundColor: "#fff",
+    marginBottom: 12,
+  },
   actionsRow: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -392,5 +436,58 @@ const styles = StyleSheet.create({
   map: {
     width: "100%",
     height: 160,
+  },
+  dateInput: {
+    justifyContent: "center",
+    backgroundColor: "#f8f9fa",
+  },
+  dateText: {
+    fontSize: 14,
+    fontFamily: "Poppins-Regular",
+    color: "#333",
+  },
+  placeholderText: {
+    fontSize: 14,
+    fontFamily: "Poppins-Regular",
+    color: "#9aa0a6",
+  },
+  pickerContainer: {
+    paddingHorizontal: 0,
+    paddingVertical: 0,
+    justifyContent: 'center',
+  },
+  picker: {
+    height: 50,
+    width: "100%",
+    color: '#333',
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'flex-end',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    paddingBottom: 20,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#e5e5e5',
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontFamily: 'Poppins-Bold',
+    color: '#333',
+  },
+  modalButton: {
+    fontSize: 16,
+    fontFamily: 'Poppins-Regular',
+    color: '#007AFF',
   },
 });

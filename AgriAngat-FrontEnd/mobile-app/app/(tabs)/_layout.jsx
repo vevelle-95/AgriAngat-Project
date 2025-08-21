@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, Images } from "react";
 import { Tabs } from "expo-router";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {
@@ -11,24 +11,12 @@ import {
 } from "react-native";
 import PropTypes from "prop-types";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import account from "../assets/images/Section=Account.png";
+import home from "../assets/images/Section=Home.png";
+import marketplace from "../assets/images/Section=Marketplace.png";
+import services from "../assets/images/Section=Services.png";
 
 const renderTabBar = (props) => <AnimatedTabBar {...props} />;
-
-const homeTabIcon = ({ color }) => (
-  <Ionicons name="home" size={20} color={color} />
-);
-
-const marketplaceTabIcon = ({ color }) => (
-  <Ionicons name="cart" size={20} color={color} />
-);
-
-const servicesTabIcon = ({ color }) => (
-  <Ionicons name="construct" size={20} color={color} />
-);
-
-const accountTabIcon = ({ color }) => (
-  <Ionicons name="person" size={20} color={color} />
-);
 
 export default function TabsLayout() {
   return (
@@ -40,28 +28,28 @@ export default function TabsLayout() {
         name="home"
         options={{
           title: "Home",
-          tabBarIcon: homeTabIcon,
+          tabBarIcon: home,
         }}
       />
       <Tabs.Screen
         name="marketplace"
         options={{
           title: "Marketplace",
-          tabBarIcon: marketplaceTabIcon,
+          tabBarIcon: marketplace,
         }}
       />
       <Tabs.Screen
         name="services"
         options={{
           title: "Services",
-          tabBarIcon: servicesTabIcon,
+          tabBarIcon: services,
         }}
       />
       <Tabs.Screen
         name="account"
         options={{
           title: "Account",
-          tabBarIcon: accountTabIcon,
+          tabBarIcon: account,
         }}
       />
     </Tabs>
@@ -78,16 +66,18 @@ function AnimatedTabBar({ state, descriptors, navigation }) {
     const layout = itemLayouts[state.index];
     if (!layout) return;
     Animated.parallel([
-      Animated.timing(translateX, {
+      Animated.spring(translateX, {
         toValue: layout.x,
-        duration: 260,
-        easing: Easing.out(Easing.circle),
+        stiffness: 220,
+        damping: 22,
+        mass: 0.6,
         useNativeDriver: false,
       }),
-      Animated.timing(activeWidth, {
-        toValue: Math.max(layout.width, 92),
-        duration: 260,
-        easing: Easing.out(Easing.circle),
+      Animated.spring(activeWidth, {
+        toValue: Math.max(layout.width, 30),
+        stiffness: 220,
+        damping: 22,
+        mass: 0.6,
         useNativeDriver: false,
       }),
     ]).start();
@@ -101,7 +91,7 @@ function AnimatedTabBar({ state, descriptors, navigation }) {
     );
   };
 
-  const bottomOffset = Math.max(16, (insets?.bottom || 0) + 12);
+  const bottomOffset = Math.max(8, (insets?.bottom || 0) + 8);
 
   return (
     <View style={[stylesBar.wrapper, { bottom: bottomOffset }]}>
@@ -123,7 +113,7 @@ function AnimatedTabBar({ state, descriptors, navigation }) {
           const { options } = descriptors[route.key];
           const focused = state.index === index;
           const icon = options.tabBarIcon?.({
-            color: focused ? "#fff" : "#D9D9D9",
+            color: focused ? "#fff" : "#ECECEC",
             size: 20,
             focused,
           });
@@ -149,7 +139,8 @@ function AnimatedTabBar({ state, descriptors, navigation }) {
                   canPreventDefault: true,
                 });
                 if (!focused && !event.defaultPrevented) {
-                  navigation.navigate(route.name);
+                  // Fallback to rAF to avoid rare timing issues
+                  requestAnimationFrame(() => navigation.navigate(route.name));
                 }
               }}
               onLongPress={() =>
@@ -186,15 +177,40 @@ function TabItem({
 }) {
   const scale = useRef(new Animated.Value(1)).current;
   const labelOpacity = useRef(new Animated.Value(focused ? 1 : 0)).current;
+  const labelTranslateX = useRef(new Animated.Value(focused ? 0 : 8)).current;
+  const iconScale = useRef(new Animated.Value(focused ? 1.1 : 1)).current;
+  const iconTranslateY = useRef(new Animated.Value(focused ? -2 : 0)).current;
 
   useEffect(() => {
-    Animated.timing(labelOpacity, {
-      toValue: focused ? 1 : 0,
-      duration: 200,
-      easing: Easing.out(Easing.quad),
-      useNativeDriver: true,
-    }).start();
-  }, [focused, labelOpacity]);
+    Animated.parallel([
+      Animated.timing(labelOpacity, {
+        toValue: focused ? 1 : 0,
+        duration: 200,
+        easing: Easing.out(Easing.quad),
+        useNativeDriver: true,
+      }),
+      Animated.timing(labelTranslateX, {
+        toValue: focused ? 0 : 8,
+        duration: 220,
+        easing: Easing.out(Easing.quad),
+        useNativeDriver: true,
+      }),
+      Animated.spring(iconScale, {
+        toValue: focused ? 1.1 : 1,
+        stiffness: 240,
+        damping: 14,
+        mass: 0.5,
+        useNativeDriver: true,
+      }),
+      Animated.spring(iconTranslateY, {
+        toValue: focused ? -2 : 0,
+        stiffness: 240,
+        damping: 14,
+        mass: 0.5,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, [focused, labelOpacity, labelTranslateX, iconScale, iconTranslateY]);
 
   return (
     <TouchableOpacity
@@ -213,13 +229,24 @@ function TabItem({
       onLayout={(e) =>
         onLayout(index, e.nativeEvent.layout.x, e.nativeEvent.layout.width)
       }
-      style={stylesBar.itemTouchable}
+      style={[stylesBar.itemTouchable, !focused && { width: 48 }]}
       activeOpacity={0.9}
     >
       <Animated.View style={[stylesBar.itemInner, { transform: [{ scale }] }]}> 
-        {icon}
+        {focused ? (
+          <Animated.View style={[stylesBar.iconWrap, { transform: [{ scale: iconScale }] }]}> 
+            {icon}
+          </Animated.View>
+        ) : (
+          <Animated.View style={{ transform: [{ scale: iconScale }, { translateY: iconTranslateY }] }}>
+            {icon}
+          </Animated.View>
+        )}
         <Animated.Text
-          style={[stylesBar.label, { opacity: labelOpacity }]}
+          style={[
+            stylesBar.label,
+            { opacity: labelOpacity, transform: [{ translateX: labelTranslateX }] },
+          ]}
           numberOfLines={1}
           ellipsizeMode="tail"
         >
@@ -243,45 +270,67 @@ TabItem.propTypes = {
 const stylesBar = StyleSheet.create({
   wrapper: {
     position: "absolute",
-    left: 16,
-    right: 16,
-    bottom: 16,
+    left: 10,
+    right: 5,
+    bottom: 20,
+    marginRight: 50,
+    width: "100%",
+    alignItems: "center",
   },
   container: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
     backgroundColor: "#3f3f3f",
-    borderRadius: 28,
-    paddingHorizontal: 12,
+    borderRadius: 9999,
+    paddingHorizontal: 10,
     height: 64,
     overflow: "hidden",
+    marginRight: 28,
+    marginTop: 10,
+    gap: 2,
+    shadowColor: "#000",
+    shadowOpacity: 0.18,
+    width: "90%",
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 6,
   },
   activePill: {
     position: "absolute",
     left: 6,
     top: 6,
     bottom: 6,
-    backgroundColor: "#2f2f2f",
-    borderRadius: 22,
+    backgroundColor: "#2a2a2a",
+    borderRadius: 26,
   },
   itemTouchable: {
-    flex: 1,
+    paddingHorizontal: 0,
+    minWidth: 58,
+    alignItems: "center",
   },
   itemInner: {
-    height: 52,
-    borderRadius: 22,
-    paddingHorizontal: 12,
+    height: 56,
+    borderRadius: 26,
+    paddingHorizontal: 14,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     gap: 8,
   },
+  iconWrap: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    backgroundColor: "rgba(0,0,0,0.2)",
+    alignItems: "center",
+    justifyContent: "center",
+  },
   label: {
     color: "#fff",
     fontFamily: "Poppins-Bold",
-    fontSize: 14,
+    fontSize: 13,
     flexShrink: 1,
-    maxWidth: 120,
+    maxWidth: 140,
   },
 });
