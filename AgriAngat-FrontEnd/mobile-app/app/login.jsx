@@ -50,7 +50,7 @@ const LoginScreen = () => {
     Alert.alert("Success", "Login successful!", [
       {
         text: "OK",
-        onPress: () => router.replace("/welcome"),
+        onPress: () => router.replace("(tabs)/home"),
       },
     ]);
   };
@@ -131,6 +131,7 @@ const LoginScreen = () => {
                 <TextInput
                   style={styles.input}
                   placeholder="Email"
+                  placeholderTextColor="#666"
                   value={email}
                   onChangeText={setEmail}
                   keyboardType="email-address"
@@ -144,6 +145,7 @@ const LoginScreen = () => {
                   <TextInput
                     style={styles.passwordInput}
                     placeholder="Password"
+                    placeholderTextColor="#666" 
                     value={password}
                     onChangeText={setPassword}
                     secureTextEntry={!showPassword}
@@ -176,7 +178,9 @@ const LoginScreen = () => {
               <View style={styles.forgotPasswordContainer}>
                 <Text style={styles.forgotPasswordText}>
                   Forgot password?{" "}
-                  <Text style={styles.forgotPasswordLink}>Remember</Text>
+                  <Text style={styles.forgotPasswordLink} onPress={() => router.push("/forgot-password")}>
+                    Forgot
+                  </Text>
                 </Text>
               </View>
 

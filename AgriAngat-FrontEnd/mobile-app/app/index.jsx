@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -12,18 +12,13 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import * as Font from "expo-font";
 import { BlurView } from "expo-blur";
-import { useNavigation } from "@react-navigation/native"; 
+import { useRouter } from "expo-router"; 
 import agriangatLogo from "../assets/images/agriangat-nobg-logo.png";
 import terraces from "../assets/images/rice-terraces.png";
 
 const App = () => {
   const [fontsLoaded, setFontsLoaded] = useState(false);
-  const navigation = useNavigation(); 
-
-  // Hide the default header
-  useLayoutEffect(() => {
-    navigation.setOptions({ headerShown: false });
-  }, [navigation]);
+  const router = useRouter(); 
 
   useEffect(() => {
     async function loadFonts() {
@@ -68,7 +63,7 @@ const App = () => {
             <BlurView intensity={10} tint="light" style={styles.blurButtonWrapper}>
               <TouchableOpacity
                 style={styles.pillButton}
-                onPress={() => navigation.replace("login")}
+                onPress={() => router.push("login")}
               >
                 <Text style={styles.pillButtonText}>Log In / Sign In</Text>
               </TouchableOpacity>

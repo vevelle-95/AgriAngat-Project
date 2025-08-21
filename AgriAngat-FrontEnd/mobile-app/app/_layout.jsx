@@ -25,7 +25,16 @@ export default function RootLayout() {
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="login" options={{ headerShown: false }} />
+        <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="login"
+          options={{
+            headerShown: false,
+            gestureEnabled: true,
+            // iOS: allow swipe anywhere on screen
+            fullScreenGestureEnabled: true,
+          }}
+        />
         <Stack.Screen name="register/farmer" options={{ headerShown: false }} />
         <Stack.Screen
           name="register/customer"
@@ -33,6 +42,8 @@ export default function RootLayout() {
         />
         <Stack.Screen name="register/welcome-customer" options={{ headerShown: false }} />
         <Stack.Screen name="register/welcome-farmer" options={{ headerShown: false }} />
+        <Stack.Screen name="forgot-password" options={{ headerShown: false }} />
+        <Stack.Screen name="reset-password" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style="auto" />
