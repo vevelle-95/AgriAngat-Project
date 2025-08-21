@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, Images } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Tabs } from "expo-router";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {
@@ -7,14 +7,15 @@ import {
   TouchableOpacity,
   View,
   Text,
+  Image,
   StyleSheet,
 } from "react-native";
 import PropTypes from "prop-types";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import account from "../assets/images/Section=Account.png";
-import home from "../assets/images/Section=Home.png";
-import marketplace from "../assets/images/Section=Marketplace.png";
-import services from "../assets/images/Section=Services.png";
+import account from "../../assets/images/Section=Account.png";
+import home from "../../assets/images/Section=Home.png";
+import marketplace from "../../assets/images/Section=Marketplace.png";
+import services from "../../assets/images/Section=Services.png";
 
 const renderTabBar = (props) => <AnimatedTabBar {...props} />;
 
@@ -28,28 +29,36 @@ export default function TabsLayout() {
         name="home"
         options={{
           title: "Home",
-          tabBarIcon: home,
+          tabBarIcon: ({ color }) => (
+            <Image source={home} style={[stylesBar.tabIcon, { tintColor: color }]} />
+          ),
         }}
       />
       <Tabs.Screen
         name="marketplace"
         options={{
           title: "Marketplace",
-          tabBarIcon: marketplace,
+          tabBarIcon: ({ color }) => (
+            <Image source={marketplace} style={[stylesBar.tabIcon, { tintColor: color }]} />
+          ),
         }}
       />
       <Tabs.Screen
         name="services"
         options={{
           title: "Services",
-          tabBarIcon: services,
+          tabBarIcon: ({ color }) => (
+            <Image source={services} style={[stylesBar.tabIcon, { tintColor: color }]} />
+          ),
         }}
       />
       <Tabs.Screen
         name="account"
         options={{
           title: "Account",
-          tabBarIcon: account,
+          tabBarIcon: ({ color }) => (
+            <Image source={account} style={[stylesBar.tabIcon, { tintColor: color }]} />
+          ),
         }}
       />
     </Tabs>
@@ -268,6 +277,11 @@ TabItem.propTypes = {
 };
 
 const stylesBar = StyleSheet.create({
+  tabIcon: {
+    width: 24,
+    height: 24,
+    resizeMode: "contain",
+  },
   wrapper: {
     position: "absolute",
     left: 10,

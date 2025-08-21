@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   Text,
@@ -8,6 +8,7 @@ import {
   ScrollView,
   ImageBackground,
   Alert,
+  Dimensions,
 } from "react-native";
 import * as Font from "expo-font";
 import { BlurView } from "expo-blur";
@@ -22,6 +23,31 @@ import terraces from "../../assets/images/rice-terraces.png";
 export default function HomeScreen() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
   const router = useRouter();
+  const [currentReminder, setCurrentReminder] = useState(0);
+  const remScrollRef = useRef(null);
+  const CARD_WIDTH = Dimensions.get("window").width - 32;
+  const CARD_HEIGHT = Dimensions.get("window").height - 40; // container horizontal padding
+  const reminders = [
+    {
+      id: "r1",
+      title: "Grow more than crops. Grow your chances.",
+      body: "Boost your AngatScore by farming smarter and paying loans on time.",
+      tint: "#d7ffd4",
+    },
+    {
+      id: "r2",
+      title: "Rainy Season Alert: Farm with Caution",
+      body: "PAGASA forecasts up to 16 tropical cyclones from AUG to DEC. Ensure you plant short-cycle crops like munggo or pechay, reinforce your fields and storage, and consider early loan access to prepare before weather disrupts supply chains.",
+      tint: "#ffdb24",
+    },
+    {
+      id: "r3",
+      title: "Sell fresh, buy fresh.",
+      body: "With our Marketplace, farmers connect directly to stores and buyers nearby. No extra layers, no unfair markups",
+      tint: "#0ca201",
+      fontColor: "#fff",
+    },
+  ];
 
   useEffect(() => {
     async function loadFonts() {
@@ -35,12 +61,23 @@ export default function HomeScreen() {
     loadFonts();
   }, []);
 
+  // Auto-advance reminders
+  useEffect(() => {
+    if (!remScrollRef.current) return;
+    const interval = setInterval(() => {
+      const next = (currentReminder + 1) % reminders.length;
+      remScrollRef.current?.scrollTo({ x: next * CARD_WIDTH, animated: true });
+      setCurrentReminder(next);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [currentReminder, reminders.length, CARD_WIDTH]);
+
   if (!fontsLoaded) return null;
 
   return (
     <ScrollView
       style={styles.container}
-      contentContainerStyle={{ paddingBottom: 40 }}
+      contentContainerStyle={{ paddingBottom: 120 }}
     >
       {/* Header with tappable logo and greeting */}
       <View style={styles.headerRow}>
@@ -173,6 +210,83 @@ export default function HomeScreen() {
           </View>
         </View>
       </View>
+
+      {/* Reminders carousel */}
+      <View style={styles.sectionHeader}>
+        <Text style={styles.sectionTitle}>Reminders</Text>
+      </View>
+      <ScrollView
+        ref={remScrollRef}
+        horizontal
+        pagingEnabled
+        snapToInterval={CARD_WIDTH}
+        decelerationRate="fast"
+        showsHorizontalScrollIndicator={false}
+        onMomentumScrollEnd={(e) => {
+          const index = Math.round(e.nativeEvent.contentOffset.x / CARD_WIDTH);
+          setCurrentReminder(index);
+        }}
+        contentContainerStyle={styles.remScroll}
+      >
+        {reminders.map((item) => (
+          <View key={item.id} style={[styles.remCard, { width: CARD_WIDTH, backgroundColor: item.tint }]}> 
+            <View style={{ flex: 1, paddingRight: 12 }}>
+              <Text style={[styles.remTitle, item.fontColor && { color: item.fontColor }]}>{item.title}</Text>
+              <Text style={[styles.remBody, item.fontColor && { color: item.fontColor }]}>{item.body}</Text>
+            </View>
+          </View>
+        ))}
+      </ScrollView>
+      <View style={styles.remDotsWrap}>
+        {reminders.map((_, idx) => (
+          <View key={idx} style={[styles.remDot, idx === currentReminder && styles.remDotActive]} />
+        ))}
+      </View>
+
+      {/* Upcoming Payments */}
+      <View style={styles.sectionHeader}>
+        <Text style={styles.sectionTitle}>Upcoming Payments</Text>
+        <TouchableOpacity style={styles.outlineBtn2}>
+          <Text style={styles.outlineBtnText2}>See all</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.upCard}>
+        <View style={styles.upRow}>
+          <View>
+            <Text style={styles.upLoan}>Loan: 00001</Text>
+            <Text style={styles.upMeta}>Date: Aug 10,2025</Text>
+            <Text style={styles.upAmount}>₱5,000.00</Text>
+            <Text style={styles.upMeta}>Due: Sept 10,2025</Text>
+          </View>
+          <TouchableOpacity style={styles.payPill}>
+            <Text style={styles.payPillText}>Pay Now</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.divider} />
+        <View style={styles.upRow}>
+          <View>
+            <Text style={styles.upLoan}>Loan: 00002</Text>
+            <Text style={styles.upMeta}>Date: Aug 10,2025</Text>
+            <Text style={styles.upAmount}>₱5,000.00</Text>
+            <Text style={styles.upMeta}>Due: Oct 10,2025</Text>
+          </View>
+          <TouchableOpacity style={styles.payPill}>
+            <Text style={styles.payPillText}>Pay Now</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.divider} />
+        <View style={styles.upRow}>
+          <View>
+            <Text style={styles.upLoan}>Loan: 00003</Text>
+            <Text style={styles.upMeta}>Date: Aug 10,2025</Text>
+            <Text style={styles.upAmount}>₱5,000.00</Text>
+            <Text style={styles.upMeta}>Due: Nov 10,2025</Text>
+          </View>
+          <TouchableOpacity style={styles.payPill}>
+            <Text style={styles.payPillText}>Pay Now</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     </ScrollView>
   );
 }
@@ -281,7 +395,7 @@ const styles = StyleSheet.create({
   statValue: {
     color: "#0f6d00",
     fontFamily: "Poppins-ExtraBold",
-    fontSize: 16,
+    fontSize: 20,
     marginTop: 4,
   },
   outlineBtn: {
@@ -300,7 +414,7 @@ const styles = StyleSheet.create({
     height: 35,
     paddingVertical: -5,
     paddingHorizontal: 24,
-    minWidth: 140,
+    minWidth: 100,
     borderRadius: 9999,
     alignItems: "center",
     justifyContent: "center",
@@ -314,7 +428,7 @@ const styles = StyleSheet.create({
   outlineBtnText2: {
     color: "#0f6d00",
     fontFamily: "Poppins-Bold",
-    fontSize: 14,
+    fontSize: 12,
     textAlign: "center",
   },
   darkBtn: {
@@ -334,7 +448,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontFamily: "Poppins-ExtraBold",
-    fontSize: 22,
+    fontSize: 19,
     color: "#111",
   },
   txCard: { backgroundColor: "#f6f6f6", borderRadius: 14, padding: 12 },
@@ -342,13 +456,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingVertical: 8,
+    paddingVertical: 5,
   },
-  txTitle: { fontFamily: "Poppins-Regular", fontSize: 11, color: "#666" },
-  txSub: { fontFamily: "Poppins-Bold", fontSize: 13, color: "#111" },
+  txTitle: { fontFamily: "Poppins-Bold", fontSize: 13, color: "#666" },
+  txSub: { fontFamily: "Poppins-ExtraBold", fontSize: 13, color: "#111" },
   txAmount: {
-    fontFamily: "Poppins-Bold",
-    fontSize: 13,
+    fontFamily: "Poppins-ExtraBold",
+    fontSize: 16,
     color: "#0f6d00",
     textAlign: "right",
   },
@@ -359,4 +473,74 @@ const styles = StyleSheet.create({
     textAlign: "right",
   },
   divider: { height: 1, backgroundColor: "#ddd" },
+  remScroll: { paddingBottom: 6 },
+  remCard: {
+    height: 170,
+    borderRadius: 16,
+    padding: 16,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  remTitle: {
+    fontFamily: "Poppins-ExtraBold",
+    fontSize: 18,
+    color: "#111",
+    marginBottom: 6,
+  },
+  remBody: {
+    fontFamily: "Poppins-Regular",
+    fontSize: 12,
+    color: "#174c1a",
+  },
+  remDotsWrap: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 8,
+    marginBottom: 10,
+    gap: 6,
+  },
+  remDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: "#cfd8cf",
+  },
+  remDotActive: {
+    width: 18,
+    backgroundColor: "#0f6d00",
+  },
+  upCard: {
+    backgroundColor: "#f6f6f6",
+    borderRadius: 14,
+    padding: 12,
+    marginTop: 4,
+  },
+  upRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: 4,
+  },
+  upLoan: { fontFamily: "Poppins-ExtraBold", fontSize: 14, color: "#111" },
+  upMeta: { fontFamily: "Poppins-Regular", fontSize: 10, color: "#666", marginBottom: 5 },
+  upAmount: {
+    fontFamily: "Poppins-ExtraBold",
+    fontSize: 16,
+    color: "#0f6d00",
+    marginTop: 2,
+  },
+  payPill: {
+    backgroundColor: "#111",
+    height: 36,
+    paddingHorizontal: 16,
+    borderRadius: 9999,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  payPillText: {
+    color: "#fff",
+    fontFamily: "Poppins-Bold",
+    fontSize: 12,
+  },
 });

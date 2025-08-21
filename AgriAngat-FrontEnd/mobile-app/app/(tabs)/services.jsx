@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Dimensions } from "react-native";
 import * as Font from "expo-font";
 import { useRouter } from "expo-router";
 // @ts-ignore
@@ -10,6 +10,10 @@ import terraces from "../../assets/images/rice-terraces.png";
 export default function ServicesScreen() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
   const router = useRouter();
+  const CARD_WIDTH = Dimensions.get("window").width - 32;
+  const [heroIndex, setHeroIndex] = useState(0);
+  const heroSlides = 3;
+  const heroScrollRef = useRef(null);
   useEffect(() => {
     async function loadFonts() {
       await Font.loadAsync({
@@ -21,12 +25,21 @@ export default function ServicesScreen() {
     }
     loadFonts();
   }, []);
+  useEffect(() => {
+    if (!heroScrollRef.current) return;
+    const id = setInterval(() => {
+      const next = (heroIndex + 1) % heroSlides;
+      heroScrollRef.current?.scrollTo({ x: next * CARD_WIDTH, animated: true });
+      setHeroIndex(next);
+    }, 4000);
+    return () => clearInterval(id);
+  }, [heroIndex, heroSlides, CARD_WIDTH]);
   if (!fontsLoaded) return null;
 
   return (
     <ScrollView
       style={styles.container}
-      contentContainerStyle={{ paddingBottom: 36 }}
+      contentContainerStyle={{ paddingBottom: 120 }}
     >
       {/* Header */}
       <View style={styles.headerRow}>
@@ -37,13 +50,47 @@ export default function ServicesScreen() {
         <View style={{ width: 40 }} />
       </View>
 
-      {/* Welcome/Hero */}
-      <View style={styles.heroCard}>
-        <View>
-          <Text style={styles.heroTitle}>Welcome to AgriAngat Services!</Text>
-          <Text style={styles.heroSub}>See how we can help you</Text>
+      {/* Welcome/Hero carousel */}
+      <ScrollView
+        ref={heroScrollRef}
+        horizontal
+        pagingEnabled
+        snapToInterval={CARD_WIDTH}
+        decelerationRate="fast"
+        showsHorizontalScrollIndicator={false}
+        onMomentumScrollEnd={(e) => {
+          const index = Math.round(e.nativeEvent.contentOffset.x / CARD_WIDTH);
+          setHeroIndex(index);
+        }}
+        contentContainerStyle={styles.heroScroll}
+      >
+        <View style={[styles.heroCard, { width: CARD_WIDTH }]}>
+          <View style={{ flex: 1, paddingRight: 12 }}>
+            <Text style={styles.heroTitle}>Welcome to</Text>
+            <Text style={styles.heroTitle}>AgriAngat Services!</Text>
+            <Text style={styles.heroSub}>See how we can help you</Text>
+          </View>
+          <Image source={terraces} style={styles.heroImage} />
         </View>
-        <Image source={terraces} style={styles.heroImage} />
+        <View style={[styles.heroCard, { width: CARD_WIDTH, backgroundColor: "#ffdb24" }]}>
+          <View style={{ flex: 1, paddingRight: 12 }}>
+            <Text style={styles.heroTitle}>Apply for Loans</Text>
+            <Text style={styles.heroSub}>Get quick access to farming loans and financial support</Text>
+          </View>
+          <Image source={terraces} style={styles.heroImage} />
+        </View>
+        <View style={[styles.heroCard, { width: CARD_WIDTH, backgroundColor: "#0ca201" }]}>
+          <View style={{ flex: 1, paddingRight: 12 }}>
+            <Text style={styles.heroTitle}>Weather Updates</Text>
+            <Text style={styles.heroSub}>Stay informed with real-time weather forecasts</Text>
+          </View>
+          <Image source={terraces} style={styles.heroImage} />
+        </View>
+      </ScrollView>
+      <View style={styles.dotsWrap}>
+        {[0,1,2].map((i) => (
+          <View key={i} style={[styles.dot, i === heroIndex && styles.dotActive]} />
+        ))}
       </View>
 
       {/* Action tiles */}
@@ -103,18 +150,41 @@ const styles = StyleSheet.create({
   heroCard: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#EBFBEA",
-    borderRadius: 14,
-    padding: 12,
+    backgroundColor: "#d7ffd4",
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 10,
   },
-  heroTitle: { fontFamily: "Poppins-ExtraBold", fontSize: 14, color: "#111" },
+  heroTitle: { 
+    fontFamily: "Poppins-ExtraBold", 
+    fontSize: 18, 
+    color: "#111",
+    marginBottom: 0,
+  },
   heroSub: {
     fontFamily: "Poppins-Regular",
-    fontSize: 11,
-    color: "#666",
-    marginTop: 2,
+    fontSize: 12,
+    marginTop: 10,
+    color: "#174c1a",
   },
-  heroImage: { width: 90, height: 70, borderRadius: 10, marginLeft: 8 },
+  heroImage: { 
+    width: 120, 
+    height: 120, 
+    borderRadius: 60, 
+    marginLeft: 12,
+    backgroundColor: "rgba(255, 255, 255, 0.3)",
+  },
+  heroScroll: { paddingBottom: 6 },
+  dotsWrap: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 8,
+    marginBottom: 10,
+    gap: 6,
+  },
+  dot: { width: 6, height: 6, borderRadius: 3, backgroundColor: "#cfd8cf" },
+  dotActive: { width: 18, backgroundColor: "#0f6d00", borderRadius: 3 },
 
   tilesRow: { flexDirection: "row", gap: 12, marginTop: 14 },
   tile: { flex: 1, backgroundColor: "#f6f6f6", borderRadius: 12, padding: 12 },
