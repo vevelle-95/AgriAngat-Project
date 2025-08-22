@@ -10,6 +10,7 @@ import {
   Alert,
   KeyboardAvoidingView,
   Platform,
+  Animated,
 } from "react-native";
 import * as Font from "expo-font";
 import { useRouter } from "expo-router";
@@ -23,7 +24,13 @@ const LoginScreen = () => {
   const [password, setPassword] = useState("");
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
-  // Deprecated: account type selection state no longer needed
+
+  // Validation states
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [emailBorderAnim] = useState(new Animated.Value(0));
+  const [passwordBorderAnim] = useState(new Animated.Value(0));
+
   const router = useRouter();
 
   useEffect(() => {
@@ -38,14 +45,108 @@ const LoginScreen = () => {
     loadFonts();
   }, []);
 
+  // Validation helper functions
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
+
+    if (!email.trim()) {
+      return "Email or username is required";
+    }
+
+    // Check if it's a phone number (invalid for email field)
+    if (phoneRegex.test(email.replace(/[\s\-\(\)]/g, ''))) {
+      return "Please enter an email address, not a phone number";
+    }
+
+    // If it contains @ symbol, validate as email
+    if (email.includes('@')) {
+      if (!emailRegex.test(email)) {
+        return "Please enter a valid email address";
+      }
+    }
+    // Otherwise, treat as username (allow alphanumeric and some special chars)
+    else {
+      const usernameRegex = /^[a-zA-Z0-9._-]{3,20}$/;
+      if (!usernameRegex.test(email)) {
+        return "Username must be 3-20 characters (letters, numbers, ., _, -)";
+      }
+    }
+
+    return "";
+  };
+
+  const validatePassword = (password) => {
+    if (!password.trim()) {
+      return "Password is required";
+    }
+    if (password.length < 6) {
+      return "Password must be at least 6 characters";
+    }
+    return "";
+  };
+
+  // Animation for red border flash
+  const flashBorder = (animValue) => {
+    Animated.sequence([
+      Animated.timing(animValue, {
+        toValue: 1,
+        duration: 200,
+        useNativeDriver: false,
+      }),
+      Animated.timing(animValue, {
+        toValue: 0,
+        duration: 200,
+        useNativeDriver: false,
+      }),
+      Animated.timing(animValue, {
+        toValue: 1,
+        duration: 200,
+        useNativeDriver: false,
+      }),
+      Animated.timing(animValue, {
+        toValue: 0,
+        duration: 200,
+        useNativeDriver: false,
+      }),
+    ]).start();
+  };
+
+  // Real-time validation on text change
+  const handleEmailChange = (text) => {
+    setEmail(text);
+    const error = validateEmail(text);
+    setEmailError(error);
+  };
+
+  const handlePasswordChange = (text) => {
+    setPassword(text);
+    const error = validatePassword(text);
+    setPasswordError(error);
+  };
+
   if (!fontsLoaded) return null;
 
   const handleSubmit = () => {
-    // Login only. Registration now navigates directly on selection.
-    if (!email || !password) {
-      Alert.alert("Error", "Please fill in all fields");
+    const emailValidationError = validateEmail(email);
+    const passwordValidationError = validatePassword(password);
+
+    setEmailError(emailValidationError);
+    setPasswordError(passwordValidationError);
+
+    // Flash borders for invalid fields
+    if (emailValidationError) {
+      flashBorder(emailBorderAnim);
+    }
+    if (passwordValidationError) {
+      flashBorder(passwordBorderAnim);
+    }
+
+    if (emailValidationError || passwordValidationError) {
+      Alert.alert("Validation Error", "Please fix the errors below");
       return;
     }
+
     console.log("Logging in with:", email, password);
     Alert.alert("Success", "Login successful!", [
       {
@@ -54,10 +155,6 @@ const LoginScreen = () => {
       },
     ]);
   };
-
-  // Back navigation from login disabled
-
-  // removed account type selector callback; selections navigate directly now
 
   return (
     <KeyboardAvoidingView
@@ -128,26 +225,53 @@ const LoginScreen = () => {
             // Login Form
             <View style={styles.form}>
               <View style={styles.inputContainer}>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Email"
-                  placeholderTextColor="#666"
-                  value={email}
-                  onChangeText={setEmail}
-                  keyboardType="email-address"
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                />
+                <Animated.View style={[
+                  styles.inputWrapper,
+                  emailError && {
+                    borderColor: emailBorderAnim.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: ['#ff4444', '#ff0000']
+                    })
+                  }
+                ]}>
+                  <TextInput
+                    style={[
+                      styles.input,
+                      emailError && styles.inputError
+                    ]}
+                    placeholder="Email or Username"
+                    placeholderTextColor="#666"
+                    value={email}
+                    onChangeText={handleEmailChange}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                  />
+                </Animated.View>
+                {emailError ? (
+                  <Text style={styles.errorText}>{emailError}</Text>
+                ) : null}
               </View>
 
               <View style={styles.inputContainer}>
-                <View style={styles.passwordContainer}>
+                <Animated.View style={[
+                  styles.passwordContainer,
+                  passwordError && {
+                    borderColor: passwordBorderAnim.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: ['#ff4444', '#ff0000']
+                    })
+                  }
+                ]}>
                   <TextInput
-                    style={styles.passwordInput}
+                    style={[
+                      styles.passwordInput,
+                      passwordError && styles.inputError
+                    ]}
                     placeholder="Password"
-                    placeholderTextColor="#666" 
+                    placeholderTextColor="#666"
                     value={password}
-                    onChangeText={setPassword}
+                    onChangeText={handlePasswordChange}
                     secureTextEntry={!showPassword}
                     autoCapitalize="none"
                     autoCorrect={false}
@@ -160,7 +284,10 @@ const LoginScreen = () => {
                       {showPassword ? "👁️" : "👁️‍🗨️"}
                     </Text>
                   </TouchableOpacity>
-                </View>
+                </Animated.View>
+                {passwordError ? (
+                  <Text style={styles.errorText}>{passwordError}</Text>
+                ) : null}
               </View>
 
               {/* Login Button */}
@@ -368,20 +495,26 @@ const styles = StyleSheet.create({
   inputContainer: {
     marginBottom: 20,
   },
-  input: {
-    borderWidth: 1,
+  inputWrapper: {
+    borderWidth: 2,
     borderColor: "#ddd",
     borderRadius: 12,
+    backgroundColor: "#fff",
+  },
+  input: {
     paddingHorizontal: 16,
     paddingVertical: 16,
     fontSize: 16,
     fontFamily: "Poppins-Regular",
-    backgroundColor: "#fff",
+    backgroundColor: "transparent",
+  },
+  inputError: {
+    borderColor: "#ff4444",
   },
   passwordContainer: {
     flexDirection: "row",
     alignItems: "center",
-    borderWidth: 1,
+    borderWidth: 2,
     borderColor: "#ddd",
     borderRadius: 12,
     backgroundColor: "#fff",
@@ -391,7 +524,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 16,
     fontSize: 16,
-    color: "#808080",
+    color: "#333",
     fontFamily: "Poppins-Regular",
   },
   eyeButton: {
@@ -400,6 +533,13 @@ const styles = StyleSheet.create({
   },
   eyeButtonText: {
     fontSize: 18,
+  },
+  errorText: {
+    color: "#ff4444",
+    fontSize: 12,
+    fontFamily: "Poppins-Regular",
+    marginTop: 5,
+    marginLeft: 4,
   },
   loginButton: {
     backgroundColor: "#007AFF",

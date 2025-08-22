@@ -44,6 +44,20 @@ export default function RootLayout() {
         <Stack.Screen name="register/welcome-farmer" options={{ headerShown: false }} />
         <Stack.Screen name="forgot-password" options={{ headerShown: false }} />
         <Stack.Screen name="reset-password" options={{ headerShown: false }} />
+        <Stack.Screen name="angatscore-explainer" options={{ headerShown: false }} />
+        <Stack.Screen name="account-info" options={{ headerShown: false }} />
+        <Stack.Screen name="add-product" options={{ headerShown: false }} />
+        <Stack.Screen name="nearby-stores" options={{ headerShown: false }} />
+        <Stack.Screen name="your-listings" options={{ headerShown: false }} />
+        <Stack.Screen name="loan-application" options={{ headerShown: false }} />
+        <Stack.Screen name="loan-application-success" options={{ headerShown: false }} />
+        <Stack.Screen name="loan-application-failure" options={{ headerShown: false }} />
+        <Stack.Screen name="loan-application-details" options={{ headerShown: false }} />
+        <Stack.Screen name="weather-analysis" options={{ headerShown: false }} />
+        <Stack.Screen name="study-hub" options={{ headerShown: false }} />
+        <Stack.Screen name="study-hub-videos" options={{ headerShown: false }} />
+        <Stack.Screen name="kaagri-chatbot" options={{ headerShown: false }} />
+        <Stack.Screen name="store-contact" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style="auto" />

@@ -3,10 +3,7 @@ import PropTypes from "prop-types";
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, Dimensions } from "react-native";
 import * as Font from "expo-font";
 import { useRouter } from "expo-router";
-// @ts-ignore
 import agriangatLogo from "../../assets/images/agriangat-nobg-logo.png";
-// @ts-ignore
-import terraces from "../../assets/images/rice-terraces.png";
 import banana from "../../assets/images/banana.png";
 import papaya from "../../assets/images/papaya.png";
 import lemon from "../../assets/images/lemon.png";
@@ -17,8 +14,11 @@ import fruits from "../../assets/images/fruits.png";
 import dairy from "../../assets/images/dairy.png";
 import beverages from "../../assets/images/beverages.png";
 import vegetables from "../../assets/images/vegetables.png";
-// @ts-ignore
-import rain from "../../assets/images/rain.png";
+import rings from "../../assets/images/riring.png";
+import basket from "../../assets/images/baskets.png";
+import redsky from "../../assets/images/skyhalf-red.png";
+import marketplace from "../../assets/images/aa-marketplace.png";
+import greenbag from "../../assets/images/green-bag.png";
 
 const MOCK_PRODUCTS = [
   { id: "1", name: "Saba Banana", price: "₱50", image: banana },
@@ -120,7 +120,10 @@ export default function MarketplaceScreen() {
       </View>
 
       {/* Sell Product Button */}
-      <TouchableOpacity style={styles.sellButton}>
+      <TouchableOpacity 
+        style={styles.sellButton}
+        onPress={() => router.push("/add-product")}
+      >
         <Text style={styles.sellButtonText}>Sell Product</Text>
       </TouchableOpacity>
 
@@ -129,14 +132,20 @@ export default function MarketplaceScreen() {
         <View style={styles.statCard}>
           <Text style={styles.statNumber}>10</Text>
           <Text style={styles.statLabel}>Stores Nearby</Text>
-          <TouchableOpacity style={styles.statButton}>
+          <TouchableOpacity 
+            style={styles.statButton}
+            onPress={() => router.push("/nearby-stores")}
+          >
             <Text style={styles.statButtonText}>Look Nearby Stores</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.statCard}>
           <Text style={styles.statNumber}>1</Text>
           <Text style={styles.statLabel}>Active Listing</Text>
-          <TouchableOpacity style={styles.statButton}>
+          <TouchableOpacity 
+            style={styles.statButton}
+            onPress={() => router.push("/your-listings")}
+          >
             <Text style={styles.statButtonText}>Your Listings</Text>
           </TouchableOpacity>
         </View>
@@ -245,43 +254,52 @@ export default function MarketplaceScreen() {
         }}
         contentContainerStyle={styles.promoScroll}
       >
-        <View style={[styles.alertCard, { width: CARD_WIDTH }]}>
-          <View style={{ flex: 1, paddingRight: 12 }}>
-            <Text style={styles.alertTitle}>Grow more than crops. Grow your chances.</Text>
-            <Text style={styles.alertSub}>
-              Boost your AngatScore by paying loans on time.
-            </Text>
+        <View style={[styles.alertCard, { width: CARD_WIDTH, backgroundColor: "#E0FFE0", position: 'relative' }]}>
+          {/* Background rings with basket inside */}
+          <View style={styles.backgroundRingsContainer}>
+            <Image source={rings} style={styles.backgroundRings} />
+            <Image source={basket} style={styles.basketImageInside} />
           </View>
-          <View style={styles.alertIconContainer}>
-            <Image source={terraces} style={styles.alertIcon} />
+
+          {/* Content on left */}
+          <View style={styles.welcomeContentContainer}>
+            <Text style={[styles.alertTitle, { marginTop: -10 }]}>Grow more than </Text>
+            <Text style={styles.alertTitle}>crops. Grow your</Text>
+            <Text style={[styles.alertTitle, { marginBottom: 10 }]}>chances.</Text>
+            <Text style={[styles.alertSub, { color: "#0f6d00", marginTop: 0 }]}>Boost your </Text>
+            <Text style={[styles.alertSub, { color: "#0f6d00", marginTop: 0 }]}>
+              <Text style={[styles.alertSub, { fontFamily: "Poppins-Bold", color: "#0f6d00", marginTop: 0 }]}>AngatScore</Text> by
+            </Text>
+            <Text style={[styles.alertSub, { color: "#0f6d00", marginTop: 0 }]}>farming smarter and</Text>
+            <Text style={[styles.alertSub, { color: "#0f6d00", marginTop: 0 }]}>paying loans on time.</Text>
           </View>
         </View>
-        <View style={[styles.alertCard, { width: CARD_WIDTH, backgroundColor: "#ffdb24" }]}>
+        <View style={[styles.alertCard, { width: CARD_WIDTH, backgroundColor: "#FFDB24" }]}>
           <View style={{ flex: 1, paddingRight: 12 }}>
-            <Text style={styles.alertTitle}>Rainy Season Alert:</Text>
-            <Text style={styles.alertTitle}>Farm with Caution</Text>
-            <Text style={styles.alertSub}>
-              PAGASA forecasts up to 16 tropical cyclones from AUG to DEC. Ensure to prepare or stock before weather disrupts supply chains.
-            </Text>
+            <Text style={[styles.alertTitle, { fontFamily: "Poppins-ExtraBold" }]}>Rainy Season Alert: Farm with Caution</Text>
+            <Text style={[styles.alertSub, { color: "#0a0b0a" }]}>PAGASA forecasts up to 16 tropical cyclones from AUG to DEC. Ensure to prepare or stock before weather disrupts supply chains.</Text>
           </View>
           <View style={styles.alertIconContainer}>
-            <Image source={rain} style={styles.alertIcon} />
+            <Image source={redsky} style={[styles.alertIcon, { width: 130, height: 150, marginTop: 0, marginRight: -20 }]} />
           </View>
         </View>
         <View style={[styles.alertCard, { width: CARD_WIDTH, backgroundColor: "#0ca201" }]}>
           <View style={{ flex: 1, paddingRight: 12 }}>
-            <Text style={styles.alertTitle}>Sell fresh, buy fresh.</Text>
-            <Text style={styles.alertSub}>
-              With our Marketplace, farmers connect directly to stores and buyers nearby.
+            <Text style={[styles.alertTitle, { color: "#ffffff", marginTop: 10 }]}>Sell fresh, buy fresh.</Text>
+            <Text style={[styles.alertSub, { color: "#ffffff" }]}>
+              With our Marketplace, farmers connect directly to stores and buyers nearby. No extra layers, no unfair markups
             </Text>
+            <View style={styles.serviceLogo}>
+              <Image source={marketplace} style={styles.logoIcon} />
+            </View>
           </View>
           <View style={styles.alertIconContainer}>
-            <Image source={terraces} style={styles.alertIcon} />
+            <Image source={greenbag} style={[styles.alertIcon, { width: 90, marginTop: 10 }]} />
           </View>
         </View>
       </ScrollView>
       <View style={styles.dotsWrap}>
-        {[0,1,2].map((i) => (
+        {[0, 1, 2].map((i) => (
           <View key={i} style={[styles.dot, i === promoIndex && styles.dotActive]} />
         ))}
       </View>
@@ -388,9 +406,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   tabButton: {
-    paddingVertical: 6,
-    paddingHorizontal: 14,
-    borderRadius: 18,
+    paddingVertical: 4,
+    paddingHorizontal: 10,
+    borderRadius: 16,
     alignItems: "center",
   },
   tabButtonActive: {
@@ -417,16 +435,17 @@ const styles = StyleSheet.create({
     padding: 16,
     alignItems: "center",
     marginBottom: 10,
+    height: 170
   },
   alertTitle: {
     fontFamily: "Poppins-ExtraBold",
-    fontSize: 18,
+    fontSize: 16,
     color: "#111",
     marginBottom: 0,
   },
   alertSub: {
     fontFamily: "Poppins-Regular",
-    fontSize: 12,
+    fontSize: 11,
     color: "#111",
     marginTop: 10,
   },
@@ -435,15 +454,13 @@ const styles = StyleSheet.create({
   },
   alertIcon: {
     width: 120,
-    height: 120,
-    borderRadius: 60,
-    backgroundColor: "#ff0000",
+    height: 130,
     marginLeft: 12,
   },
   promoScroll: { paddingBottom: 6 },
-  promoTitle: { 
-    fontFamily: "Poppins-ExtraBold", 
-    fontSize: 18, 
+  promoTitle: {
+    fontFamily: "Poppins-ExtraBold",
+    fontSize: 18,
     color: "#111",
     marginBottom: 6,
   },
@@ -452,10 +469,10 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "#174c1a",
   },
-  promoImage: { 
-    width: 120, 
-    height: 120, 
-    borderRadius: 60, 
+  promoImage: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
     marginLeft: 12,
     backgroundColor: "rgba(255, 255, 255, 0.3)",
   },
@@ -468,20 +485,21 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     gap: 6,
   },
-  dot: { width: 6, height: 6, borderRadius: 3, backgroundColor: "#cfd8cf" },
+  dot: { width: 6, height: 6, borderRadius: 3, backgroundColor: "#cfd8cf", marginTop: -10 },
   dotActive: { width: 18, backgroundColor: "#0f6d00", borderRadius: 3 },
 
   sectionTitle: {
     fontFamily: "Poppins-ExtraBold",
-    fontSize: 16,
+    fontSize: 20,
     color: "#111",
-    marginTop: 14,
+    marginTop: 10,
     marginBottom: 8,
   },
-  categoriesRow: { 
-    flexDirection: "row", 
+  categoriesRow: {
+    flexDirection: "row",
     justifyContent: "space-between",
     marginTop: 8,
+    marginRight: 12,
   },
   categoryItem: {
     alignItems: "center",
@@ -491,7 +509,7 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: "#f4f4f4",
+    backgroundColor: "#f6f6f6",
     marginBottom: 8,
     justifyContent: "center",
     alignItems: "center",
@@ -502,38 +520,39 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 20,
   },
-  categoryText: { 
-    fontFamily: "Poppins-Regular", 
-    fontSize: 12, 
+  categoryText: {
+    fontFamily: "Poppins-Bold",
+    fontSize: 12,
     color: "#333",
     textAlign: "center",
   },
 
   card: {
     width: "100%",
-    height: 190,
+    height: 250,
     backgroundColor: "#f6f6f6",
     borderRadius: 12,
     overflow: "hidden",
     marginBottom: 30,
   },
-  cardImage: { width: "100%", height: 100, marginLeft: 0, marginTop: 0 },
-  cardBody: { padding: 10 },
-  cardName: { fontFamily: "Poppins-Bold", fontSize: 13, color: "#111" },
+  cardImage: { width: "100%", height: 150, marginLeft: -1, marginTop: -2, marginBottom: 10, backgroundColor: "#e8e8e8", borderRadius: 12, overflow: "hidden" },
+  cardBody: { padding: 10, backgroundColor: "#f6f6f6" },
+  cardName: { fontFamily: "Poppins-Bold", fontSize: 16, color: "#111", marginTop: -10 },
   cardRow: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     marginTop: 5,
   },
-  star: { fontFamily: "Poppins-Regular", fontSize: 10, color: "#666" },
+  star: { fontFamily: "Poppins-Regular", fontSize: 12, color: "#FBB400", marginTop: -40, },
   plusBtn: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
+    width: 50,
+    height: 50,
+    borderRadius: 9999,
     backgroundColor: "#111",
     alignItems: "center",
     justifyContent: "center",
+    marginTop: 3
   },
   plusText: {
     color: "#fff",
@@ -542,10 +561,53 @@ const styles = StyleSheet.create({
     marginTop: -1,
   },
   cardPrice: {
-    fontFamily: "Poppins-Bold",
-    fontSize: 13,
+    fontFamily: "Poppins-ExtraBold",
+    fontSize: 25,
     color: "#0f6d00",
-    marginTop: 4,
+    marginTop: -28,
+  },
+  backgroundRingsContainer: {
+    position: 'absolute',
+    width: 120,
+    height: 120,
+    top: 30,
+    right: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1,
+  },
+  backgroundRings: {
+    width: 150,
+    height: 155,
+    marginLeft: 48,
+    marginBottom: -5,
+    transform: [{ rotate: "360deg" }],
+  },
+  basketImageInside: {
+    position: 'absolute',
+    width: 140,
+    height: 140,
+    top: 9,
+    left: 19,
+    zIndex: 2,
+  },
+  welcomeContentContainer: {
+    flex: 1,
+    paddingLeft: 0,
+    paddingTop: 0,
+    paddingBottom: 0,
+    justifyContent: 'center',
+    zIndex: 2,
+  },
+  serviceLogo: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  logoIcon: {
+    width: "60%",
+    height: 50,
+    marginRight: 18,
+    marginTop: 5,
   },
   userCard: {
     flexDirection: "row",
@@ -635,7 +697,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginBottom: 10,
   },
-  stars: { fontSize: 18 },
+  stars: { fontSize: 18, color: "#FBB400" },
   ratingBars: {
     flexDirection: "row",
     justifyContent: "space-around",
