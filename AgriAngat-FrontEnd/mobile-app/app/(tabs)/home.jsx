@@ -21,9 +21,10 @@ import terraces from "../../assets/images/rice-terraces.png";
 // @ts-ignore
 import baskets from "../../assets/images/baskets.png";
 // @ts-ignore
-import rings from "../../assets/images/rings.png";
+import rings from "../../assets/images/riring.png";
 import redsky from "../../assets/images/skyhalf-red.png";
 import greenBag from "../../assets/images/green-bag.png";
+import basket from "../../assets/images/baskets.png";
 
 
 export default function HomeScreen() {
@@ -96,7 +97,7 @@ export default function HomeScreen() {
         <ImageBackground source={terraces} style={styles.heroImage}>
           <TouchableOpacity
             activeOpacity={0.8}
-            onPress={() => Alert.alert("AngatScore", "Coming soon")}
+            onPress={() => router.push("/angatscore-explainer")}
             style={styles.scorePillTouchable}
           >
             <BlurView intensity={3} tint="light" style={styles.scorePill}>
@@ -150,29 +151,32 @@ export default function HomeScreen() {
         </ImageBackground>
       </View>
 
-{/* Two stats + actions */}
-<View style={styles.statRow}>
-  {/* Left column: Balance + Button */}
-  <View style={styles.leftCol}>
-    <View style={styles.statCard}>
-      <Text style={styles.statLabel}>Balance</Text>
-      <Text style={styles.statValue}>₱150,000.00</Text>
-    </View>
+      {/* Two stats + actions */}
+      <View style={styles.statRow}>
+        {/* Left column: Balance + Button */}
+        <View style={styles.leftCol}>
+          <View style={styles.statCard}>
+            <Text style={styles.statLabel}>Balance</Text>
+            <Text style={styles.statValue}>₱150,000.00</Text>
+          </View>
 
-    <TouchableOpacity style={styles.outlineBtn}>
-      <Text style={styles.outlineBtnText}>Get new loan</Text>
-    </TouchableOpacity>
-  </View>
+          <TouchableOpacity 
+            style={styles.outlineBtn}
+            onPress={() => router.push("/loan-application")}
+          >
+            <Text style={styles.outlineBtnText}>Get new loan</Text>
+          </TouchableOpacity>
+        </View>
 
-  {/* Right column: Due */}
-  <View style={styles.statCard}>
-    <Text style={styles.statLabel}>Due Next 30 Days</Text>
-    <Text style={styles.statValue}>₱5,000.00</Text>
-    <TouchableOpacity style={styles.darkBtn}>
-      <Text style={styles.darkBtnText}>Pay Now</Text>
-    </TouchableOpacity>
-  </View>
-</View>
+        {/* Right column: Due */}
+        <View style={styles.statCard}>
+          <Text style={styles.statLabel}>Due Next 30 Days</Text>
+          <Text style={styles.statValue}>₱5,000.00</Text>
+          <TouchableOpacity style={styles.darkBtn}>
+            <Text style={styles.darkBtnText}>Pay Now</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
 
 
       <View style={styles.sectionHeader}>
@@ -234,42 +238,52 @@ export default function HomeScreen() {
         }}
         contentContainerStyle={styles.remScroll}
       >
-        {/* FIXED: Welcome card with overlapping rings */}
+        {/* Welcome card with rings and basket image */}
         <View style={[styles.welcomeCard, { width: CARD_WIDTH, position: 'relative' }]}>
-  {/* Background rings positioned absolutely */}
-  <View style={styles.backgroundRingsContainer}>
-    <Image source={rings} style={{ width: 50, height: 50, marginTop: -10 }} />
-  </View>
-  
-  {/* Content on top */}
-  <View style={styles.welcomeContentContainer}>
-    <Text style={styles.welcomeTitle}>Grow more than </Text>
-    <Text style={styles.welcomeTitle}>crops. Grow your</Text>
-    <Text style={[styles.welcomeTitle, {marginBottom: 10}]}>chances.</Text>
-    <Text style={styles.welcomeSub}>Boost your </Text>
-    <Text style={styles.welcomeSub}>
-      <Text style={[styles.welcomeSub, { fontFamily: "Poppins-Bold" }]}>Agriangat</Text>Score by 
-    </Text>
-    <Text style={styles.welcomeSub}>farming smarter and paying</Text>
-    <Text style={styles.welcomeSub}>loans on time.</Text>
-  </View>
-</View>
+          {/* Background rings with basket inside */}
+          <View style={styles.backgroundRingsContainer}>
+            <Image source={rings} style={styles.backgroundRings} />
+            <Image source={basket} style={styles.basketImageInside} />
+          </View>
+
+          {/* Content on left */}
+          <View style={styles.welcomeContentContainer}>
+            <Text style={[styles.welcomeTitle, { marginTop: 30 }]}>Grow more than </Text>
+            <Text style={styles.welcomeTitle}>crops. Grow your</Text>
+            <Text style={[styles.welcomeTitle, { marginBottom: 10 }]}>chances.</Text>
+            <Text style={[styles.welcomeSub, { color: "#0f6d00" }]}>Boost your </Text>
+            <Text style={[styles.welcomeSub, { color: "#0f6d00" }]}>
+              <Text style={[styles.welcomeSub, { fontFamily: "Poppins-Bold", color: "#0f6d00" }]}>AngatScore</Text> by
+            </Text>
+            <Text style={[styles.welcomeSub, { color: "#0f6d00" }]}>farming smarter and</Text>
+            <Text style={[styles.welcomeSub, { color: "#0f6d00" }]}>paying loans on time.</Text>
+          </View>
+        </View>
 
         {/* Fixed second card - removed duplicate structure */}
-        <View style={[styles.welcomeCard, { width: CARD_WIDTH, backgroundColor: "#ffdb24" }]}>
+        <TouchableOpacity 
+          style={[styles.welcomeCard, { width: CARD_WIDTH, backgroundColor: "#ffdb24" }]}
+          onPress={() => router.push("/weather-analysis")}
+        >
           <View style={{ flex: 1, paddingRight: 12 }}>
             <Text style={[styles.welcomeTitle, { fontFamily: "Poppins-ExtraBold", marginBottom: 10 }]}>Rainy Season Alert: Farm with Caution</Text>
-            <Text style={[styles.welcomeSub, { color: "#0a0b0a" }]}>PAGASA forecasts up to 16 tropical cyclones from AUG to DEC. Ensure to prepare or stock before weather disrupts supply chains.</Text>
+            <Text style={[styles.welcomeSub, { color: "#0a0b0a", marginTop: -4, fontSize: 10 }]}>PAGASA forecasts up to 16 tropical cyclones from AUG to DEC. Ensure you plant short-cycle crops like munggo or pechay, reinforce your fields and storage, and consider early loan access to prepare before weather disrupts supply chains.</Text>
           </View>
           <View style={styles.welcomeImageContainer}>
             <Image source={redsky} style={styles.weatherImage} />
           </View>
-        </View>
+        </TouchableOpacity>
 
         <View style={[styles.welcomeCard, { width: CARD_WIDTH, backgroundColor: "#0ca201" }]}>
           <View style={{ flex: 1, paddingRight: 12 }}>
-            <Text style={[styles.welcomeTitle, { color: "#ffffff", marginBottom: 10, fontSize: 18 }]}>Sell fresh, buy fresh.</Text>
-            <Text style={[styles.welcomeSub, { color: "#ffffff" }]}>With our Marketplace, farmers connect directly to stores and buyers nearby. No extra layers, no unfair markups</Text>
+            <Text style={[styles.welcomeTitle, { color: "#ffffff", marginBottom: 2, fontSize: 17 }]}>Sell fresh, buy fresh.</Text>
+            <Text style={[styles.welcomeSub, { color: "#ffffff", marginBottom: 10, fontSize: 10 }]}>With our Marketplace, farmers connect directly to stores and buyers nearby. No extra layers, no unfair markups</Text>
+            <TouchableOpacity 
+              style={styles.shopNowButton}
+              onPress={() => router.push("/(tabs)/marketplace")}
+            >
+              <Text style={styles.shopNowButtonText}>Shop Now</Text>
+            </TouchableOpacity>
           </View>
           <View style={styles.welcomeImageContainer}>
             <Image source={greenBag} style={styles.welcomeImage} />
@@ -277,7 +291,7 @@ export default function HomeScreen() {
         </View>
       </ScrollView>
       <View style={styles.remDotsWrap}>
-        {[0,1,2].map((i) => (
+        {[0, 1, 2].map((i) => (
           <View key={i} style={[styles.remDot, i === currentReminder && styles.remDotActive]} />
         ))}
       </View>
@@ -342,7 +356,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     marginBottom: 12,
-    marginTop:-10,
+    marginTop: -10,
   },
   brandIcon: { width: 50, height: 50, borderRadius: 6, top: -60 },
   greetingText: {
@@ -591,28 +605,30 @@ const styles = StyleSheet.create({
     padding: 16,
     marginTop: 18,
     marginBottom: 10,
+    height: 190,
     // Allow rings to extend beyond card boundaries
   },
 
   // NEW STYLES FOR OVERLAPPING RINGS
   backgroundRingsContainer: {
     position: 'absolute',
-    top: -20, // Extend above the card
-    right: -40, // Extend beyond the right edge of the card
-    bottom: -20, // Extend below the card
+    width: 120,
+    height: 120,
+    top: 30,
+    right: 40,
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 1,
   },
-  
+
   backgroundRings: {
-    width: 300,
-    height: 500,
-    marginTop: -20,
-    marginRight: -100,
-    transform: [{ rotate: "100deg" }],
+    width: 150,
+    height: 155,
+    marginLeft: 48,
+    marginBottom: -45,
+    transform: [{ rotate: "360deg" }],
   },
-  
+
   welcomeContentContainer: {
     flex: 1,
     paddingLeft: 0,
@@ -630,21 +646,64 @@ const styles = StyleSheet.create({
   },
   welcomeSub: {
     fontFamily: "Poppins-Regular",
-    fontSize: 12,
+    fontSize: 11,
     color: "#174c1a",
   },
   welcomeImageContainer: {
     position: "relative",
   },
   welcomeImage: {
-    width: 125,
-    height: 130,
-    marginLeft: 12,
+    width: 160,
+    height: 170,
+    marginLeft: 15,
     marginRight: -20,
   },
   weatherImage: {
     width: 130,
     height: 150,
     marginRight: -30,
+  },
+  shopNowButton: {
+    backgroundColor: "#ffffff",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+    alignSelf: 'flex-start',
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  shopNowButtonText: {
+    color: "#0ca201",
+    fontFamily: "Poppins-Bold",
+    fontSize: 14,
+  },
+  basketImage: {
+    width: 140,
+    height: 140,
+    marginLeft: 12,
+    marginRight: -13,
+    marginTop: 52
+  },
+  basketImageInside: {
+    position: 'absolute',
+    width: 140,
+    height: 140,
+    top: 27,
+    left: 19,
+    zIndex: 2,
+  },
+  greenCurveBackground: {
+    position: 'absolute',
+    right: -80,
+    top: -50,
+    bottom: -50,
+    width: 300,
+    height: 300,
+    backgroundColor: '#7ED321',
+    borderRadius: 150,
+    zIndex: 1,
   },
 });

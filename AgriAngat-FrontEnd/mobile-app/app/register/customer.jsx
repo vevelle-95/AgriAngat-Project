@@ -9,6 +9,8 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
+  Animated,
+  Alert,
 } from "react-native";
 import * as Font from "expo-font";
 import MapView, { Marker } from "react-native-maps";
@@ -49,6 +51,16 @@ const CustomerRegistrationScreen = () => {
 
   const [password, setPassword] = useState("");
 
+  // Validation states
+  const [errors, setErrors] = useState({});
+  const [borderAnims] = useState({
+    firstName: new Animated.Value(0),
+    lastName: new Animated.Value(0),
+    email: new Animated.Value(0),
+    contactNumber: new Animated.Value(0),
+    password: new Animated.Value(0),
+  });
+
   useEffect(() => {
     async function loadFonts() {
       await Font.loadAsync({
@@ -60,6 +72,141 @@ const CustomerRegistrationScreen = () => {
     }
     loadFonts();
   }, []);
+
+  // Validation helper functions
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
+    
+    if (!email.trim()) {
+      return "Email is required";
+    }
+    
+    if (phoneRegex.test(email.replace(/[\s\-\(\)]/g, ''))) {
+      return "Please enter an email address, not a phone number";
+    }
+    
+    if (!emailRegex.test(email)) {
+      return "Please enter a valid email address";
+    }
+    
+    return "";
+  };
+
+  const validatePhoneNumber = (phone) => {
+    const phoneRegex = /^(\+63|0)[9][0-9]{9}$/;
+    
+    if (!phone.trim()) {
+      return "Contact number is required";
+    }
+    
+    if (!phoneRegex.test(phone.replace(/[\s\-\(\)]/g, ''))) {
+      return "Please enter a valid Philippine mobile number";
+    }
+    
+    return "";
+  };
+
+  const validatePassword = (password) => {
+    if (!password.trim()) {
+      return "Password is required";
+    }
+    if (password.length < 8) {
+      return "Password must be at least 8 characters";
+    }
+    if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password)) {
+      return "Password must contain uppercase, lowercase, and number";
+    }
+    return "";
+  };
+
+  const validateRequired = (value, fieldName) => {
+    if (!value || !value.trim()) {
+      return `${fieldName} is required`;
+    }
+    return "";
+  };
+
+  // Animation for red border flash
+  const flashBorder = (animValue) => {
+    Animated.sequence([
+      Animated.timing(animValue, {
+        toValue: 1,
+        duration: 200,
+        useNativeDriver: false,
+      }),
+      Animated.timing(animValue, {
+        toValue: 0,
+        duration: 200,
+        useNativeDriver: false,
+      }),
+      Animated.timing(animValue, {
+        toValue: 1,
+        duration: 200,
+        useNativeDriver: false,
+      }),
+      Animated.timing(animValue, {
+        toValue: 0,
+        duration: 200,
+        useNativeDriver: false,
+      }),
+    ]).start();
+  };
+
+  // Real-time validation handlers
+  const handleFieldChange = (field, value, validator) => {
+    // Update field value
+    switch(field) {
+      case 'firstName': setFirstName(value); break;
+      case 'lastName': setLastName(value); break;
+      case 'email': setEmail(value); break;
+      case 'contactNumber': setContactNumber(value); break;
+      case 'password': setPassword(value); break;
+    }
+    
+    // Validate and update errors
+    const error = validator ? validator(value) : validateRequired(value, field);
+    setErrors(prev => ({ ...prev, [field]: error }));
+  };
+
+  const handleSubmit = () => {
+    const validationErrors = {
+      firstName: validateRequired(firstName, "First name"),
+      lastName: validateRequired(lastName, "Last name"),
+      email: validateEmail(email),
+      contactNumber: validatePhoneNumber(contactNumber),
+      password: validatePassword(password),
+    };
+    
+    setErrors(validationErrors);
+    
+    // Flash borders for invalid fields
+    Object.keys(validationErrors).forEach(field => {
+      if (validationErrors[field] && borderAnims[field]) {
+        flashBorder(borderAnims[field]);
+      }
+    });
+    
+    const hasErrors = Object.values(validationErrors).some(error => error !== "");
+    
+    if (hasErrors) {
+      Alert.alert("Validation Error", "Please fix the errors below");
+      return;
+    }
+    
+    // Additional validation for optional fields
+    if (!birthdate) {
+      Alert.alert("Missing Information", "Please select your birthdate");
+      return;
+    }
+    
+    if (!sex) {
+      Alert.alert("Missing Information", "Please select your sex");
+      return;
+    }
+    
+    router.replace("/register/welcome-customer");
+  };
 
   if (!fontsLoaded) return null;
 
@@ -115,13 +262,24 @@ const CustomerRegistrationScreen = () => {
         <Text style={styles.sectionTitle}>Your Information</Text>
         <View style={styles.form}>
           {/* Personal Info Inputs */}
-          <TextInput
-            style={styles.input}
-            placeholder="First Name"
-            placeholderTextColor="#9aa0a6"
-            value={firstName}
-            onChangeText={setFirstName}
-          />
+          <Animated.View style={[
+            styles.inputWrapper,
+            errors.firstName && {
+              borderColor: borderAnims.firstName.interpolate({
+                inputRange: [0, 1],
+                outputRange: ['#ff4444', '#ff0000']
+              })
+            }
+          ]}>
+            <TextInput
+              style={[styles.input, errors.firstName && styles.inputError]}
+              placeholder="First Name"
+              placeholderTextColor="#9aa0a6"
+              value={firstName}
+              onChangeText={(value) => handleFieldChange('firstName', value)}
+            />
+          </Animated.View>
+          {errors.firstName ? <Text style={styles.errorText}>{errors.firstName}</Text> : null}
           <TextInput
             style={styles.input}
             placeholder="Middle Name (optional)"
@@ -129,13 +287,24 @@ const CustomerRegistrationScreen = () => {
             value={middleName}
             onChangeText={setMiddleName}
           />
-          <TextInput
-            style={styles.input}
-            placeholder="Last Name"
-            placeholderTextColor="#9aa0a6"
-            value={lastName}
-            onChangeText={setLastName}
-          />
+          <Animated.View style={[
+            styles.inputWrapper,
+            errors.lastName && {
+              borderColor: borderAnims.lastName.interpolate({
+                inputRange: [0, 1],
+                outputRange: ['#ff4444', '#ff0000']
+              })
+            }
+          ]}>
+            <TextInput
+              style={[styles.input, errors.lastName && styles.inputError]}
+              placeholder="Last Name"
+              placeholderTextColor="#9aa0a6"
+              value={lastName}
+              onChangeText={(value) => handleFieldChange('lastName', value)}
+            />
+          </Animated.View>
+          {errors.lastName ? <Text style={styles.errorText}>{errors.lastName}</Text> : null}
           <View style={styles.row}>
             <TouchableOpacity
               style={[styles.input, styles.rowItem, styles.dateInput]}
@@ -165,23 +334,46 @@ const CustomerRegistrationScreen = () => {
               placeholder="Select Sex"
               style={[styles.rowItem, styles.pickerField]}
             />
-            <TextInput
-              style={[styles.input, styles.rowItem]}
-              placeholder="Contact Number"
-              placeholderTextColor="#9aa0a6"
-              value={contactNumber}
-              onChangeText={setContactNumber}
-              keyboardType="phone-pad"
-            />
+            <Animated.View style={[
+              styles.inputWrapper,
+              styles.rowItem,
+              errors.contactNumber && {
+                borderColor: borderAnims.contactNumber.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: ['#ff4444', '#ff0000']
+                })
+              }
+            ]}>
+              <TextInput
+                style={[styles.input, errors.contactNumber && styles.inputError]}
+                placeholder="Contact Number"
+                placeholderTextColor="#9aa0a6"
+                value={contactNumber}
+                onChangeText={(value) => handleFieldChange('contactNumber', value, validatePhoneNumber)}
+                keyboardType="phone-pad"
+              />
+            </Animated.View>
           </View>
-          <TextInput
-            style={styles.input}
-            placeholder="Email"
-            placeholderTextColor="#9aa0a6"
-            value={email}
-            onChangeText={setEmail}
-            keyboardType="email-address"
-          />
+          {errors.contactNumber ? <Text style={styles.errorText}>{errors.contactNumber}</Text> : null}
+          <Animated.View style={[
+            styles.inputWrapper,
+            errors.email && {
+              borderColor: borderAnims.email.interpolate({
+                inputRange: [0, 1],
+                outputRange: ['#ff4444', '#ff0000']
+              })
+            }
+          ]}>
+            <TextInput
+              style={[styles.input, errors.email && styles.inputError]}
+              placeholder="Email"
+              placeholderTextColor="#9aa0a6"
+              value={email}
+              onChangeText={(value) => handleFieldChange('email', value, validateEmail)}
+              keyboardType="email-address"
+            />
+          </Animated.View>
+          {errors.email ? <Text style={styles.errorText}>{errors.email}</Text> : null}
           <TextInput
             style={styles.input}
             placeholder="Current Address"
@@ -236,14 +428,25 @@ const CustomerRegistrationScreen = () => {
 
           {/* Password */}
           <Text style={styles.sectionTitleInner}>Set your password</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Password"
-            placeholderTextColor="#9aa0a6"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-          />
+          <Animated.View style={[
+            styles.inputWrapper,
+            errors.password && {
+              borderColor: borderAnims.password.interpolate({
+                inputRange: [0, 1],
+                outputRange: ['#ff4444', '#ff0000']
+              })
+            }
+          ]}>
+            <TextInput
+              style={[styles.input, errors.password && styles.inputError]}
+              placeholder="Password"
+              placeholderTextColor="#9aa0a6"
+              value={password}
+              onChangeText={(value) => handleFieldChange('password', value, validatePassword)}
+              secureTextEntry
+            />
+          </Animated.View>
+          {errors.password ? <Text style={styles.errorText}>{errors.password}</Text> : null}
 
           <Text style={styles.disclaimer}>
           By submitting, you agree to share your personal and store information with AgriAngat.
@@ -284,7 +487,7 @@ const CustomerRegistrationScreen = () => {
                 marginLeft: 8,
                 marginTop: 60,
               }}
-              onPress={() => router.replace("/register/welcome-customer")}
+              onPress={handleSubmit}
             >
               <Text style={{ fontFamily: "Poppins-Bold", color: "#fff" }}>
                 Submit
@@ -384,16 +587,29 @@ const styles = StyleSheet.create({
     marginLeft: 15,
   },
   form: { paddingHorizontal: 20 },
-  input: {
-    borderWidth: 1,
+  inputWrapper: {
+    borderWidth: 2,
     borderColor: "#e5e5e5",
     borderRadius: 10,
+    backgroundColor: "#fff",
+    marginBottom: 8,
+  },
+  input: {
     paddingHorizontal: 12,
     paddingVertical: 12,
     fontSize: 14,
     fontFamily: "Poppins-Regular",
-    marginBottom: 12,
-    backgroundColor: "#fff",
+    backgroundColor: "transparent",
+  },
+  inputError: {
+    borderColor: "#ff4444",
+  },
+  errorText: {
+    color: "#ff4444",
+    fontSize: 11,
+    fontFamily: "Poppins-Regular",
+    marginBottom: 8,
+    marginLeft: 4,
   },
   row: { flexDirection: "row", gap: 12 },
   rowItem: { flex: 1 },

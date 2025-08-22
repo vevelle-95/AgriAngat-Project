@@ -125,9 +125,12 @@ export default function ServicesScreen() {
           <Text style={styles.tileSub}>
             Apply for loan offered by our partners
           </Text>
-          <View style={styles.ctaDark}>
+          <TouchableOpacity 
+            style={styles.ctaDark}
+            onPress={() => router.push("/loan-application")}
+          >
             <Text style={styles.ctaDarkText}>Apply now</Text>
-          </View>
+          </TouchableOpacity>
         </View>
         <View style={styles.tile}>
           <Image source={skyblue} style={{ width: "25%", height: 30, marginBottom: 5 }} />
@@ -135,9 +138,12 @@ export default function ServicesScreen() {
           <Text style={styles.tileSub}>
             Check weather, forecasts and insights.
           </Text>
-          <View style={styles.ctaLight}>
+          <TouchableOpacity 
+            style={styles.ctaLight}
+            onPress={() => router.push("/weather-analysis")}
+          >
             <Text style={styles.ctaLightText}>Check now</Text>
-          </View>
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -148,9 +154,12 @@ export default function ServicesScreen() {
           Learn tips and how-tos from AgriAngat videos and the AgriAngat
           Assistant.
         </Text>
-        <View style={styles.ctaDark}>
+        <TouchableOpacity 
+          style={styles.ctaDark}
+          onPress={() => router.push("/study-hub")}
+        >
           <Text style={styles.ctaDarkText}>Learn now</Text>
-        </View>
+        </TouchableOpacity>
       </View>
 
       {/* In-screen quick nav removed (tab bar already present) */}

@@ -49,16 +49,22 @@ export default function AccountScreen() {
           <Text style={styles.name}>Juan Dela Cruz</Text>
           <Text style={styles.meta}>Verified profile — July 25, 2025</Text>
         </View>
-        <View style={styles.viewBtn}>
+        <TouchableOpacity 
+          style={styles.viewBtn}
+          onPress={() => router.push("/account-info")}
+        >
           <Text style={styles.viewBtnText}>View More</Text>
-        </View>
+        </TouchableOpacity>
       </View>
 
       {/* Chips */}
       <View style={styles.chipsRow}>
-        <View style={styles.chip}>
+        <TouchableOpacity 
+          style={styles.chip}
+          onPress={() => router.push("/angatscore-explainer")}
+        >
           <Text style={styles.chipText}>AgriAngat Score</Text>
-        </View>
+        </TouchableOpacity>
         <View style={styles.chip}>
           <Text style={styles.chipText}>My Seller Account</Text>
         </View>
@@ -116,6 +122,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     marginBottom: 10,
+    marginTop: -10,
   },
   brandIcon: { width: 50, height: 50, borderRadius: 6, marginTop: 46 },
   headerTitle: { fontFamily: "Poppins-ExtraBold", fontSize: 23, color: "#111", marginTop: 45, marginLeft: 197 },
