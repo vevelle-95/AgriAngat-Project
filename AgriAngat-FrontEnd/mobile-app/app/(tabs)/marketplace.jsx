@@ -7,13 +7,31 @@ import { useRouter } from "expo-router";
 import agriangatLogo from "../../assets/images/agriangat-nobg-logo.png";
 // @ts-ignore
 import terraces from "../../assets/images/rice-terraces.png";
+import banana from "../../assets/images/banana.png";
+import papaya from "../../assets/images/papaya.png";
+import lemon from "../../assets/images/lemon.png";
+import pakwan from "../../assets/images/watermelon.png";
+import mangga from "../../assets/images/mango.png";
+import strawberry from "../../assets/images/strawberry.png";
+import fruits from "../../assets/images/fruits.png";
+import dairy from "../../assets/images/dairy.png";
+import beverages from "../../assets/images/beverages.png";
+import vegetables from "../../assets/images/vegetables.png";
+
 const MOCK_PRODUCTS = [
-  { id: "1", name: "Saba Banana", price: "₱50", image: terraces },
-  { id: "2", name: "Papaya", price: "₱80", image: terraces },
-  { id: "3", name: "Lemon", price: "₱30", image: terraces },
-  { id: "4", name: "Pakwan", price: "₱60", image: terraces },
-  { id: "5", name: "Manga", price: "₱40", image: terraces },
-  { id: "6", name: "Strawberry", price: "₱90", image: terraces },
+  { id: "1", name: "Saba Banana", price: "₱50", image: banana },
+  { id: "2", name: "Papaya", price: "₱80", image: papaya },
+  { id: "3", name: "Lemon", price: "₱30", image: lemon },
+  { id: "4", name: "Pakwan", price: "₱60", image: pakwan },
+  { id: "5", name: "Mangga", price: "₱40", image: mangga },
+  { id: "6", name: "Strawberry", price: "₱90", image: strawberry },
+];
+
+const CATEGORIES = [
+  { id: "1", name: "Fruits", image: fruits },
+  { id: "2", name: "Milk & egg", image: dairy },
+  { id: "3", name: "Beverages", image: beverages },
+  { id: "4", name: "Vegetables", image: vegetables },
 ];
 
 function ProductCard({ item }) {
@@ -211,67 +229,29 @@ export default function MarketplaceScreen() {
 
   const renderExploreContent = () => (
     <>
-      {/* Promo cards carousel */}
-      <ScrollView
-        ref={promoScrollRef}
-        horizontal
-        pagingEnabled
-        snapToInterval={CARD_WIDTH}
-        decelerationRate="fast"
-        showsHorizontalScrollIndicator={false}
-        onMomentumScrollEnd={(e) => {
-          const index = Math.round(e.nativeEvent.contentOffset.x / CARD_WIDTH);
-          setPromoIndex(index);
-        }}
-        contentContainerStyle={styles.promoScroll}
-      >
-        <View style={[styles.promoCard, { width: CARD_WIDTH }]}>
-          <View style={{ flex: 1, paddingRight: 12 }}>
-            <Text style={styles.promoTitle}>
-              Grow more than crops. Grow your chances.
-            </Text>
-            <Text style={styles.promoSub}>
-              Boost your AngatScore by paying loans on time.
-            </Text>
-          </View>
-          <Image source={terraces} style={styles.promoImage} />
+      {/* Rainy Season Alert Banner */}
+      <View style={styles.alertCard}>
+        <View style={{ flex: 1, paddingRight: 12 }}>
+          <Text style={styles.alertTitle}>Rainy Season Alert:</Text>
+          <Text style={styles.alertTitle}>Farm with Caution</Text>
+          <Text style={styles.alertSub}>
+            PAGASA forecasts up to 16 tropical cyclones from AUG to DEC. Ensure to prepare or stock before weather disrupts supply chains.
+          </Text>
         </View>
-        <View style={[styles.promoCard, { width: CARD_WIDTH, backgroundColor: "#ffdb24" }]}>
-          <View style={{ flex: 1, paddingRight: 12 }}>
-            <Text style={styles.promoTitle}>
-              Rainy Season Alert: Farm with Caution
-            </Text>
-            <Text style={styles.promoSub}>
-              PAGASA forecasts up to 16 tropical cyclones from AUG to DEC.
-            </Text>
-          </View>
-          <Image source={terraces} style={styles.promoImage} />
+        <View style={styles.alertIconContainer}>
+          <View style={styles.alertIcon} />
         </View>
-        <View style={[styles.promoCard, { width: CARD_WIDTH, backgroundColor: "#0ca201" }]}>
-          <View style={{ flex: 1, paddingRight: 12 }}>
-            <Text style={styles.promoTitle}>
-              Sell fresh, buy fresh.
-            </Text>
-            <Text style={styles.promoSub}>
-              With our Marketplace, farmers connect directly to stores and buyers nearby.
-            </Text>
-          </View>
-          <Image source={terraces} style={styles.promoImage} />
-        </View>
-      </ScrollView>
-      <View style={styles.dotsWrap}>
-        {[0,1,2].map((i) => (
-          <View key={i} style={[styles.dot, i === promoIndex && styles.dotActive]} />
-        ))}
       </View>
 
       {/* Categories */}
       <Text style={styles.sectionTitle}>Categories</Text>
       <View style={styles.categoriesRow}>
-        {["Fruits", "Milk & egg", "Beverages", "Vegetables"].map((cat) => (
-          <View key={cat} style={styles.categoryPill}>
-            <View style={styles.categoryIcon} />
-            <Text style={styles.categoryText}>{cat}</Text>
+        {CATEGORIES.map((category) => (
+          <View key={category.id} style={styles.categoryItem}>
+            <View style={styles.categoryIcon}>
+              <Image source={category.image} style={styles.categoryImage} />
+            </View>
+            <Text style={styles.categoryText}>{category.name}</Text>
           </View>
         ))}
       </View>
@@ -386,13 +366,35 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
 
-  promoCard: {
+  alertCard: {
     flexDirection: "row",
-    backgroundColor: "#d7ffd4",
+    backgroundColor: "#ffdb24",
     borderRadius: 16,
     padding: 16,
     alignItems: "center",
     marginBottom: 10,
+  },
+  alertTitle: {
+    fontFamily: "Poppins-ExtraBold",
+    fontSize: 18,
+    color: "#111",
+    marginBottom: 0,
+  },
+  alertSub: {
+    fontFamily: "Poppins-Regular",
+    fontSize: 12,
+    color: "#111",
+    marginTop: 10,
+  },
+  alertIconContainer: {
+    position: "relative",
+  },
+  alertIcon: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    backgroundColor: "#ff0000",
+    marginLeft: 12,
   },
   promoTitle: { 
     fontFamily: "Poppins-ExtraBold", 
@@ -431,39 +433,53 @@ const styles = StyleSheet.create({
     marginTop: 14,
     marginBottom: 8,
   },
-  categoriesRow: { flexDirection: "row", gap: 10 },
-  categoryPill: {
-    flexDirection: "row",
+  categoriesRow: { 
+    flexDirection: "row", 
+    justifyContent: "space-between",
+    marginTop: 8,
+  },
+  categoryItem: {
     alignItems: "center",
-    backgroundColor: "#f4f4f4",
-    borderRadius: 22,
-    paddingVertical: 8,
-    paddingHorizontal: 12,
+    flex: 1,
   },
   categoryIcon: {
-    width: 22,
-    height: 22,
-    borderRadius: 11,
-    backgroundColor: "#d1d1d1",
-    marginRight: 8,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: "#f4f4f4",
+    marginBottom: 8,
+    justifyContent: "center",
+    alignItems: "center",
+    overflow: "hidden",
   },
-  categoryText: { fontFamily: "Poppins-Bold", fontSize: 12, color: "#333" },
+  categoryImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+  },
+  categoryText: { 
+    fontFamily: "Poppins-Regular", 
+    fontSize: 12, 
+    color: "#333",
+    textAlign: "center",
+  },
 
   card: {
     width: "100%",
+    height: 190,
     backgroundColor: "#f6f6f6",
     borderRadius: 12,
     overflow: "hidden",
-    marginBottom: 12,
+    marginBottom: 30,
   },
-  cardImage: { width: "120%", height: 90 },
+  cardImage: { width: "100%", height: 100, marginLeft: 0, marginTop: 0 },
   cardBody: { padding: 10 },
   cardName: { fontFamily: "Poppins-Bold", fontSize: 13, color: "#111" },
   cardRow: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginTop: 4,
+    marginTop: 5,
   },
   star: { fontFamily: "Poppins-Regular", fontSize: 10, color: "#666" },
   plusBtn: {
