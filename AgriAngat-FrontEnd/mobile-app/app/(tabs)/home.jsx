@@ -211,36 +211,16 @@ export default function HomeScreen() {
         </View>
       </View>
 
-      {/* Reminders carousel */}
-      <View style={styles.sectionHeader}>
-        <Text style={styles.sectionTitle}>Reminders</Text>
-      </View>
-      <ScrollView
-        ref={remScrollRef}
-        horizontal
-        pagingEnabled
-        snapToInterval={CARD_WIDTH}
-        decelerationRate="fast"
-        showsHorizontalScrollIndicator={false}
-        onMomentumScrollEnd={(e) => {
-          const index = Math.round(e.nativeEvent.contentOffset.x / CARD_WIDTH);
-          setCurrentReminder(index);
-        }}
-        contentContainerStyle={styles.remScroll}
-      >
-        {reminders.map((item) => (
-          <View key={item.id} style={[styles.remCard, { width: CARD_WIDTH, backgroundColor: item.tint }]}> 
-            <View style={{ flex: 1, paddingRight: 12 }}>
-              <Text style={[styles.remTitle, item.fontColor && { color: item.fontColor }]}>{item.title}</Text>
-              <Text style={[styles.remBody, item.fontColor && { color: item.fontColor }]}>{item.body}</Text>
-            </View>
-          </View>
-        ))}
-      </ScrollView>
-      <View style={styles.remDotsWrap}>
-        {reminders.map((_, idx) => (
-          <View key={idx} style={[styles.remDot, idx === currentReminder && styles.remDotActive]} />
-        ))}
+      {/* Welcome Banner */}
+      <View style={styles.welcomeCard}>
+        <View style={{ flex: 1, paddingRight: 12 }}>
+          <Text style={styles.welcomeTitle}>Welcome to</Text>
+          <Text style={styles.welcomeTitle}>AgriAngat Services!</Text>
+          <Text style={styles.welcomeSub}>See how we can help you</Text>
+        </View>
+        <View style={styles.welcomeImageContainer}>
+          <View style={styles.welcomeImage} />
+        </View>
       </View>
 
       {/* Upcoming Payments */}
@@ -542,5 +522,36 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontFamily: "Poppins-Bold",
     fontSize: 12,
+  },
+  welcomeCard: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#E0FFE0",
+    borderRadius: 16,
+    padding: 16,
+    marginTop: 18,
+    marginBottom: 10,
+  },
+  welcomeTitle: {
+    fontFamily: "Poppins-ExtraBold",
+    fontSize: 18,
+    color: "#111",
+    marginBottom: 0,
+  },
+  welcomeSub: {
+    fontFamily: "Poppins-Regular",
+    fontSize: 12,
+    color: "#174c1a",
+    marginTop: 10,
+  },
+  welcomeImageContainer: {
+    position: "relative",
+  },
+  welcomeImage: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    backgroundColor: "rgba(255, 255, 255, 0.3)",
+    marginLeft: 12,
   },
 });
