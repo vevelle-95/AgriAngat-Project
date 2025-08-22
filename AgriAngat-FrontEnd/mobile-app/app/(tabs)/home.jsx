@@ -18,6 +18,12 @@ import Svg, { Circle } from "react-native-svg";
 import agriangatLogo from "../../assets/images/agriangat-nobg-logo.png";
 // @ts-ignore
 import terraces from "../../assets/images/rice-terraces.png";
+// @ts-ignore
+import baskets from "../../assets/images/baskets.png";
+// @ts-ignore
+import rings from "../../assets/images/rings.png";
+import redsky from "../../assets/images/skyhalf-red.png";
+import greenBag from "../../assets/images/green-bag.png";
 
 
 export default function HomeScreen() {
@@ -26,7 +32,7 @@ export default function HomeScreen() {
   const [currentReminder, setCurrentReminder] = useState(0);
   const remScrollRef = useRef(null);
   const CARD_WIDTH = Dimensions.get("window").width - 32;
-  const CARD_HEIGHT = Dimensions.get("window").height - 40; // container horizontal padding
+  const CARD_HEIGHT = Dimensions.get("window").height - 40;
   const reminders = [
     {
       id: "r1",
@@ -211,16 +217,69 @@ export default function HomeScreen() {
         </View>
       </View>
 
-      {/* Welcome Banner */}
-      <View style={styles.welcomeCard}>
-        <View style={{ flex: 1, paddingRight: 12 }}>
-          <Text style={styles.welcomeTitle}>Welcome to</Text>
-          <Text style={styles.welcomeTitle}>AgriAngat Services!</Text>
-          <Text style={styles.welcomeSub}>See how we can help you</Text>
+      {/* Reminders carousel */}
+      <View style={styles.sectionHeader}>
+        <Text style={[styles.sectionTitle, { marginTop: 5, marginLeft: 10, marginBottom: -20 }]}>Reminders</Text>
+      </View>
+      <ScrollView
+        ref={remScrollRef}
+        horizontal
+        pagingEnabled
+        snapToInterval={CARD_WIDTH}
+        decelerationRate="fast"
+        showsHorizontalScrollIndicator={false}
+        onMomentumScrollEnd={(e) => {
+          const index = Math.round(e.nativeEvent.contentOffset.x / CARD_WIDTH);
+          setCurrentReminder(index);
+        }}
+        contentContainerStyle={styles.remScroll}
+      >
+        {/* FIXED: Welcome card with overlapping rings */}
+        <View style={[styles.welcomeCard, { width: CARD_WIDTH, position: 'relative' }]}>
+  {/* Background rings positioned absolutely */}
+  <View style={styles.backgroundRingsContainer}>
+    <Image source={rings} style={{ width: 50, height: 50, marginTop: -10 }} />
+  </View>
+  
+  {/* Content on top */}
+  <View style={styles.welcomeContentContainer}>
+    <Text style={styles.welcomeTitle}>Grow more than </Text>
+    <Text style={styles.welcomeTitle}>crops. Grow your</Text>
+    <Text style={[styles.welcomeTitle, {marginBottom: 10}]}>chances.</Text>
+    <Text style={styles.welcomeSub}>Boost your </Text>
+    <Text style={styles.welcomeSub}>
+      <Text style={[styles.welcomeSub, { fontFamily: "Poppins-Bold" }]}>Agriangat</Text>Score by 
+    </Text>
+    <Text style={styles.welcomeSub}>farming smarter and paying</Text>
+    <Text style={styles.welcomeSub}>loans on time.</Text>
+  </View>
+</View>
+
+        {/* Fixed second card - removed duplicate structure */}
+        <View style={[styles.welcomeCard, { width: CARD_WIDTH, backgroundColor: "#ffdb24" }]}>
+          <View style={{ flex: 1, paddingRight: 12 }}>
+            <Text style={[styles.welcomeTitle, { fontFamily: "Poppins-ExtraBold", marginBottom: 10 }]}>Rainy Season Alert: Farm with Caution</Text>
+            <Text style={[styles.welcomeSub, { color: "#0a0b0a" }]}>PAGASA forecasts up to 16 tropical cyclones from AUG to DEC. Ensure to prepare or stock before weather disrupts supply chains.</Text>
+          </View>
+          <View style={styles.welcomeImageContainer}>
+            <Image source={redsky} style={styles.weatherImage} />
+          </View>
         </View>
-        <View style={styles.welcomeImageContainer}>
-          <View style={styles.welcomeImage} />
+
+        <View style={[styles.welcomeCard, { width: CARD_WIDTH, backgroundColor: "#0ca201" }]}>
+          <View style={{ flex: 1, paddingRight: 12 }}>
+            <Text style={[styles.welcomeTitle, { color: "#ffffff", marginBottom: 10, fontSize: 18 }]}>Sell fresh, buy fresh.</Text>
+            <Text style={[styles.welcomeSub, { color: "#ffffff" }]}>With our Marketplace, farmers connect directly to stores and buyers nearby. No extra layers, no unfair markups</Text>
+          </View>
+          <View style={styles.welcomeImageContainer}>
+            <Image source={greenBag} style={styles.welcomeImage} />
+          </View>
         </View>
+      </ScrollView>
+      <View style={styles.remDotsWrap}>
+        {[0,1,2].map((i) => (
+          <View key={i} style={[styles.remDot, i === currentReminder && styles.remDotActive]} />
+        ))}
       </View>
 
       {/* Upcoming Payments */}
@@ -283,6 +342,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     marginBottom: 12,
+    marginTop:-10,
   },
   brandIcon: { width: 50, height: 50, borderRadius: 6, top: -60 },
   greetingText: {
@@ -531,7 +591,37 @@ const styles = StyleSheet.create({
     padding: 16,
     marginTop: 18,
     marginBottom: 10,
+    // Allow rings to extend beyond card boundaries
   },
+
+  // NEW STYLES FOR OVERLAPPING RINGS
+  backgroundRingsContainer: {
+    position: 'absolute',
+    top: -20, // Extend above the card
+    right: -40, // Extend beyond the right edge of the card
+    bottom: -20, // Extend below the card
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1,
+  },
+  
+  backgroundRings: {
+    width: 300,
+    height: 500,
+    marginTop: -20,
+    marginRight: -100,
+    transform: [{ rotate: "100deg" }],
+  },
+  
+  welcomeContentContainer: {
+    flex: 1,
+    paddingLeft: 0,
+    paddingTop: 20,
+    paddingBottom: 20,
+    justifyContent: 'center',
+    zIndex: 2, // Ensure content is above rings
+  },
+
   welcomeTitle: {
     fontFamily: "Poppins-ExtraBold",
     fontSize: 18,
@@ -542,16 +632,19 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins-Regular",
     fontSize: 12,
     color: "#174c1a",
-    marginTop: 10,
   },
   welcomeImageContainer: {
     position: "relative",
   },
   welcomeImage: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    backgroundColor: "rgba(255, 255, 255, 0.3)",
+    width: 125,
+    height: 130,
     marginLeft: 12,
+    marginRight: -20,
+  },
+  weatherImage: {
+    width: 130,
+    height: 150,
+    marginRight: -30,
   },
 });

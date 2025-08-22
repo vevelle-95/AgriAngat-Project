@@ -6,6 +6,13 @@ import { useRouter } from "expo-router";
 import agriangatLogo from "../../assets/images/agriangat-nobg-logo.png";
 // @ts-ignore
 import terraces from "../../assets/images/rice-terraces.png";
+// @ts-ignore
+import rings from "../../assets/images/rings.png";
+import redsky from "../../assets/images/skyhalf-red.png";
+import greenBag from "../../assets/images/green-bag.png";
+import marketplace from "../../assets/images/aa-marketplace.png";
+import skyblue from "../../assets/images/sky-blue.png";
+import hub from "../../assets/images/study-hub.png";
 
 export default function ServicesScreen() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
@@ -64,27 +71,43 @@ export default function ServicesScreen() {
         }}
         contentContainerStyle={styles.heroScroll}
       >
-        <View style={[styles.heroCard, { width: CARD_WIDTH }]}>
-          <View style={{ flex: 1, paddingRight: 12 }}>
-            <Text style={styles.heroTitle}>Welcome to</Text>
-            <Text style={styles.heroTitle}>AgriAngat Services!</Text>
-            <Text style={styles.heroSub}>See how we can help you</Text>
+        {/* FIXED: Welcome card with overlapping background */}
+        <View style={[styles.serviceCard, { width: CARD_WIDTH, position: 'relative' }]}>
+          {/* Background image positioned absolutely */}
+          <View style={styles.backgroundImageContainer}>
+            <Image source={rings} style={styles.backgroundImage} />
           </View>
-          <Image source={terraces} style={styles.heroImage} />
+          
+          {/* Content on top */}
+          <View style={styles.welcomeContentContainer}>
+            <Text style={[styles.serviceTitle, { marginBottom: -5, marginTop: -20, fontSize: 20 }]}>Welcome to</Text>
+            <Text style={[styles.serviceTitle, { fontSize: 20 }]}>AgriAngat Services!</Text>
+            <Text style={[styles.serviceSub, { marginBottom: -5, marginTop: 20, color: "#0CA201", fontSize: 15, fontFamily: "Poppins-ExtraBold" }]}>See how we can help you</Text>
+          </View>
         </View>
-        <View style={[styles.heroCard, { width: CARD_WIDTH, backgroundColor: "#ffdb24" }]}>
+
+        <View style={[styles.serviceCard, { width: CARD_WIDTH, backgroundColor: "#FFDB24" }]}>
           <View style={{ flex: 1, paddingRight: 12 }}>
-            <Text style={styles.heroTitle}>Apply for Loans</Text>
-            <Text style={styles.heroSub}>Get quick access to farming loans and financial support</Text>
+            <Text style={[styles.serviceTitle, { fontFamily: "Poppins-ExtraBold" }]}>Rainy Season Alert: Farm with Caution</Text>
+            <Text style={[styles.serviceSub, { color: "#0a0b0a" }]}>PAGASA forecasts up to 16 tropical cyclones from AUG to DEC. Ensure to prepare or stock before weather disrupts supply chains.</Text>
           </View>
-          <Image source={terraces} style={styles.heroImage} />
+          <View style={styles.serviceImageContainer}>
+            <Image source={redsky} style={styles.serviceImage} />
+          </View>
         </View>
-        <View style={[styles.heroCard, { width: CARD_WIDTH, backgroundColor: "#0ca201" }]}>
+        <View style={[styles.serviceCard, { width: CARD_WIDTH, backgroundColor: "#0ca201" }]}>
           <View style={{ flex: 1, paddingRight: 12 }}>
-            <Text style={styles.heroTitle}>Weather Updates</Text>
-            <Text style={styles.heroSub}>Stay informed with real-time weather forecasts</Text>
+            <Text style={[styles.serviceTitle, { color: "#ffffff" }]}>Sell fresh, buy fresh.</Text>
+            <Text style={[styles.serviceSub, { color: "#ffffff" }]}>
+              With our Marketplace, farmers connect directly to stores and buyers nearby. No extra layers, no unfair markups
+            </Text>
+            <View style={styles.serviceLogo}>
+              <Image source={marketplace} style={styles.logoIcon} />
+            </View>
           </View>
-          <Image source={terraces} style={styles.heroImage} />
+          <View style={styles.serviceImageContainer}>
+            <Image source={greenBag} style={styles.serviceImage} />
+          </View>
         </View>
       </ScrollView>
       <View style={styles.dotsWrap}>
@@ -96,7 +119,9 @@ export default function ServicesScreen() {
       {/* Action tiles */}
       <View style={styles.tilesRow}>
         <View style={styles.tile}>
-          <Text style={styles.tileTitle}>Apply for Loan</Text>
+          <Image source={rings} style={{ width: 50, height: 50, marginTop: -10 }} />
+          <Text style={styles.tileTitle}>Apply for</Text>
+          <Text style={styles.tileTitle}>Loan</Text>
           <Text style={styles.tileSub}>
             Apply for loan offered by our partners
           </Text>
@@ -105,6 +130,7 @@ export default function ServicesScreen() {
           </View>
         </View>
         <View style={styles.tile}>
+          <Image source={skyblue} style={{ width: "25%", height: 30, marginBottom: 5 }} />
           <Text style={styles.tileTitle}>Weather & Analysis</Text>
           <Text style={styles.tileSub}>
             Check weather, forecasts and insights.
@@ -116,6 +142,7 @@ export default function ServicesScreen() {
       </View>
 
       <View style={styles.tileFull}>
+        <Image source={hub} style={{ width: "10%", height: 35, marginBottom: 5 }} />
         <Text style={styles.tileTitle}>Study Hub</Text>
         <Text style={styles.tileSub}>
           Learn tips and how-tos from AgriAngat videos and the AgriAngat
@@ -136,27 +163,89 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     paddingHorizontal: 16,
-    paddingTop: 14,
+    paddingTop: 13,
   },
   headerRow: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     marginBottom: 10,
+    marginTop: -4,
   },
-  brandIcon: { width: 50, height: 50, borderRadius: 6, marginTop: 46 },
-  headerTitle: { fontFamily: "Poppins-ExtraBold", fontSize: 24, color: "#111", marginTop: 45, marginLeft: 192 },
+  brandIcon: { width: 50, height: 50, borderRadius: 6, marginTop: 41 },
+  headerTitle: { fontFamily: "Poppins-ExtraBold", fontSize: 24, color: "#111", marginTop: 41, marginLeft: 192 },
 
-  heroCard: {
+  serviceCard: {
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#d7ffd4",
     borderRadius: 16,
     padding: 16,
     marginBottom: 10,
+    overflow: 'hidden', // Prevents background image from extending beyond card bounds
+  },
+  
+  // NEW STYLES FOR OVERLAPPING BACKGROUND
+  backgroundImageContainer: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    paddingRight: 10,
+    zIndex: 1,
+  },
+  
+  backgroundImage: {
+    width: 300,
+    height: 500,
+    marginTop: -20,
+    marginRight: -100,
+    transform: [{ rotate: "97deg" }],
+  },
+  
+  welcomeContentContainer: {
+    flex: 1,
+    paddingLeft: 0,
+    paddingTop: 20,
+    paddingBottom: 20,
+    justifyContent: 'center',
+    zIndex: 2, // Ensure content is above image
+  },
+  
+  serviceTitle: {
+    fontFamily: "Poppins-Bold",
+    fontSize: 20,
+    color: "#0A0B0A",
+    marginBottom: 2,
+  },
+  serviceSub: {
+    fontFamily: "Poppins-Regular",
+    fontSize: 10,
+    color: "#0CA201",
+    marginBottom: 12,
+  },
+  serviceLogo: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  logoIcon: {
+    width: "60%",
+    height: 50,
+    marginRight: 18,
+    marginTop: -5,
+  },
+  serviceImageContainer: {
+    position: "relative",
+  },
+  serviceImage: {
+    width: 130,
+    height: 150,
+    marginRight: -30,
   },
   heroTitle: { 
-    fontFamily: "Poppins-ExtraBold", 
+    fontFamily: "Poppins-Bold", 
     fontSize: 18, 
     color: "#111",
     marginBottom: 0,
@@ -188,7 +277,7 @@ const styles = StyleSheet.create({
 
   tilesRow: { flexDirection: "row", gap: 12, marginTop: 14 },
   tile: { flex: 1, backgroundColor: "#f6f6f6", borderRadius: 12, padding: 12 },
-  tileTitle: { fontFamily: "Poppins-Bold", fontSize: 13, color: "#111" },
+  tileTitle: { fontFamily: "Poppins-ExtraBold", fontSize: 20, color: "#111" },
   tileSub: {
     fontFamily: "Poppins-Regular",
     fontSize: 11,
