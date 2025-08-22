@@ -17,6 +17,8 @@ import fruits from "../../assets/images/fruits.png";
 import dairy from "../../assets/images/dairy.png";
 import beverages from "../../assets/images/beverages.png";
 import vegetables from "../../assets/images/vegetables.png";
+// @ts-ignore
+import rain from "../../assets/images/rain.png";
 
 const MOCK_PRODUCTS = [
   { id: "1", name: "Saba Banana", price: "₱50", image: banana },
@@ -229,18 +231,59 @@ export default function MarketplaceScreen() {
 
   const renderExploreContent = () => (
     <>
-      {/* Rainy Season Alert Banner */}
-      <View style={styles.alertCard}>
-        <View style={{ flex: 1, paddingRight: 12 }}>
-          <Text style={styles.alertTitle}>Rainy Season Alert:</Text>
-          <Text style={styles.alertTitle}>Farm with Caution</Text>
-          <Text style={styles.alertSub}>
-            PAGASA forecasts up to 16 tropical cyclones from AUG to DEC. Ensure to prepare or stock before weather disrupts supply chains.
-          </Text>
+      {/* Promo cards carousel */}
+      <ScrollView
+        ref={promoScrollRef}
+        horizontal
+        pagingEnabled
+        snapToInterval={CARD_WIDTH}
+        decelerationRate="fast"
+        showsHorizontalScrollIndicator={false}
+        onMomentumScrollEnd={(e) => {
+          const index = Math.round(e.nativeEvent.contentOffset.x / CARD_WIDTH);
+          setPromoIndex(index);
+        }}
+        contentContainerStyle={styles.promoScroll}
+      >
+        <View style={[styles.alertCard, { width: CARD_WIDTH }]}>
+          <View style={{ flex: 1, paddingRight: 12 }}>
+            <Text style={styles.alertTitle}>Grow more than crops. Grow your chances.</Text>
+            <Text style={styles.alertSub}>
+              Boost your AngatScore by paying loans on time.
+            </Text>
+          </View>
+          <View style={styles.alertIconContainer}>
+            <Image source={terraces} style={styles.alertIcon} />
+          </View>
         </View>
-        <View style={styles.alertIconContainer}>
-          <View style={styles.alertIcon} />
+        <View style={[styles.alertCard, { width: CARD_WIDTH, backgroundColor: "#ffdb24" }]}>
+          <View style={{ flex: 1, paddingRight: 12 }}>
+            <Text style={styles.alertTitle}>Rainy Season Alert:</Text>
+            <Text style={styles.alertTitle}>Farm with Caution</Text>
+            <Text style={styles.alertSub}>
+              PAGASA forecasts up to 16 tropical cyclones from AUG to DEC. Ensure to prepare or stock before weather disrupts supply chains.
+            </Text>
+          </View>
+          <View style={styles.alertIconContainer}>
+            <Image source={rain} style={styles.alertIcon} />
+          </View>
         </View>
+        <View style={[styles.alertCard, { width: CARD_WIDTH, backgroundColor: "#0ca201" }]}>
+          <View style={{ flex: 1, paddingRight: 12 }}>
+            <Text style={styles.alertTitle}>Sell fresh, buy fresh.</Text>
+            <Text style={styles.alertSub}>
+              With our Marketplace, farmers connect directly to stores and buyers nearby.
+            </Text>
+          </View>
+          <View style={styles.alertIconContainer}>
+            <Image source={terraces} style={styles.alertIcon} />
+          </View>
+        </View>
+      </ScrollView>
+      <View style={styles.dotsWrap}>
+        {[0,1,2].map((i) => (
+          <View key={i} style={[styles.dot, i === promoIndex && styles.dotActive]} />
+        ))}
       </View>
 
       {/* Categories */}
@@ -329,6 +372,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     marginBottom: 10,
+    marginTop: -10,
   },
   brandIcon: { width: 50, height: 50, borderRadius: 6, marginTop: 46 },
   headerTitle: { fontFamily: "Poppins-ExtraBold", fontSize: 23, color: "#111", marginTop: 45, marginLeft: 148 },
@@ -396,6 +440,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#ff0000",
     marginLeft: 12,
   },
+  promoScroll: { paddingBottom: 6 },
   promoTitle: { 
     fontFamily: "Poppins-ExtraBold", 
     fontSize: 18, 
