@@ -34,6 +34,7 @@ const FarmerRegistrationScreen = () => {
   const [nationality, setNationality] = useState("");
   const [sex, setSex] = useState("");
   const [contactNumber, setContactNumber] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
   const [showVerificationDialog, setShowVerificationDialog] = useState(false);
@@ -52,6 +53,7 @@ const FarmerRegistrationScreen = () => {
   const [borderAnims] = useState({
     firstName: new Animated.Value(0),
     lastName: new Animated.Value(0),
+    username: new Animated.Value(0),
     email: new Animated.Value(0),
     contactNumber: new Animated.Value(0),
     password: new Animated.Value(0),
@@ -130,6 +132,25 @@ const FarmerRegistrationScreen = () => {
     return "";
   };
 
+  const validateUsername = (username) => {
+    if (!username.trim()) {
+      return "Username is required";
+    }
+    if (username.length < 3) {
+      return "Username must be at least 3 characters";
+    }
+    if (username.length > 20) {
+      return "Username must be less than 20 characters";
+    }
+    if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+      return "Username can only contain letters, numbers, and underscores";
+    }
+    if (/^[0-9]/.test(username)) {
+      return "Username cannot start with a number";
+    }
+    return "";
+  };
+
   const validateRequired = (value, fieldName) => {
     if (!value?.trim()) {
       return `${fieldName} is required`;
@@ -182,6 +203,7 @@ const FarmerRegistrationScreen = () => {
     const setters = {
       firstName: setFirstName,
       lastName: setLastName,
+      username: setUsername,
       email: setEmail,
       contactNumber: setContactNumber,
       password: setPassword,
@@ -207,6 +229,7 @@ const FarmerRegistrationScreen = () => {
     return {
       firstName: validateRequired(firstName, "First name"),
       lastName: validateRequired(lastName, "Last name"),
+      username: validateUsername(username),
       email: validateEmail(email),
       contactNumber: validatePhoneNumber(contactNumber),
       password: validatePassword(password),
@@ -476,6 +499,25 @@ const FarmerRegistrationScreen = () => {
             </Animated.View>
           </View>
           {errors.contactNumber ? <Text style={styles.errorText}>{errors.contactNumber}</Text> : null}
+          <Animated.View style={[
+            styles.inputWrapper,
+            errors.username && {
+              borderColor: borderAnims.username.interpolate({
+                inputRange: [0, 1],
+                outputRange: ['#ff4444', '#ff0000']
+              })
+            }
+          ]}>
+            <TextInput
+              style={[styles.input, errors.username && styles.inputError]}
+              placeholder="Username"
+              placeholderTextColor="#9aa0a6"
+              value={username}
+              onChangeText={(value) => handleFieldChange('username', value, validateUsername)}
+              autoCapitalize="none"
+            />
+          </Animated.View>
+          {errors.username ? <Text style={styles.errorText}>{errors.username}</Text> : null}
           <Animated.View style={[
             styles.inputWrapper,
             errors.email && {
