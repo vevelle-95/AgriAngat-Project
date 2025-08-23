@@ -69,7 +69,7 @@ const LoginScreen = () => {
     else {
       const usernameRegex = /^[a-zA-Z0-9._-]{3,20}$/;
       if (!usernameRegex.test(email)) {
-        return "Username must be 3-20 characters (letters, numbers, ., _, -)";
+        return "Username must be 3-20 characters (letters, numbers, symbols)";
       }
     }
 

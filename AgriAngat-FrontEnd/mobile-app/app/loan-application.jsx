@@ -1,581 +1,736 @@
-import React from "react";
-import { ScrollView, Text, StyleSheet, View, TouchableOpacity } from "react-native";
-import Svg, { Circle } from "react-native-svg";
+import React, { useState, useRef, useEffect } from 'react';
+import { View, Text, StyleSheet, ScrollView, TextInput, TouchableOpacity, Alert, KeyboardAvoidingView, Platform, Pressable, Modal } from 'react-native';
+import * as Font from "expo-font";
+import { useRouter } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import VerificationDialog from "../components/VerificationDialog";
 
 const LoanApplication = () => {
-  	
-  	return (
-    		<ScrollView style={styles.loanApplication}>
-      			<Text style={[styles.applicationForLoan, styles.buttonText1Typo]}>Application for Loan</Text>
-      			<Text style={[styles.typeOfLoan, styles.loanTypo]}>Type of Loan</Text>
-      			<Text style={[styles.desiredLoanAmount, styles.loanTypo]}>Desired Loan Amount</Text>
-      			<Text style={[styles.purposeOfLoan, styles.loanTypo]}>Purpose of Loan</Text>
-      			<Text style={[styles.installmentPlan, styles.loanTypo]}>Installment Plan</Text>
-      			<Text style={[styles.bySubmittingYou, styles.youTypo]}>{`By submitting, you agree to share your personal and farm information with AgriAngat AI and its partner banks for the purpose of processing your loan application. Please ensure all details are true and accurate, as false information may affect your AngatScore or loan approval.
+    const [fontsLoaded, setFontsLoaded] = useState(false);
+    const [formData, setFormData] = useState({
+        loanType: '',
+        loanAmount: '',
+        purpose: '',
+        installmentPlan: ''
+    });
+    const [showLoanTypeDropdown, setShowLoanTypeDropdown] = useState(false);
+    const [showInstallmentDropdown, setShowInstallmentDropdown] = useState(false);
+    const [showVerificationDialog, setShowVerificationDialog] = useState(false);
+    const loanTypeRef = useRef(null);
+    const installmentRef = useRef(null);
 
-`}</Text>
-            <Text style={[styles.chooseHowYou, styles.youTypo]}>Choose how you want to pay back your loan based on your income schedule.</Text>
-            <Text style={[styles.daily, styles.dailyTypo]}>Daily</Text>
-            <Text style={[styles.biWeekly, styles.dailyTypo]}>Bi-weekly</Text>
-            <Text style={[styles.monthly, styles.monthlyTypo]}>Monthly</Text>
-            <Text style={[styles.seasonal, styles.monthlyTypo]}>Seasonal</Text>
-            <Text style={styles.payASmall}>Pay a small amount every day. Best for those with daily income from selling goods.</Text>
-            <Text style={[styles.payOnceA, styles.payTypo]}>Pay once a month, the most common option.</Text>
-            <Text style={[styles.payDuringHarvest, styles.payTypo]}>Pay during harvest season only (every 3–6 months).</Text>
-            <Text style={[styles.payEvery2, styles.payTypo]}>Pay every 2 weeks. Good for semi-monthly sales.</Text>
-            <View style={[styles.inputFieldParent, styles.inputLayout]}>
-                <View style={[styles.inputField, styles.inputFieldPosition]}>
-                    <View style={styles.input} />
+    const router = useRouter();
+
+    const loanTypes = [
+        'Agricultural Loan',
+        'Equipment Loan',
+        'Crop Loan',
+        'Disaster Recovery Loan'
+    ];
+
+    const installmentOptions = [
+        { label: 'Daily', description: 'Pay a small amount every day. Best for those with daily income from selling goods.' },
+        { label: 'Bi-weekly', description: 'Pay every 2 weeks. Good for semi-monthly sales.' },
+        { label: 'Monthly', description: 'Pay once a month, the most common option.' },
+        { label: 'Seasonal', description: 'Pay during harvest season only (every 3–6 months).' }
+    ];
+
+    useEffect(() => {
+        async function loadFonts() {
+            await Font.loadAsync({
+                "Poppins-Bold": require("../assets/fonts/Poppins-Bold.ttf"),
+                "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
+                "Poppins-ExtraBold": require("../assets/fonts/Poppins-ExtraBold.ttf"),
+                "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
+            });
+            setFontsLoaded(true);
+        }
+        loadFonts();
+    }, []);
+
+    if (!fontsLoaded) return null;
+
+    const handleInputChange = (field, value) => {
+        setFormData(prev => ({ ...prev, [field]: value }));
+    };
+
+    const handleSubmit = () => {
+        // Validate form data
+        if (!formData.loanType) {
+            Alert.alert("Error", "Please select a loan type");
+            return;
+        }
+        if (!formData.loanAmount) {
+            Alert.alert("Error", "Please enter the desired loan amount");
+            return;
+        }
+        if (!formData.purpose) {
+            Alert.alert("Error", "Please enter the purpose of the loan");
+            return;
+        }
+        if (!formData.installmentPlan) {
+            Alert.alert("Error", "Please select an installment plan");
+            return;
+        }
+
+        // Show verification dialog instead of directly submitting
+        setShowVerificationDialog(true);
+    };
+
+    const handleConfirmSubmit = () => {
+        // Close the verification dialog
+        setShowVerificationDialog(false);
+        
+        // Navigate to the success page
+        router.replace("/loan-application-success");
+    };
+
+    const handleCancel = () => {
+        router.back();
+    };
+
+    return (
+        <KeyboardAvoidingView
+            style={styles.container}
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
+            <StatusBar style="dark" />
+            <ScrollView
+                style={styles.scrollView}
+                contentContainerStyle={styles.scrollContent}
+                keyboardShouldPersistTaps="always"
+            >
+                {/* Header */}
+                <View style={styles.header}>
+                    <TouchableOpacity
+                        onPress={() => router.back()}
+                        style={styles.backButton}
+                    >
+                        <Text style={styles.backIcon}>←</Text>
+                        <Text style={styles.backText}>Back</Text>
+                    </TouchableOpacity>
                 </View>
-                <Text style={[styles.eg25000, styles.brieflyLayout]}>e.g., 25000</Text>
-            </View>
-            <View style={[styles.brieflyExplainWhyYouNeedTWrapper, styles.brieflyLayout]}>
-                <Text style={[styles.brieflyExplainWhy, styles.brieflyLayout]}>Briefly explain why you need this loan (e.g., To buy seeds, repair irrigation system)</Text>
-            </View>
-            <View style={[styles.button, styles.buttonFlexBox]}>
-                <Text style={styles.buttonText}>Submit</Text>
-            </View>
-            <View style={[styles.button1, styles.buttonFlexBox]}>
-                <Text style={[styles.buttonText1, styles.buttonText1Typo]}>Cancel</Text>
-            </View>
-            <View style={[styles.transactions, styles.transactionsPosition]} />
-            <View style={[styles.listboxComponent, styles.listboxPosition]}>
-                <View style={styles.listboxMain}>
-                    <View style={styles.listboxbgShadowBox} />
-                    <Chevron style={[styles.chevronIcon, styles.iconLayout]} />
-                    <View style={styles.placeholderText}>
-                        <Text style={[styles.selectMeasurement, styles.textTypo]}>Select Installment</Text>
+
+                {/* Main Content */}
+                <View style={styles.content}>
+                    <Text style={styles.title}>Application for Loan</Text>
+
+                    {/* Type of Loan */}
+                    <View style={styles.formSection}>
+                        <Text style={styles.fieldLabel}>Type of Loan</Text>
+                        <TouchableOpacity
+                            ref={loanTypeRef}
+                            style={[styles.selectField, formData.loanType && styles.selectFieldActive]}
+                            onPress={() => {
+                                setShowLoanTypeDropdown(!showLoanTypeDropdown);
+                                setShowInstallmentDropdown(false);
+                            }}
+                        >
+                            <Text style={[styles.selectText, !formData.loanType && styles.placeholderText]}>
+                                {formData.loanType || 'Select Loan Type'}
+                            </Text>
+                            <Text style={styles.selectArrow}>▼</Text>
+                        </TouchableOpacity>
+                        {showLoanTypeDropdown && (
+                          <Modal
+                            transparent
+                            visible={showLoanTypeDropdown}
+                            animationType="fade"
+                            onRequestClose={() => setShowLoanTypeDropdown(false)}
+                          >
+                            <View style={styles.modalOverlay}>
+                              <Pressable
+                                style={StyleSheet.absoluteFill}
+                                onPress={() => setShowLoanTypeDropdown(false)}
+                              />
+                              <View style={styles.modalCard}>
+                                <Text style={styles.modalTitle}>Select Loan Type</Text>
+                                {loanTypes.map((type, index) => (
+                                  <TouchableOpacity
+                                    key={type}
+                                    style={index === loanTypes.length - 1 ? styles.modalOptionLast : styles.modalOption}
+                                    onPress={() => {
+                                        setFormData(prev => ({ ...prev, loanType: type }));
+                                        setTimeout(() => setShowLoanTypeDropdown(false), 0);
+                                    }}
+                                    activeOpacity={0.7}
+                                  >
+                                    <Text style={[
+                                      styles.modalOptionText,
+                                      formData.loanType === type && styles.modalOptionTextSelected
+                                    ]}>
+                                      {type}
+                                    </Text>
+                                  </TouchableOpacity>
+                                ))}
+                              </View>
+                            </View>
+                          </Modal>
+                        )}
+                    </View>
+
+                    {/* Desired Loan Amount */}
+                    <View style={styles.formSection}>
+                        <Text style={styles.fieldLabel}>Desired Loan Amount</Text>
+                        <TextInput
+                            style={styles.textField}
+                            placeholder="e.g., 25000"
+                            value={formData.loanAmount}
+                            onChangeText={(value) => handleInputChange('loanAmount', value)}
+                            keyboardType="numeric"
+                            placeholderTextColor="#C7C7CD"
+                        />
+                    </View>
+
+                    {/* Purpose of Loan */}
+                    <View style={styles.formSection}>
+                        <Text style={styles.fieldLabel}>Purpose of Loan</Text>
+                        <TextInput
+                            style={styles.textAreaField}
+                            placeholder="Briefly explain why you need this loan (e.g., To buy seeds, repair irrigation system)"
+                            value={formData.purpose}
+                            onChangeText={(value) => handleInputChange('purpose', value)}
+                            multiline={true}
+                            numberOfLines={3}
+                            placeholderTextColor="#C7C7CD"
+                            textAlignVertical="top"
+                        />
+                    </View>
+
+                    {/* Installment Plan */}
+                    <View style={styles.formSection}>
+                        <Text style={styles.fieldLabel}>Installment Plan</Text>
+                        <Text style={styles.fieldDescription}>
+                            Choose how you want to pay back your loan based on your income schedule.
+                        </Text>
+                        <TouchableOpacity
+                            ref={installmentRef}
+                            style={[styles.selectField, formData.installmentPlan && styles.selectFieldActive]}
+                            onPress={() => {
+                                setShowInstallmentDropdown(!showInstallmentDropdown);
+                                setShowLoanTypeDropdown(false);
+                            }}
+                        >
+                            <Text style={[styles.selectText, !formData.installmentPlan && styles.placeholderText]}>
+                                {formData.installmentPlan || 'Select Installment Plan'}
+                            </Text>
+                            <Text style={styles.selectArrow}>▼</Text>
+                        </TouchableOpacity>
+                        {showInstallmentDropdown && (
+                          <Modal
+                            transparent
+                            visible={showInstallmentDropdown}
+                            animationType="fade"
+                            onRequestClose={() => setShowInstallmentDropdown(false)}
+                          >
+                            <View style={styles.modalOverlay}>
+                              <Pressable
+                                style={StyleSheet.absoluteFill}
+                                onPress={() => setShowInstallmentDropdown(false)}
+                              />
+                              <View style={styles.modalCard}>
+                                <Text style={styles.modalTitle}>Select Installment Plan</Text>
+                                {installmentOptions.map((option, index) => (
+                                  <TouchableOpacity
+                                    key={option.label}
+                                    style={index === installmentOptions.length - 1 ? styles.modalOptionLast : styles.modalOption}
+                                    onPress={() => {
+                                        setFormData(prev => ({ ...prev, installmentPlan: option.label }));
+                                        setTimeout(() => setShowInstallmentDropdown(false), 0);
+                                    }}
+                                    activeOpacity={0.7}
+                                  >
+                                    <Text style={[
+                                      styles.modalOptionText,
+                                      formData.installmentPlan === option.label && styles.modalOptionTextSelected
+                                    ]}>
+                                      {option.label}
+                                    </Text>
+                                  </TouchableOpacity>
+                                ))}
+                              </View>
+                            </View>
+                          </Modal>
+                        )}
+                    </View>
+
+                    {/* Payment Options Grid */}
+                    <View style={styles.paymentOptionsGrid}>
+                        <View style={styles.paymentRow}>
+                            <View style={styles.paymentCard}>
+                                <Text style={styles.paymentTitle}>Daily</Text>
+                                <Text style={styles.paymentDescription}>
+                                    Pay a small amount every day. Best for those with daily income from selling goods.
+                                </Text>
+                            </View>
+                            <View style={styles.paymentCard}>
+                                <Text style={styles.paymentTitle}>Bi-weekly</Text>
+                                <Text style={styles.paymentDescription}>
+                                    Pay every 2 weeks. Good for semi-monthly sales.
+                                </Text>
+                            </View>
+                        </View>
+                        <View style={styles.paymentRow}>
+                            <View style={styles.paymentCard}>
+                                <Text style={styles.paymentTitle}>Monthly</Text>
+                                <Text style={styles.paymentDescription}>
+                                    Pay once a month, the most common option.
+                                </Text>
+                            </View>
+                            <View style={styles.paymentCard}>
+                                <Text style={styles.paymentTitle}>Seasonal</Text>
+                                <Text style={styles.paymentDescription}>
+                                    Pay during harvest season only (every 3–6 months).
+                                </Text>
+                            </View>
+                        </View>
+                    </View>
+
+                    {/* Disclaimer */}
+                    <Text style={styles.disclaimerText}>
+                        By submitting, you agree to share your personal and farm information with AgriAngat AI and its partner banks for the purpose of processing your loan application. Please ensure all details are true and accurate, as false information may affect your AngatScore or loan approval.
+                    </Text>
+
+                    {/* Buttons */}
+                    <View style={styles.actionButtons}>
+                        <TouchableOpacity style={styles.cancelBtn} onPress={handleCancel}>
+                            <Text style={styles.cancelBtnText}>Cancel</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.submitBtn} onPress={handleSubmit}>
+                            <Text style={styles.submitBtnText}>Submit</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
-                <View style={styles.clipList}>
-                    <View style={styles.dropdownShadowBox}>
-                        <View style={styles.item1}>
-                            <Text style={[styles.text, styles.textTypo]}>Kilogram (kg)</Text>
-                        </View>
-                        <View style={styles.item1}>
-                            <Text style={[styles.text, styles.textTypo]}>Gram (g)</Text>
-                        </View>
-                        <View style={styles.item1}>
-                            <Text style={[styles.text, styles.textTypo]}>Liter (L)</Text>
-                        </View>
-                        <View style={styles.item1}>
-                            <Text style={[styles.text, styles.textTypo]}>Milliliter (ml)</Text>
-                        </View>
-                        <View style={styles.item1}>
-                            <Text style={[styles.text, styles.textTypo]}>Piece (pc)</Text>
-                        </View>
-                        <View style={styles.item1}>
-                            <Text style={[styles.text, styles.textTypo]}>Dozen (12 pc)</Text>
-                        </View>
-                    </View>
-                </View>
-            </View>
-            <View style={[styles.listboxComponent1, styles.listboxPosition]}>
-                <View style={styles.listboxMain}>
-                    <View style={styles.listboxbgShadowBox} />
-                    <Chevron1 style={[styles.chevronIcon, styles.iconLayout]} />
-                    <View style={styles.placeholderText}>
-                        <Text style={[styles.selectMeasurement, styles.textTypo]}>Select Installment</Text>
-                    </View>
-                </View>
-                <View style={styles.clipList}>
-                    <View style={styles.dropdownShadowBox}>
-                        <View style={styles.item1}>
-                            <Text style={[styles.text, styles.textTypo]}>Kilogram (kg)</Text>
-                        </View>
-                        <View style={styles.item1}>
-                            <Text style={[styles.text, styles.textTypo]}>Gram (g)</Text>
-                        </View>
-                        <View style={styles.item1}>
-                            <Text style={[styles.text, styles.textTypo]}>Liter (L)</Text>
-                        </View>
-                        <View style={styles.item1}>
-                            <Text style={[styles.text, styles.textTypo]}>Milliliter (ml)</Text>
-                        </View>
-                        <View style={styles.item1}>
-                            <Text style={[styles.text, styles.textTypo]}>Piece (pc)</Text>
-                        </View>
-                        <View style={styles.item1}>
-                            <Text style={[styles.text, styles.textTypo]}>Dozen (12 pc)</Text>
-                        </View>
-                    </View>
-                </View>
-            </View>
-            <View style={[styles.frameParent, styles.groupChildLayout]}>
-                <View style={[styles.groupChild, styles.groupChildLayout]} />
-                <View style={[styles.button2, styles.buttonFlexBox]}>
-                    <View style={styles.iconLeftArrow}>
-                        <Vector1 style={[styles.iconLeftArrowChild, styles.iconLayout]} />
-                    </View>
-                    <Text style={[styles.buttonText1, styles.buttonText1Typo]}>Back</Text>
-                </View>
-            </View>
-            <View style={[styles.bottomBarNavigationvariant5, styles.transactionsPosition]} />
-            <View style={[styles.bottomBar, styles.bottomBarLayout]}>
-                <View style={styles.bottomBarInner}>
-                    <View style={[styles.homeIndicatorWrapper, styles.homePosition]}>
-                        <View style={[styles.homeIndicator, styles.homePosition]} />
-                    </View>
-                </View>
-                <View style={[styles.homeindicator, styles.homePosition]} />
-            </View>
-        </ScrollView>);
+            </ScrollView>
+
+            {/* Verification Dialog */}
+            <VerificationDialog
+                visible={showVerificationDialog}
+                onClose={() => setShowVerificationDialog(false)}
+                onConfirm={handleConfirmSubmit}
+                title="Confirm Loan Application"
+                message="Are you sure all the information you provided is correct? Please review your loan details before submitting."
+            />
+        </KeyboardAvoidingView>
+    );
 };
 
+export default LoanApplication;
+
 const styles = StyleSheet.create({
-    buttonText1Typo: {
-        color: "#000",
-        fontFamily: "Poppins-Bold",
-        fontWeight: "700",
-        textAlign: "left"
+    container: {
+        flex: 1,
+        backgroundColor: "#fff",
     },
-    loanTypo: {
-        fontSize: 18,
-        textAlign: "left",
-        color: "#000",
-        fontFamily: "Poppins-Bold",
-        fontWeight: "700",
-        position: "absolute"
+    scrollContent: {
+        flexGrow: 1,
+        paddingBottom: 30,
     },
-    youTypo: {
-        fontFamily: "Poppins-Medium",
-        fontWeight: "500",
-        fontSize: 14,
-        color: "#000",
-        position: "absolute"
+    header: {
+        paddingHorizontal: 20,
+        paddingTop: 60,
+        paddingBottom: 20,
     },
-    dailyTypo: {
-        opacity: 0.6,
-        fontSize: 14,
-        textAlign: "left",
-        color: "#000",
-        fontFamily: "Poppins-Bold",
-        fontWeight: "700",
-        position: "absolute"
-    },
-    monthlyTypo: {
-        width: 173,
-        top: 967,
-        opacity: 0.6,
-        fontSize: 14,
-        textAlign: "left",
-        color: "#000",
-        fontFamily: "Poppins-Bold",
-        fontWeight: "700",
-        position: "absolute"
-    },
-    payTypo: {
-        width: 128,
-        lineHeight: 15,
-        fontSize: 13,
-        opacity: 0.6,
-        fontFamily: "Poppins-Medium",
-        fontWeight: "500",
-        textAlign: "left",
-        color: "#000",
-        position: "absolute"
-    },
-    inputLayout: {
-        width: 347,
-        position: "absolute"
-    },
-    inputFieldPosition: {
-        top: 0,
-        left: 0
-    },
-    brieflyLayout: {
-        width: 313,
-        position: "absolute"
-    },
-    buttonFlexBox: {
-        paddingVertical: 16,
-        paddingHorizontal: 24,
-        justifyContent: "center",
+    backButton: {
         flexDirection: "row",
         alignItems: "center",
-        position: "absolute"
+        backgroundColor: "#f2f2f2",
+        borderRadius: 20,
+        paddingHorizontal: 15,
+        paddingVertical: 8,
+        alignSelf: "flex-start",
     },
-    transactionsPosition: {
-        left: "50%",
-        position: "absolute"
+    backIcon: {
+        fontSize: 18,
+        marginRight: 6,
+        color: "#333",
     },
-    listboxPosition: {
-        height: 289,
-        width: 374,
-        marginLeft: -186.5,
-        left: "50%",
-        position: "absolute"
-    },
-    iconLayout: {
-        maxHeight: "100%",
-        overflow: "hidden",
-        position: "absolute",
-        maxWidth: "100%"
-    },
-    textTypo: {
-        fontFamily: "Montserrat-Regular",
-        fontSize: 16,
-        textAlign: "left",
-        position: "absolute"
-    },
-    groupChildLayout: {
-        height: 108,
-        width: 413,
-        top: 0,
-        position: "absolute"
-    },
-    bottomBarLayout: {
-        height: 34,
-        left: 0
-    },
-    homePosition: {
-        bottom: 0,
-        position: "absolute"
-    },
-    applicationForLoan: {
-        top: 117,
-        left: 74,
-        fontSize: 24,
-        textAlign: "left",
-        position: "absolute"
-    },
-    typeOfLoan: {
-        top: 203,
-        left: 25
-    },
-    desiredLoanAmount: {
-        top: 334,
-        left: 25
-    },
-    purposeOfLoan: {
-        top: 437,
-        left: 23
-    },
-    installmentPlan: {
-        top: 635,
-        left: 23
-    },
-    bySubmittingYou: {
-        top: 1324,
-        left: 36,
-        textAlign: "justify",
-        width: 317
-    },
-    chooseHowYou: {
-        top: 667,
-        width: 329,
-        left: 23,
-        textAlign: "left"
-    },
-    daily: {
-        top: 842,
-        width: 353,
-        left: 37
-    },
-    biWeekly: {
-        top: 843,
-        width: 120,
-        left: 214
-    },
-    monthly: {
-        left: 37
-    },
-    seasonal: {
-        left: 214
-    },
-    payASmall: {
-        top: 865,
-        width: 137,
-        lineHeight: 15,
-        fontSize: 13,
-        opacity: 0.6,
-        left: 37,
-        fontFamily: "Poppins-Medium",
-        fontWeight: "500",
-        textAlign: "left",
-        color: "#000",
-        position: "absolute"
-    },
-    payOnceA: {
-        top: 989,
-        left: 37
-    },
-    payDuringHarvest: {
-        top: 988,
-        left: 214
-    },
-    payEvery2: {
-        top: 864,
-        left: 215
-    },
-    input: {
-        borderColor: "#d9d9d9",
-        height: 41,
-        minWidth: 240,
-        alignItems: "center",
-        overflow: "hidden",
-        borderWidth: 1,
-        borderStyle: "solid",
-        borderRadius: 8,
-        alignSelf: "stretch",
-        backgroundColor: "#fff"
-    },
-    inputField: {
-        left: 0,
-        width: 347,
-        position: "absolute"
-    },
-    eg25000: {
-        top: 8,
-        left: 15,
-        color: "#c0c0c0",
-        fontFamily: "Poppins-Regular",
-        width: 313,
-        fontSize: 16,
-        textAlign: "left"
-    },
-    inputFieldParent: {
-        top: 370,
-        height: 40,
-        left: 23
-    },
-    brieflyExplainWhy: {
-        color: "#c0c0c0",
-        fontFamily: "Poppins-Regular",
-        width: 313,
-        fontSize: 16,
-        textAlign: "left",
-        left: 0,
-        top: 0
-    },
-    brieflyExplainWhyYouNeedTWrapper: {
-        top: 484,
-        left: 40,
-        height: 72
-    },
-    buttonText: {
-        color: "#fff",
-        fontSize: 16,
-        textAlign: "left",
+    backText: {
+        fontSize: 14,
+        color: "#333",
         fontFamily: "Poppins-Bold",
-        fontWeight: "700"
     },
-    button: {
-        top: 1248,
-        left: 206,
-        borderRadius: 33,
-        backgroundColor: "#0088ff",
-        width: 144,
-        height: 45
+    content: {
+        flex: 1,
+        paddingHorizontal: 20,
     },
-    buttonText1: {
-        fontSize: 12,
-        letterSpacing: 0.4,
-        textAlign: "left"
+    title: {
+        fontSize: 24,
+        fontFamily: "Poppins-ExtraBold",
+        color: "#333",
+        textAlign: "center",
+        marginBottom: 30,
     },
-    button1: {
-        top: 1249,
-        left: 41,
-        borderRadius: 30,
-        backgroundColor: "rgba(255, 255, 255, 0)",
-        borderColor: "#000",
-        borderWidth: 2,
-        width: 135,
-        height: 42,
-        borderStyle: "solid",
-        paddingVertical: 16,
-        paddingHorizontal: 24,
-        justifyContent: "center",
-        flexDirection: "row"
+    section: {
+        marginBottom: 25,
     },
-    transactions: {
-        marginLeft: -173.5,
-        top: 472,
-        borderColor: "#7e7e7e",
-        height: 136,
-        opacity: 0.3,
-        borderWidth: 1,
-        borderRadius: 8,
-        left: "50%",
-        borderStyle: "solid",
-        width: 347
+    sectionTitle: {
+        fontSize: 18,
+        fontFamily: "Poppins-Bold",
+        color: "#333",
+        marginBottom: 8,
     },
-    listboxbgShadowBox: {
-        shadowOpacity: 1,
-        elevation: 14,
-        shadowRadius: 14,
-        shadowOffset: {
-            width: 0,
-            height: 4
-        },
-        shadowColor: "rgba(0, 0, 0, 0.1)",
-        boxShadow: "0px 4px 14px rgba(0, 0, 0, 0.1)",
-        height: "100%",
-        left: "0%",
-        bottom: "0%",
-        right: "0%",
-        top: "0%",
-        borderRadius: 8,
-        position: "absolute",
-        backgroundColor: "#fff",
-        width: "100%"
-    },
-    chevronIcon: {
-        height: "8.33%",
-        width: "3.56%",
-        top: "46.67%",
-        right: "7.87%",
-        bottom: "45%",
-        left: "88.57%",
-        opacity: 0.8
-    },
-    selectMeasurement: {
+    sectionSubtitle: {
+        fontSize: 14,
+        fontFamily: "Poppins-Regular",
         color: "#666",
-        left: "0%",
-        top: "0%",
-        fontFamily: "Montserrat-Regular"
+        marginBottom: 15,
+        lineHeight: 20,
+    },
+    dropdown: {
+        borderWidth: 1,
+        borderColor: "#ddd",
+        borderRadius: 8,
+        paddingHorizontal: 15,
+        paddingVertical: 12,
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        backgroundColor: "#fff",
+    },
+    dropdownText: {
+        fontSize: 16,
+        fontFamily: "Poppins-Regular",
+        color: "#333",
+        flex: 1,
     },
     placeholderText: {
-        height: "33.33%",
-        width: "65.71%",
-        top: "33.33%",
-        right: "28.58%",
-        bottom: "33.33%",
-        left: "5.71%",
-        position: "absolute"
+        color: "#999",
     },
-    listboxMain: {
-        height: "20.76%",
-        bottom: "69.55%",
-        left: "4.55%",
-        right: "4.55%",
-        top: "9.69%",
-        width: "90.91%",
-        position: "absolute"
+    dropdownArrow: {
+        fontSize: 12,
+        color: "#666",
     },
-    text: {
-        top: 12,
-        left: 16,
-        color: "#333"
+    dropdownList: {
+        borderWidth: 1,
+        borderColor: "#ddd",
+        borderTopWidth: 0,
+        borderRadius: 8,
+        borderTopLeftRadius: 0,
+        borderTopRightRadius: 0,
+        backgroundColor: "#fff",
+        maxHeight: 200,
     },
-    item1: {
-        height: 44,
-        overflow: "hidden",
-        alignSelf: "stretch",
-        backgroundColor: "#fff"
+    dropdownItem: {
+        paddingHorizontal: 15,
+        paddingVertical: 12,
+        borderBottomWidth: 12,
+        borderBottomColor: "#f0f0f0",
     },
-    dropdownShadowBox: {
-        opacity: 0,
-        gap: 1,
-        height: 1,
-        top: 68,
-        shadowOpacity: 1,
-        elevation: 14,
-        shadowRadius: 14,
+    dropdownItemText: {
+        fontSize: 16,
+        fontFamily: "Poppins-Regular",
+        color: "#333",
+    },
+    input: {
+        borderWidth: 1,
+        borderColor: "#ddd",
+        borderRadius: 8,
+        paddingHorizontal: 15,
+        paddingVertical: 12,
+        fontSize: 16,
+        fontFamily: "Poppins-Regular",
+        backgroundColor: "#fff",
+        color: "#333",
+    },
+    textArea: {
+        borderWidth: 1,
+        borderColor: "#ddd",
+        borderRadius: 8,
+        paddingHorizontal: 15,
+        paddingVertical: 12,
+        fontSize: 16,
+        fontFamily: "Poppins-Regular",
+        backgroundColor: "#fff",
+        color: "#333",
+        height: 100,
+        textAlignVertical: "top",
+    },
+    paymentGrid: {
+        marginBottom: 30,
+    },
+    paymentRow: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        marginBottom: 15,
+    },
+    paymentOption: {
+        flex: 1,
+        marginHorizontal: 5,
+    },
+    paymentTitle: {
+        fontSize: 14,
+        fontFamily: "Poppins-Bold",
+        color: "#333",
+        marginBottom: 5,
+        opacity: 0.8,
+    },
+    paymentDescription: {
+        fontSize: 12,
+        fontFamily: "Poppins-Regular",
+        color: "#666",
+        lineHeight: 16,
+        opacity: 0.8,
+    },
+    buttonContainer: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        marginBottom: 20,
+        gap: 15,
+    },
+    cancelButton: {
+        flex: 1,
+        borderWidth: 2,
+        borderColor: "#333",
+        borderRadius: 25,
+        paddingVertical: 12,
+        alignItems: "center",
+        backgroundColor: "transparent",
+    },
+    cancelButtonText: {
+        fontSize: 16,
+        fontFamily: "Poppins-Bold",
+        color: "#333",
+    },
+    submitButton: {
+        flex: 1,
+        backgroundColor: "#007AFF",
+        borderRadius: 25,
+        paddingVertical: 12,
+        alignItems: "center",
+    },
+    submitButtonText: {
+        fontSize: 16,
+        fontFamily: "Poppins-Bold",
+        color: "#fff",
+    },
+    disclaimer: {
+        fontSize: 12,
+        fontFamily: "Poppins-Regular",
+        color: "#666",
+        lineHeight: 18,
+        textAlign: "justify",
+        marginTop: 10,
+    },
+    formSection: {
+        marginBottom: 20,
+        position: 'relative',
+    },
+    fieldLabel: {
+        fontSize: 18,
+        fontFamily: 'Poppins-SemiBold',
+        color: '#1F2937',
+        marginBottom: 8,
+    },
+    fieldDescription: {
+        fontSize: 14,
+        fontFamily: 'Poppins-Regular',
+        color: '#6B7280',
+        marginBottom: 12,
+        lineHeight: 20,
+    },
+    selectField: {
+        borderWidth: 1,
+        borderColor: '#E5E7EB',
+        borderRadius: 12,
+        paddingHorizontal: 16,
+        paddingVertical: 14,
+        backgroundColor: '#FFFFFF',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    selectFieldActive: {
+        borderColor: '#3B82F6',
+        backgroundColor: '#F0F9FF',
+    },
+    selectText: {
+        fontSize: 16,
+        fontFamily: 'Poppins-Regular',
+        color: '#1F2937',
+        flex: 1,
+    },
+    selectArrow: {
+        fontSize: 14,
+        color: '#6B7280',
+    },
+    floatingDropdown: {
+        position: 'absolute',
+        top: '100%',
+        left: 0,
+        right: 0,
+        zIndex: 1000,
+        borderWidth: 1,
+        borderColor: '#E5E7EB',
+        borderRadius: 12,
+        backgroundColor: '#FFFFFF',
+        marginTop: 4,
+        maxHeight: 300,
+        shadowColor: '#000',
         shadowOffset: {
             width: 0,
-            height: 4
+            height: 4,
         },
-        shadowColor: "rgba(0, 0, 0, 0.1)",
-        boxShadow: "0px 4px 14px rgba(0, 0, 0, 0.1)",
-        left: "4.55%",
-        right: "4.55%",
-        width: "90.91%",
-        justifyContent: "center",
-        alignItems: "center",
-        overflow: "hidden",
-        borderRadius: 8,
-        position: "absolute"
+        shadowOpacity: 0.15,
+        shadowRadius: 6,
+        elevation: 8,
+        overflow: 'hidden',
     },
-    clipList: {
-        height: "90.31%",
-        left: "0%",
-        bottom: "0%",
-        right: "0%",
-        top: "9.69%",
-        overflow: "hidden",
-        position: "absolute",
-        width: "100%"
+    floatingOption: {
+        paddingHorizontal: 16,
+        paddingVertical: 16,
+        borderBottomWidth: 1,
+        borderBottomColor: '#F3F4F6',
+        backgroundColor: 'transparent',
     },
-    listboxComponent: {
-        top: 693
+    floatingOptionLast: {
+        paddingHorizontal: 16,
+        paddingTop: 16,
+        paddingBottom: 18,
+        borderBottomWidth: 0,
+        backgroundColor: 'transparent',
     },
-    listboxComponent1: {
-        top: 209
+    floatingOptionText: {
+        fontSize: 16,
+        fontFamily: 'Poppins-Regular',
+        color: '#1F2937',
     },
-    groupChild: {
-        left: 0
+    floatingOptionSelected: {
+        backgroundColor: '#EFF6FF',
     },
-    iconLeftArrowChild: {
-        height: "47.92%",
-        width: "64.58%",
-        top: "25%",
-        right: "18.75%",
-        bottom: "27.08%",
-        left: "16.67%"
+    floatingOptionTextSelected: {
+        color: '#3B82F6',
+        fontFamily: 'Poppins-SemiBold',
     },
-    iconLeftArrow: {
-        width: 24,
-        height: 24
+    textField: {
+        borderWidth: 1,
+        borderColor: '#E5E7EB',
+        borderRadius: 12,
+        paddingHorizontal: 16,
+        paddingVertical: 14,
+        fontSize: 16,
+        fontFamily: 'Poppins-Regular',
+        backgroundColor: '#FFFFFF',
+        color: '#1F2937',
     },
-    button2: {
-        top: 64,
-        borderRadius: 16,
-        width: 85,
-        height: 38,
-        gap: 10,
-        left: 25
+    textAreaField: {
+        borderWidth: 1,
+        borderColor: '#E5E7EB',
+        borderRadius: 12,
+        paddingHorizontal: 16,
+        paddingVertical: 14,
+        fontSize: 16,
+        fontFamily: 'Poppins-Regular',
+        backgroundColor: '#FFFFFF',
+        color: '#1F2937',
+        minHeight: 80,
     },
-    frameParent: {
-        left: -10
+    paymentOptionsGrid: {
+        marginBottom: 24,
     },
-    bottomBarNavigationvariant5: {
-        marginLeft: -118.5,
-        top: 745,
-        width: 237,
-        height: 64,
-        display: "none"
-    },
-    homeIndicator: {
-        borderRadius: 100,
-        backgroundColor: "#000",
-        marginLeft: -67,
-        bottom: 0,
-        height: 5,
-        width: 134,
-        left: "50%"
-    },
-    homeIndicatorWrapper: {
-        marginLeft: -67,
-        bottom: 0,
-        height: 5,
-        width: 134,
-        left: "50%"
-    },
-    bottomBarInner: {
-        marginLeft: -66.5,
-        bottom: 8,
-        height: 5,
-        width: 134,
-        left: "50%",
-        position: "absolute"
-    },
-    homeindicator: {
-        right: 0,
-        height: 34,
-        left: 0
-    },
-    bottomBar: {
-        top: 818,
-        width: 393,
-        position: "absolute"
-    },
-    loanApplication: {
+    paymentCard: {
         flex: 1,
-        maxWidth: "100%",
-        backgroundColor: "#fff",
-        width: "100%"
-    }
+        backgroundColor: '#F8FAFC',
+        padding: 16,
+        borderRadius: 12,
+        borderWidth: 1,
+        borderColor: '#E2E8F0',
+    },
+    actionButtons: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 32,
+        marginBottom: 20,
+        gap: 16,
+    },
+    cancelBtn: {
+        flex: 1,
+        borderWidth: 2,
+        borderColor: '#3B82F6',
+        borderRadius: 12,
+        paddingVertical: 14,
+        alignItems: 'center',
+        backgroundColor: 'transparent',
+    },
+    cancelBtnText: {
+        fontSize: 16,
+        fontFamily: 'Poppins-SemiBold',
+        color: '#3B82F6',
+    },
+    submitBtn: {
+        flex: 1,
+        backgroundColor: '#3B82F6',
+        borderRadius: 12,
+        paddingVertical: 14,
+        alignItems: 'center',
+        shadowColor: '#3B82F6',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+    },
+    submitBtnText: {
+        fontSize: 16,
+        fontFamily: 'Poppins-SemiBold',
+        color: '#FFFFFF',
+    },
+    disclaimerText: {
+        fontSize: 12,
+        fontFamily: 'Poppins-Regular',
+        color: '#64748B',
+        lineHeight: 18,
+        textAlign: 'left',
+        marginBottom: 8,
+        paddingHorizontal: 4,
+    },
+    modalOverlay: {
+        flex: 1,
+        backgroundColor: 'rgba(0,0,0,0.2)',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 16,
+    },
+    modalCard: {
+        width: '100%',
+        maxWidth: 420,
+        backgroundColor: '#FFFFFF',
+        borderRadius: 12,
+        paddingVertical: 8,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.15,
+        shadowRadius: 6,
+        elevation: 8,
+    },
+    modalTitle: {
+        fontSize: 16,
+        fontFamily: 'Poppins-SemiBold',
+        color: '#1F2937',
+        paddingHorizontal: 16,
+        paddingVertical: 12,
+        borderBottomWidth: 1,
+        borderBottomColor: '#F3F4F6',
+    },
+    modalOption: {
+        paddingHorizontal: 16,
+        paddingVertical: 16,
+        borderBottomWidth: 1,
+        borderBottomColor: '#F3F4F6',
+    },
+    modalOptionLast: {
+        paddingHorizontal: 16,
+        paddingVertical: 16,
+    },
+    modalOptionText: {
+        fontSize: 16,
+        fontFamily: 'Poppins-Regular',
+        color: '#1F2937',
+    },
+    modalOptionTextSelected: {
+        color: '#3B82F6',
+        fontFamily: 'Poppins-SemiBold',
+    },
 });
-
-export default LoanApplication;

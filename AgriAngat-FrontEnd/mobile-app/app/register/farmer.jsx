@@ -16,11 +16,9 @@ import * as Font from "expo-font";
 import { useRouter } from "expo-router";
 import MapView, { Marker } from "react-native-maps";
 import CustomDatePicker from "../../components/CustomDatePicker";
-import CustomPicker from "../../components/CustomPicker";
+import VerificationDialog from "../../components/VerificationDialog";
 // @ts-ignore
 import agriangatLogo from "../../assets/images/agriangat-nobg-logo.png";
-// @ts-ignore
-import rings from "../../assets/images/riring.png";
 
 const FarmerRegistrationScreen = () => {
   const [fontsLoaded, setFontsLoaded] = useState(false);
@@ -32,25 +30,23 @@ const FarmerRegistrationScreen = () => {
   const [lastName, setLastName] = useState("");
   const [birthdate, setBirthdate] = useState(null);
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showSexDropdown, setShowSexDropdown] = useState(false);
   const [nationality, setNationality] = useState("");
   const [sex, setSex] = useState("");
   const [contactNumber, setContactNumber] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
+  const [showVerificationDialog, setShowVerificationDialog] = useState(false);
 
   // Farm info
   const [farmType, setFarmType] = useState("");
   const [landSize, setLandSize] = useState("");
   const [landLocation, setLandLocation] = useState("");
   const [pin, setPin] = useState(null);
-  const defaultMapRegion = {
-    latitude: 14.5995,
-    longitude: 120.9842,
-    latitudeDelta: 0.05,
-    longitudeDelta: 0.05,
-  };
+  
+  // Auth info
   const [password, setPassword] = useState("");
-
+  
   // Validation states
   const [errors, setErrors] = useState({});
   const [borderAnims] = useState({
@@ -61,7 +57,17 @@ const FarmerRegistrationScreen = () => {
     password: new Animated.Value(0),
     farmType: new Animated.Value(0),
     landSize: new Animated.Value(0),
+    landLocation: new Animated.Value(0),
+    address: new Animated.Value(0),
+    nationality: new Animated.Value(0),
   });
+  
+  const defaultMapRegion = {
+    latitude: 14.5995,
+    longitude: 120.9842,
+    latitudeDelta: 0.05,
+    longitudeDelta: 0.05,
+  };
 
   useEffect(() => {
     async function loadFonts() {
@@ -80,34 +86,34 @@ const FarmerRegistrationScreen = () => {
   // Validation helper functions
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
-    
+    const phoneRegex = /^[+]?[1-9]\d{0,15}$/;
+
     if (!email.trim()) {
       return "Email is required";
     }
-    
-    if (phoneRegex.test(email.replace(/[\s\-\(\)]/g, ''))) {
+
+    if (phoneRegex.test(email.replace(/[\s\-()]/g, ''))) {
       return "Please enter an email address, not a phone number";
     }
-    
+
     if (!emailRegex.test(email)) {
       return "Please enter a valid email address";
     }
-    
+
     return "";
   };
 
   const validatePhoneNumber = (phone) => {
-    const phoneRegex = /^(\+63|0)[9][0-9]{9}$/;
-    
+    const phoneRegex = /^(\+63|0)9\d{9}$/;
+
     if (!phone.trim()) {
       return "Contact number is required";
     }
-    
-    if (!phoneRegex.test(phone.replace(/[\s\-\(\)]/g, ''))) {
+
+    if (!phoneRegex.test(phone.replace(/[\s\-()]/g, ''))) {
       return "Please enter a valid Philippine mobile number";
     }
-    
+
     return "";
   };
 
@@ -125,7 +131,7 @@ const FarmerRegistrationScreen = () => {
   };
 
   const validateRequired = (value, fieldName) => {
-    if (!value || !value.trim()) {
+    if (!value?.trim()) {
       return `${fieldName} is required`;
     }
     return "";
@@ -140,6 +146,10 @@ const FarmerRegistrationScreen = () => {
     }
     return "";
   };
+
+  // Animation for red border flash
+
+  if (!fontsLoaded) return null;
 
   // Animation for red border flash
   const flashBorder = (animValue) => {
@@ -167,28 +177,34 @@ const FarmerRegistrationScreen = () => {
     ]).start();
   };
 
+  // Field update helper
+  const updateFieldValue = (field, value) => {
+    const setters = {
+      firstName: setFirstName,
+      lastName: setLastName,
+      email: setEmail,
+      contactNumber: setContactNumber,
+      password: setPassword,
+      farmType: setFarmType,
+      landSize: setLandSize,
+      landLocation: setLandLocation,
+      address: setAddress,
+      nationality: setNationality,
+    };
+    setters[field]?.(value);
+  };
+
   // Real-time validation handlers
   const handleFieldChange = (field, value, validator) => {
-    // Update field value
-    switch(field) {
-      case 'firstName': setFirstName(value); break;
-      case 'lastName': setLastName(value); break;
-      case 'email': setEmail(value); break;
-      case 'contactNumber': setContactNumber(value); break;
-      case 'password': setPassword(value); break;
-      case 'farmType': setFarmType(value); break;
-      case 'landSize': setLandSize(value); break;
-    }
-    
-    // Validate and update errors
+    updateFieldValue(field, value);
     const error = validator ? validator(value) : validateRequired(value, field);
     setErrors(prev => ({ ...prev, [field]: error }));
   };
 
   const handleBack = () => router.back();
-  
-  const handleSubmit = () => {
-    const validationErrors = {
+
+  const validateAllFields = () => {
+    return {
       firstName: validateRequired(firstName, "First name"),
       lastName: validateRequired(lastName, "Last name"),
       email: validateEmail(email),
@@ -196,44 +212,96 @@ const FarmerRegistrationScreen = () => {
       password: validatePassword(password),
       farmType: validateRequired(farmType, "Farm type"),
       landSize: validateLandSize(landSize),
+      landLocation: validateRequired(landLocation, "Land location"),
+      address: validateRequired(address, "Current address"),
+      nationality: validateRequired(nationality, "Nationality"),
     };
-    
+  };
+
+  const handleValidationErrors = (validationErrors) => {
     setErrors(validationErrors);
-    
+
     // Flash borders for invalid fields
     Object.keys(validationErrors).forEach(field => {
       if (validationErrors[field] && borderAnims[field]) {
         flashBorder(borderAnims[field]);
       }
     });
-    
+
     const hasErrors = Object.values(validationErrors).some(error => error !== "");
-    
     if (hasErrors) {
       Alert.alert("Validation Error", "Please fix the errors below");
-      return;
     }
-    
-    // Additional validation for optional fields
+    return hasErrors;
+  };
+
+  const validateRequiredSelections = () => {
     if (!birthdate) {
       Alert.alert("Missing Information", "Please select your birthdate");
-      return;
+      return false;
     }
-    
+
     if (!sex) {
       Alert.alert("Missing Information", "Please select your sex");
-      return;
+      return false;
     }
+    return true;
+  };
+
+  const processFormSubmission = () => {
+    const validationErrors = validateAllFields();
     
+    if (handleValidationErrors(validationErrors)) {
+      return false;
+    }
+
+    if (!validateRequiredSelections()) {
+      return false;
+    }
+
+    setShowVerificationDialog(true);
+    return true;
+  };
+
+  const handleSubmit = () => {
+    processFormSubmission();
+  };
+
+  const handleConfirmSubmit = () => {
+    // Close the verification dialog
+    setShowVerificationDialog(false);
+    
+    // Navigate to the welcome screen
     router.replace("/register/welcome-farmer");
+  };
+
+  const handleDatePickerOpen = () => {
+    setShowSexDropdown(false);
+    setShowDatePicker(true);
+  };
+
+  const handleSexDropdownToggle = () => {
+    setShowSexDropdown(true);
+  };
+
+  const handleSexSelection = (selectedSex) => {
+    setSex(selectedSex);
+    setShowSexDropdown(false);
+  };
+
+  const handleMapPress = (e) => {
+    const { latitude, longitude } = e.nativeEvent.coordinate;
+    setPin({ latitude, longitude });
+    setLandLocation("Selected Location");
   };
 
   const handleDateChange = (selectedDate) => {
     setBirthdate(selectedDate);
   };
 
-  const handleDatePress = () => {
-    setShowDatePicker(true);
+  const getSexDisplayText = () => {
+    if (!sex) return "Select Sex";
+    return sex === 'male' ? 'Male' : 'Female';
   };
 
   const formatDate = (date) => {
@@ -244,12 +312,13 @@ const FarmerRegistrationScreen = () => {
     });
   };
 
-  const handleMapPress = (e) => {
-    const { latitude, longitude } = e.nativeEvent.coordinate;
-    setPin({ latitude, longitude });
-    // For now, we'll use a placeholder location name
-    // In a real app, you'd use reverse geocoding to get the actual address
-    setLandLocation("Selected Location");
+  const handleDatePickerClose = () => {
+    setShowDatePicker(false);
+    setShowSexDropdown(false);
+  };
+
+  const handleVerificationDialogClose = () => {
+    setShowVerificationDialog(false);
   };
 
   return (
@@ -294,13 +363,15 @@ const FarmerRegistrationScreen = () => {
             />
           </Animated.View>
           {errors.firstName ? <Text style={styles.errorText}>{errors.firstName}</Text> : null}
-          <TextInput
-            style={styles.input}
-            placeholder="Middle Name (optional)"
-            placeholderTextColor="#9aa0a6"
-            value={middleName}
-            onChangeText={setMiddleName}
-          />
+          <View style={styles.inputWrapper}>
+            <TextInput
+              style={styles.input}
+              placeholder="Middle Name (optional)"
+              placeholderTextColor="#9aa0a6"
+              value={middleName}
+              onChangeText={setMiddleName}
+            />
+          </View>
           <Animated.View style={[
             styles.inputWrapper,
             errors.lastName && {
@@ -320,34 +391,70 @@ const FarmerRegistrationScreen = () => {
           </Animated.View>
           {errors.lastName ? <Text style={styles.errorText}>{errors.lastName}</Text> : null}
           <View style={styles.row}>
-            <TouchableOpacity
-              style={[styles.input, styles.rowItem, styles.dateInput]}
-              onPress={handleDatePress}
-            >
-              <Text style={birthdate ? styles.dateText : styles.placeholderText}>
-                {birthdate ? formatDate(birthdate) : "Birthdate"}
-              </Text>
-            </TouchableOpacity>
-            <TextInput
-              style={[styles.input, styles.rowItem]}
-              placeholder="Nationality"
-              placeholderTextColor="#9aa0a6"
-              value={nationality}
-              onChangeText={setNationality}
-            />
+            <View style={[styles.inputWrapper, styles.rowItem]}>
+              <TouchableOpacity
+                style={[styles.input, styles.dateInput]}
+                onPress={handleDatePickerOpen}
+              >
+                <Text style={birthdate ? styles.dateText : styles.placeholderText}>
+                  {birthdate ? formatDate(birthdate) : "Birthdate"}
+                </Text>
+                <Text style={styles.dropdownArrow}>📅</Text>
+              </TouchableOpacity>
+            </View>
+            <Animated.View style={[
+              styles.inputWrapper,
+              styles.rowItem,
+              errors.nationality && {
+                borderColor: borderAnims.nationality.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: ['#ff4444', '#ff0000']
+                })
+              }
+            ]}>
+              <TextInput
+                style={[styles.input, errors.nationality && styles.inputError]}
+                placeholder="Nationality"
+                placeholderTextColor="#9aa0a6"
+                value={nationality}
+                onChangeText={(value) => handleFieldChange('nationality', value)}
+              />
+            </Animated.View>
           </View>
           <View style={styles.row}>
-            <CustomPicker
-              selectedValue={sex}
-              onValueChange={setSex}
-              items={[
-                { label: "Select Sex", value: "" },
-                { label: "Male", value: "male" },
-                { label: "Female", value: "female" }
-              ]}
-              placeholder="Select Sex"
-              style={[styles.rowItem, styles.pickerField]}
-            />
+            <View style={[styles.inputWrapper, styles.rowItem]}>
+              <TouchableOpacity
+                style={[styles.input, styles.dateInput]}
+                onPress={handleSexDropdownToggle}
+              >
+                <Text style={sex ? styles.dateText : styles.placeholderText}>
+                  {getSexDisplayText()}
+                </Text>
+                <Text style={styles.dropdownArrow}>▼</Text>
+              </TouchableOpacity>
+              {showSexDropdown && (
+                <View style={styles.dropdown}>
+                  <TouchableOpacity
+                    style={styles.dropdownItem}
+                    onPress={() => handleSexSelection('')}
+                  >
+                    <Text style={[styles.dropdownText, styles.placeholderDropdownText]}>Select Sex</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.dropdownItem}
+                    onPress={() => handleSexSelection('male')}
+                  >
+                    <Text style={styles.dropdownText}>Male</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.dropdownItem}
+                    onPress={() => handleSexSelection('female')}
+                  >
+                    <Text style={styles.dropdownText}>Female</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+            </View>
             <Animated.View style={[
               styles.inputWrapper,
               styles.rowItem,
@@ -388,13 +495,24 @@ const FarmerRegistrationScreen = () => {
             />
           </Animated.View>
           {errors.email ? <Text style={styles.errorText}>{errors.email}</Text> : null}
-          <TextInput
-            style={styles.input}
-            placeholder="Current Address"
-            placeholderTextColor="#9aa0a6"
-            value={address}
-            onChangeText={setAddress}
-          />
+          <Animated.View style={[
+            styles.inputWrapper,
+            errors.address && {
+              borderColor: borderAnims.address.interpolate({
+                inputRange: [0, 1],
+                outputRange: ['#ff4444', '#ff0000']
+              })
+            }
+          ]}>
+            <TextInput
+              style={[styles.input, errors.address && styles.inputError]}
+              placeholder="Current Address"
+              placeholderTextColor="#9aa0a6"
+              value={address}
+              onChangeText={(value) => handleFieldChange('address', value)}
+            />
+          </Animated.View>
+          {errors.address ? <Text style={styles.errorText}>{errors.address}</Text> : null}
 
           <Text style={styles.sectionTitleInner}>Your Land Information</Text>
           <Animated.View style={[
@@ -433,13 +551,24 @@ const FarmerRegistrationScreen = () => {
             />
           </Animated.View>
           {errors.landSize ? <Text style={styles.errorText}>{errors.landSize}</Text> : null}
-          <TextInput
-            style={styles.input}
-            placeholder="Land Location (tap on map to select)"
-            placeholderTextColor="#9aa0a6"
-            value={landLocation}
-            onChangeText={setLandLocation}
-          />
+          <Animated.View style={[
+            styles.inputWrapper,
+            errors.landLocation && {
+              borderColor: borderAnims.landLocation.interpolate({
+                inputRange: [0, 1],
+                outputRange: ['#ff4444', '#ff0000']
+              })
+            }
+          ]}>
+            <TextInput
+              style={[styles.input, errors.landLocation && styles.inputError]}
+              placeholder="Land Location (tap on map to select)"
+              placeholderTextColor="#9aa0a6"
+              value={landLocation}
+              onChangeText={(value) => handleFieldChange('landLocation', value)}
+            />
+          </Animated.View>
+          {errors.landLocation ? <Text style={styles.errorText}>{errors.landLocation}</Text> : null}
           <View style={styles.mapContainer}>
             <MapView
               style={styles.map}
@@ -471,29 +600,10 @@ const FarmerRegistrationScreen = () => {
           </Animated.View>
           {errors.password ? <Text style={styles.errorText}>{errors.password}</Text> : null}
 
-          {/* Welcome card with rings */}
-          <View style={styles.welcomeCard}>
-            {/* Background rings positioned absolutely */}
-            <View style={styles.backgroundRingsContainer}>
-              <Image source={rings} style={styles.backgroundRings} />
-            </View>
 
-            {/* Content on top */}
-            <View style={styles.welcomeContentContainer}>
-              <Text style={styles.welcomeTitle}>Grow more than </Text>
-              <Text style={styles.welcomeTitle}>crops. Grow your</Text>
-              <Text style={[styles.welcomeTitle, { marginBottom: 10 }]}>chances.</Text>
-              <Text style={styles.welcomeSub}>Boost your </Text>
-              <Text style={styles.welcomeSub}>
-                <Text style={[styles.welcomeSub, { fontFamily: "Poppins-Bold" }]}>AngatScore</Text> by
-              </Text>
-              <Text style={styles.welcomeSub}>farming smarter and paying</Text>
-              <Text style={styles.welcomeSub}>loans on time.</Text>
-            </View>
-          </View>
 
           <Text style={styles.disclaimer}>
-            By submitting, you agree to share your personal and farm information with AgriAngat and its partner banks for the purpose of evaluating and processing your AngatScore and loan applications in the future. 
+            By submitting, you agree to share your personal and farm information with AgriAngat and its partner banks for the purpose of evaluating and processing your AngatScore and loan applications in the future.
           </Text>
           <Text style={styles.disclaimer}>
             Please ensure that all information provided is true and accurate, as incomplete or false details may affect your AngatScore and loan eligibility.
@@ -520,15 +630,22 @@ const FarmerRegistrationScreen = () => {
         value={birthdate}
         onChange={handleDateChange}
         visible={showDatePicker}
-        onClose={() => setShowDatePicker(false)}
+        onClose={handleDatePickerClose}
         maximumDate={new Date()}
         placeholder="Birthdate"
+      />
+      
+      {/* Verification Dialog */}
+      <VerificationDialog
+        visible={showVerificationDialog}
+        onClose={handleVerificationDialogClose}
+        onConfirm={handleConfirmSubmit}
+        title="Confirm Farmer Registration"
+        message="Are you sure all the information you provided is correct? Please review before submitting."
       />
     </KeyboardAvoidingView>
   );
 };
-
-export default FarmerRegistrationScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -809,4 +926,48 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "#174c1a",
   },
+  dropdownArrow: {
+    position: 'absolute',
+    right: 12,
+    fontSize: 12,
+    color: '#666',
+  },
+  dropdown: {
+    position: 'absolute',
+    top: '100%',
+    left: 0,
+    right: 0,
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#e5e5e5',
+    borderRadius: 8,
+    marginTop: 2,
+    zIndex: 1000,
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  },
+  dropdownItem: {
+    paddingHorizontal: 12,
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0f0f0',
+  },
+  dropdownText: {
+    fontSize: 14,
+    fontFamily: 'Poppins-Regular',
+    color: '#333',
+  },
+  customDateText: {
+    color: '#007AFF',
+    fontFamily: 'Poppins-Bold',
+  },
+  placeholderDropdownText: {
+    color: '#9aa0a6',
+    fontStyle: 'italic',
+  },
 });
+
+export default FarmerRegistrationScreen;

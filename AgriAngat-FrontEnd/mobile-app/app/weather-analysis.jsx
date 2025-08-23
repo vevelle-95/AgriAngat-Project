@@ -12,7 +12,6 @@ import { useRouter } from "expo-router";
 
 export default function WeatherAnalysisScreen() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
-  const [selectedPeriod, setSelectedPeriod] = useState("7days");
   const router = useRouter();
 
   useEffect(() => {
@@ -21,6 +20,7 @@ export default function WeatherAnalysisScreen() {
         "Poppins-Bold": require("../assets/fonts/Poppins-Bold.ttf"),
         "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
         "Poppins-ExtraBold": require("../assets/fonts/Poppins-ExtraBold.ttf"),
+        "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
       });
       setFontsLoaded(true);
     }
@@ -28,60 +28,6 @@ export default function WeatherAnalysisScreen() {
   }, []);
 
   if (!fontsLoaded) return null;
-
-  const currentWeather = {
-    temperature: 28,
-    condition: "Partly Cloudy",
-    humidity: 75,
-    windSpeed: 12,
-    rainfall: 5,
-    icon: "⛅"
-  };
-
-  const forecast = [
-    { day: "Today", high: 32, low: 24, condition: "Partly Cloudy", icon: "⛅", rain: 20 },
-    { day: "Tomorrow", high: 30, low: 23, condition: "Light Rain", icon: "🌦️", rain: 60 },
-    { day: "Wed", high: 29, low: 22, condition: "Rainy", icon: "🌧️", rain: 80 },
-    { day: "Thu", high: 31, low: 25, condition: "Sunny", icon: "☀️", rain: 10 },
-    { day: "Fri", high: 33, low: 26, condition: "Sunny", icon: "☀️", rain: 5 },
-    { day: "Sat", high: 30, low: 24, condition: "Cloudy", icon: "☁️", rain: 30 },
-    { day: "Sun", high: 28, low: 23, condition: "Light Rain", icon: "🌦️", rain: 50 }
-  ];
-
-  const farmingInsights = [
-    {
-      title: "Irrigation Recommendation",
-      description: "Light rain expected Wednesday. Reduce irrigation by 30% for the next 3 days.",
-      priority: "medium",
-      icon: "💧"
-    },
-    {
-      title: "Pest Alert",
-      description: "High humidity levels may increase pest activity. Monitor crops closely.",
-      priority: "high",
-      icon: "🐛"
-    },
-    {
-      title: "Harvest Window",
-      description: "Optimal harvest conditions expected Thursday-Friday. Plan accordingly.",
-      priority: "medium",
-      icon: "🌾"
-    },
-    {
-      title: "Fertilizer Application",
-      description: "Apply fertilizer before Wednesday's rain for better absorption.",
-      priority: "low",
-      icon: "🌱"
-    }
-  ];
-
-  const weeklyAnalysis = {
-    avgTemp: 30,
-    totalRainfall: 45,
-    sunnyDays: 3,
-    rainyDays: 2,
-    optimalDays: 5
-  };
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}>
@@ -95,141 +41,122 @@ export default function WeatherAnalysisScreen() {
 
       {/* Title */}
       <Text style={styles.title}>Weather & Analysis</Text>
-      <Text style={styles.subtitle}>Cabanatuan City, Nueva Ecija</Text>
 
-      {/* Current Weather Card */}
+      {/* Current Weather Card - Blue Design */}
       <View style={styles.currentWeatherCard}>
-        <View style={styles.currentWeatherMain}>
-          <Text style={styles.weatherIcon}>{currentWeather.icon}</Text>
-          <View style={styles.temperatureContainer}>
-            <Text style={styles.temperature}>{currentWeather.temperature}°</Text>
-            <Text style={styles.condition}>{currentWeather.condition}</Text>
-          </View>
+        <Text style={styles.weatherLocation}>My Location</Text>
+        <Text style={styles.weatherCity}>Tayabas, Quezon</Text>
+        <Text style={styles.weatherCondition}>Partly Cloudy</Text>
+
+        <View style={styles.temperatureSection}>
+          <Text style={styles.temperature}>26°C</Text>
         </View>
-        
+
         <View style={styles.weatherDetails}>
           <View style={styles.weatherDetailItem}>
             <Text style={styles.weatherDetailLabel}>Humidity</Text>
-            <Text style={styles.weatherDetailValue}>{currentWeather.humidity}%</Text>
+            <Text style={styles.weatherDetailValue}>75%</Text>
           </View>
           <View style={styles.weatherDetailItem}>
             <Text style={styles.weatherDetailLabel}>Wind</Text>
-            <Text style={styles.weatherDetailValue}>{currentWeather.windSpeed} km/h</Text>
+            <Text style={styles.weatherDetailValue}>12 km/h</Text>
           </View>
           <View style={styles.weatherDetailItem}>
-            <Text style={styles.weatherDetailLabel}>Rainfall</Text>
-            <Text style={styles.weatherDetailValue}>{currentWeather.rainfall} mm</Text>
+            <Text style={styles.weatherDetailLabel}>Rain Chance</Text>
+            <Text style={styles.weatherDetailValue}>20%</Text>
           </View>
         </View>
       </View>
 
-      {/* Period Selector */}
-      <View style={styles.periodSelector}>
-        {["7days", "14days", "30days"].map((period) => (
-          <TouchableOpacity
-            key={period}
-            style={[
-              styles.periodButton,
-              selectedPeriod === period && styles.periodButtonSelected
-            ]}
-            onPress={() => setSelectedPeriod(period)}
-          >
-            <Text style={[
-              styles.periodButtonText,
-              selectedPeriod === period && styles.periodButtonTextSelected
-            ]}>
-              {period === "7days" ? "7 Days" : period === "14days" ? "14 Days" : "30 Days"}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-
-      {/* 7-Day Forecast */}
+      {/* 3-Day Forecast */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>7-Day Forecast</Text>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.forecastScroll}>
-          {forecast.map((day, index) => (
-            <View key={index} style={styles.forecastCard}>
-              <Text style={styles.forecastDay}>{day.day}</Text>
-              <Text style={styles.forecastIcon}>{day.icon}</Text>
-              <Text style={styles.forecastHigh}>{day.high}°</Text>
-              <Text style={styles.forecastLow}>{day.low}°</Text>
-              <Text style={styles.forecastRain}>{day.rain}%</Text>
-            </View>
-          ))}
-        </ScrollView>
-      </View>
-
-      {/* Weekly Analysis */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Weekly Analysis</Text>
-        <View style={styles.analysisGrid}>
-          <View style={styles.analysisCard}>
-            <Text style={styles.analysisValue}>{weeklyAnalysis.avgTemp}°C</Text>
-            <Text style={styles.analysisLabel}>Avg Temperature</Text>
+        <Text style={styles.sectionTitle}>3-Day Forecast</Text>
+        <View style={styles.forecastContainer}>
+          <View style={styles.forecastItem}>
+            <Text style={styles.forecastDay}>Today</Text>
+            <Image source={require("../assets/images/sun.png")} style={styles.forecastIcon} />
+            <Text style={styles.forecastCondition}>Partly Cloudy</Text>
+            <Text style={styles.forecastTemp}>26°C - 32°C</Text>
           </View>
-          <View style={styles.analysisCard}>
-            <Text style={styles.analysisValue}>{weeklyAnalysis.totalRainfall}mm</Text>
-            <Text style={styles.analysisLabel}>Total Rainfall</Text>
+          <View style={styles.forecastItem}>
+            <Text style={styles.forecastDay}>Thu</Text>
+            <Image source={require("../assets/images/rain.png")} style={styles.forecastIcon2} />
+            <Text style={styles.forecastCondition}>Rainy</Text>
+            <Text style={styles.forecastTemp}>24°C - 28°C</Text>
           </View>
-          <View style={styles.analysisCard}>
-            <Text style={styles.analysisValue}>{weeklyAnalysis.sunnyDays}</Text>
-            <Text style={styles.analysisLabel}>Sunny Days</Text>
-          </View>
-          <View style={styles.analysisCard}>
-            <Text style={styles.analysisValue}>{weeklyAnalysis.optimalDays}</Text>
-            <Text style={styles.analysisLabel}>Optimal Days</Text>
+          <View style={styles.forecastItem}>
+            <Text style={styles.forecastDay}>Fri</Text>
+            <Image source={require("../assets/images/rain.png")} style={styles.forecastIcon2} />
+            <Text style={styles.forecastCondition}>Rainy</Text>
+            <Text style={styles.forecastTemp}>23°C - 27°C</Text>
           </View>
         </View>
       </View>
 
-      {/* Farming Insights */}
+      {/* Crop Advisories */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Farming Insights</Text>
-        {farmingInsights.map((insight, index) => (
-          <View key={index} style={styles.insightCard}>
-            <View style={styles.insightHeader}>
-              <View style={styles.insightIconContainer}>
-                <Text style={styles.insightIcon}>{insight.icon}</Text>
-              </View>
-              <View style={styles.insightContent}>
-                <Text style={styles.insightTitle}>{insight.title}</Text>
-                <View style={[
-                  styles.priorityBadge,
-                  insight.priority === 'high' && styles.priorityHigh,
-                  insight.priority === 'medium' && styles.priorityMedium,
-                  insight.priority === 'low' && styles.priorityLow
-                ]}>
-                  <Text style={[
-                    styles.priorityText,
-                    insight.priority === 'high' && styles.priorityTextHigh,
-                    insight.priority === 'medium' && styles.priorityTextMedium,
-                    insight.priority === 'low' && styles.priorityTextLow
-                  ]}>
-                    {insight.priority.toUpperCase()}
-                  </Text>
-                </View>
-              </View>
-            </View>
-            <Text style={styles.insightDescription}>{insight.description}</Text>
-          </View>
-        ))}
-      </View>
+        <Text style={[styles.sectionTitle, { marginTop: 10, fontSize: 20, fontFamily: "Poppins-Bold" }]}>Crop Advisories</Text>
 
-      {/* Weather Alerts */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Weather Alerts</Text>
-        <View style={styles.alertCard}>
-          <View style={styles.alertHeader}>
-            <Text style={styles.alertIcon}>⚠️</Text>
-            <Text style={styles.alertTitle}>Heavy Rain Warning</Text>
-          </View>
-          <Text style={styles.alertDescription}>
-            Heavy rainfall expected Wednesday afternoon. Consider postponing outdoor farming activities and ensure proper drainage.
+        {/* Rice Advisory */}
+        <View style={[styles.advisoryCard, { backgroundColor: "#ffb6c1" }]}>
+          <Text style={styles.advisoryTitle}>Rice (Palay) Advisory</Text>
+          <Text style={styles.advisoryDescription}>
+            Expect Moderate rainfall next week. Ensure proper drainage to prevent waterlogging. Monitor for pest activity during wet periods.
           </Text>
-          <Text style={styles.alertTime}>Valid until: Wednesday, 6:00 PM</Text>
+        </View>
+
+        {/* Corn Advisory */}
+        <View style={[styles.advisoryCard, { backgroundColor: "#ffb6c1" }]}>
+          <Text style={styles.advisoryTitle}>Corn (Mais) Advisory</Text>
+          <Text style={styles.advisoryDescription}>
+            Monitor for armyworm infestations as temperature rise. Apply organic pesticides if necessary.
+          </Text>
+        </View>
+
+        {/* Banana Advisory */}
+        <View style={[styles.advisoryCard, { backgroundColor: "#ecfadc" }]}>
+          <Text style={[styles.advisoryTitle, { color: "#0a8701" }]}>Banana (Saging) Advisory</Text>
+          <Text style={styles.advisoryDescription}>
+            Moderate wind and warm temperatures support ideal fruit development. Maintain consistent watering and monitor for fungal diseases.
+          </Text>
         </View>
       </View>
+
+      <View style={styles.section}>
+  <Text
+    style={[
+      styles.sectionTitle,
+      {
+        fontSize: 20,
+        fontFamily: "Poppins-SemiBold",
+        marginTop: 30,
+      },
+    ]}
+  >
+    Find more Crop Care tips and sustainable farming practices in Study Hub.
+  </Text>
+
+  {/* Card (display only, not clickable) */}
+  <View style={styles.studyHubCard}>
+    <Image
+      source={require("../assets/images/study-hub.png")}
+      style={styles.studyHubIcon}
+    />
+    <View style={styles.studyHubContent}>
+      <Text style={styles.studyHubTitle}>Study Hub</Text>
+      <Text style={styles.studyHubSubtitle}>
+      Learn tips and how-tos from AgriAngat videos and the AgriAngat Assistant      </Text>
+    </View>
+  </View>
+
+  {/* Learn More button → navigates to Study Hub */}
+  <TouchableOpacity
+    style={styles.learnMoreButton}
+    onPress={() => router.push("/study-hub-videos")}
+  >
+    <Text style={styles.learnMoreText}>Learn More</Text>
+  </TouchableOpacity>
+</View>
     </ScrollView>
   );
 }
@@ -249,8 +176,12 @@ const styles = StyleSheet.create({
   },
   backButton: {
     flexDirection: "row",
-    alignItems: "center",
-    alignSelf: "flex-start",
+        alignItems: "center",
+        backgroundColor: "#f2f2f2",
+        borderRadius: 20,
+        paddingHorizontal: 15,
+        paddingVertical: 8,
+        alignSelf: "flex-start",
   },
   backIcon: {
     fontSize: 20,
@@ -260,50 +191,53 @@ const styles = StyleSheet.create({
   backText: {
     fontSize: 16,
     color: "#333",
-    fontFamily: "Poppins-Regular",
+    fontFamily: "Poppins-SemiBold",
   },
   title: {
     fontSize: 28,
     fontFamily: "Poppins-ExtraBold",
     color: "#111",
     textAlign: "center",
-    marginBottom: 4,
-  },
-  subtitle: {
-    fontSize: 14,
-    fontFamily: "Poppins-Regular",
-    color: "#666",
-    textAlign: "center",
     marginBottom: 25,
   },
   currentWeatherCard: {
     marginHorizontal: 20,
-    backgroundColor: "#f8f8f8",
+    backgroundColor: "#007AFF",
     borderRadius: 16,
     padding: 20,
-    marginBottom: 20,
+    marginBottom: 25,
   },
-  currentWeatherMain: {
-    flexDirection: "row",
+  weatherLocation: {
+    fontSize: 12,
+    fontFamily: "Poppins-SemiBold",
+    color: "#fff",
+    opacity: 0.8,
+    marginBottom: 4,
+  },
+  weatherCity: {
+    fontSize: 19,
+    fontFamily: "Poppins-SemiBold",
+    color: "#fff",
+    marginBottom: 4,
+  },
+  weatherCondition: {
+    fontSize: 14,
+    fontFamily: "Poppins-Regular",
+    color: "#fff",
+    opacity: 0.9,
+    marginBottom: 15,
+    marginLeft: 189,
+  },
+  temperatureSection: {
     alignItems: "center",
     marginBottom: 20,
   },
-  weatherIcon: {
-    fontSize: 64,
-    marginRight: 20,
-  },
-  temperatureContainer: {
-    flex: 1,
-  },
   temperature: {
     fontSize: 48,
-    fontFamily: "Poppins-ExtraBold",
-    color: "#111",
-  },
-  condition: {
-    fontSize: 16,
-    fontFamily: "Poppins-Regular",
-    color: "#666",
+    fontFamily: "Poppins-SemiBold",
+    color: "#fff",
+    marginLeft: 180,
+    marginTop: -93,
   },
   weatherDetails: {
     flexDirection: "row",
@@ -315,208 +249,123 @@ const styles = StyleSheet.create({
   weatherDetailLabel: {
     fontSize: 12,
     fontFamily: "Poppins-Regular",
-    color: "#999",
-    marginBottom: 4,
+    color: "#fff",
+    opacity: 0.8,
+    marginBottom: 3,
+    marginTop: -5
   },
   weatherDetailValue: {
     fontSize: 16,
     fontFamily: "Poppins-Bold",
-    color: "#333",
-  },
-  periodSelector: {
-    flexDirection: "row",
-    marginHorizontal: 20,
-    marginBottom: 20,
-    backgroundColor: "#f0f0f0",
-    borderRadius: 8,
-    padding: 4,
-  },
-  periodButton: {
-    flex: 1,
-    paddingVertical: 8,
-    alignItems: "center",
-    borderRadius: 6,
-  },
-  periodButtonSelected: {
-    backgroundColor: "#0f6d00",
-  },
-  periodButtonText: {
-    fontSize: 14,
-    fontFamily: "Poppins-Regular",
-    color: "#666",
-  },
-  periodButtonTextSelected: {
     color: "#fff",
-    fontFamily: "Poppins-Bold",
   },
   section: {
     paddingHorizontal: 20,
     marginBottom: 25,
   },
   sectionTitle: {
-    fontSize: 18,
+    fontSize: 12,
     fontFamily: "Poppins-Bold",
     color: "#111",
-    marginBottom: 15,
+    marginBottom: 10,
   },
-  forecastScroll: {
-    marginHorizontal: -20,
-    paddingHorizontal: 20,
+  forecastContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    gap: 12,
   },
-  forecastCard: {
+  forecastItem: {
+    flex: 1,
     backgroundColor: "#f9f9f9",
     borderRadius: 12,
     padding: 15,
-    marginRight: 12,
     alignItems: "center",
-    minWidth: 80,
   },
   forecastDay: {
-    fontSize: 12,
+    fontSize: 14,
     fontFamily: "Poppins-Bold",
     color: "#333",
     marginBottom: 8,
   },
   forecastIcon: {
-    fontSize: 24,
+    width: 32,
+    height: 32,
     marginBottom: 8,
   },
-  forecastHigh: {
-    fontSize: 16,
-    fontFamily: "Poppins-Bold",
-    color: "#111",
+  forecastIcon2: {
+    width: 32,
+    height: 43,
+    marginBottom: 8,
   },
-  forecastLow: {
-    fontSize: 14,
-    fontFamily: "Poppins-Regular",
-    color: "#666",
-    marginBottom: 4,
-  },
-  forecastRain: {
-    fontSize: 12,
-    fontFamily: "Poppins-Regular",
-    color: "#007AFF",
-  },
-  analysisGrid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 12,
-  },
-  analysisCard: {
-    flex: 1,
-    minWidth: "45%",
-    backgroundColor: "#f9f9f9",
-    borderRadius: 12,
-    padding: 15,
-    alignItems: "center",
-  },
-  analysisValue: {
-    fontSize: 24,
-    fontFamily: "Poppins-ExtraBold",
-    color: "#0f6d00",
-    marginBottom: 4,
-  },
-  analysisLabel: {
+  forecastCondition: {
     fontSize: 12,
     fontFamily: "Poppins-Regular",
     color: "#666",
     textAlign: "center",
+    marginBottom: 4,
   },
-  insightCard: {
-    backgroundColor: "#f9f9f9",
+  forecastTemp: {
+    fontSize: 12,
+    fontFamily: "Poppins-Bold",
+    color: "#111",
+    textAlign: "center",
+  },
+  advisoryCard: {
+    backgroundColor: "#f8f8f8",
     borderRadius: 12,
-    padding: 15,
+    padding: 16,
     marginBottom: 12,
   },
-  insightHeader: {
-    flexDirection: "row",
-    alignItems: "flex-start",
+  advisoryTitle: {
+    fontSize: 16,
+    fontFamily: "Poppins-ExtraBold",
+    color: "#ff0019",
     marginBottom: 8,
   },
-  insightIconContainer: {
+  advisoryDescription: {
+    fontSize: 14,
+    fontFamily: "Poppins-SemiBold",
+    color: "#000",
+    lineHeight: 20,
+  },
+  studyHubCard: {
+    flexDirection: "row",
+    backgroundColor: "#f8f8f8",
+    borderRadius: 12,
+    padding: 16,
+    alignItems: "center",
+    marginBottom: 12,
+  },
+  studyHubIcon: {
+    width: 42,
+    height: 45,
     marginRight: 12,
   },
-  insightIcon: {
-    fontSize: 20,
-  },
-  insightContent: {
+  studyHubContent: {
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
   },
-  insightTitle: {
+  studyHubTitle: {
     fontSize: 16,
     fontFamily: "Poppins-Bold",
     color: "#111",
-    flex: 1,
+    marginBottom: 4,
   },
-  priorityBadge: {
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: 10,
-    marginLeft: 8,
-  },
-  priorityHigh: {
-    backgroundColor: "#ffebee",
-  },
-  priorityMedium: {
-    backgroundColor: "#fff3e0",
-  },
-  priorityLow: {
-    backgroundColor: "#e8f5e8",
-  },
-  priorityText: {
-    fontSize: 10,
-    fontFamily: "Poppins-Bold",
-  },
-  priorityTextHigh: {
-    color: "#d32f2f",
-  },
-  priorityTextMedium: {
-    color: "#f57c00",
-  },
-  priorityTextLow: {
-    color: "#388e3c",
-  },
-  insightDescription: {
-    fontSize: 14,
-    fontFamily: "Poppins-Regular",
-    color: "#666",
-    lineHeight: 18,
-    marginLeft: 32,
-  },
-  alertCard: {
-    backgroundColor: "#fff3cd",
-    borderRadius: 12,
-    padding: 15,
-    borderLeftWidth: 4,
-    borderLeftColor: "#ffc107",
-  },
-  alertHeader: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 8,
-  },
-  alertIcon: {
-    fontSize: 20,
-    marginRight: 8,
-  },
-  alertTitle: {
-    fontSize: 16,
-    fontFamily: "Poppins-Bold",
-    color: "#856404",
-  },
-  alertDescription: {
-    fontSize: 14,
-    fontFamily: "Poppins-Regular",
-    color: "#856404",
-    lineHeight: 18,
-    marginBottom: 8,
-  },
-  alertTime: {
+  studyHubSubtitle: {
     fontSize: 12,
     fontFamily: "Poppins-Regular",
-    color: "#6c5700",
+    color: "#666",
+    lineHeight: 16,
+  },
+  learnMoreButton: {
+    backgroundColor: "#111",
+    borderRadius: 25,
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    alignItems: "center",
+  },
+  learnMoreText: {
+    fontSize: 14,
+    fontFamily: "Poppins-Bold",
+    color: "#fff",
   },
 });

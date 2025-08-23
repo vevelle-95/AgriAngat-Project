@@ -4,7 +4,7 @@ import * as Font from "expo-font";
 import { useRouter } from "expo-router";
 import agriangatLogo from "../../assets/images/agriangat-nobg-logo.png";
 
-export default function CustomerWelcomeScreen() {
+export default function FarmerWelcomeScreen() {
   const router = useRouter();
   const [fontsLoaded, setFontsLoaded] = useState(false);
 

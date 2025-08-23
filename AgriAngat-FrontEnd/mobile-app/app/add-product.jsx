@@ -6,15 +6,14 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
-  Image,
   Alert,
   Animated,
 } from "react-native";
 import * as Font from "expo-font";
 import { useRouter } from "expo-router";
 
-export default function AddProductScreen() {
-  const [fontsLoaded, setFontsLoaded] = useState(false);
+// Custom hook for form state management
+const useProductForm = () => {
   const [productData, setProductData] = useState({
     name: "",
     category: "",
@@ -26,15 +25,48 @@ export default function AddProductScreen() {
     location: "",
   });
 
-  // Validation states
   const [errors, setErrors] = useState({});
+  
   const [borderAnims] = useState({
     name: new Animated.Value(0),
     price: new Animated.Value(0),
     quantity: new Animated.Value(0),
     harvestDate: new Animated.Value(0),
+    description: new Animated.Value(0),
   });
+
+  const handleInputChange = (field, value, validator) => {
+    setProductData(prev => ({ ...prev, [field]: value }));
+    
+    // Real-time validation
+    if (validator) {
+      const error = validator(value);
+      setErrors(prev => ({ ...prev, [field]: error }));
+    }
+  };
+
+  return {
+    productData,
+    setProductData,
+    errors,
+    setErrors,
+    borderAnims,
+    handleInputChange
+  };
+};
+
+export default function AddProductScreen() {
+  const [fontsLoaded, setFontsLoaded] = useState(false);
+  const [isUnitDropdownOpen, setIsUnitDropdownOpen] = useState(false);
   const router = useRouter();
+  
+  const {
+    productData,
+    errors,
+    setErrors,
+    borderAnims,
+    handleInputChange
+  } = useProductForm();
 
   useEffect(() => {
     async function loadFonts() {
@@ -50,7 +82,7 @@ export default function AddProductScreen() {
 
   // Validation helper functions
   const validateProductName = (name) => {
-    if (!name || !name.trim()) {
+    if (!name?.trim()) {
       return "Product name is required";
     }
     if (name.length < 2) {
@@ -63,7 +95,7 @@ export default function AddProductScreen() {
   };
 
   const validatePrice = (price) => {
-    if (!price || !price.trim()) {
+    if (!price?.trim()) {
       return "Price is required";
     }
     const numPrice = parseFloat(price.replace(/,/g, ''));
@@ -77,7 +109,7 @@ export default function AddProductScreen() {
   };
 
   const validateQuantity = (quantity) => {
-    if (!quantity || !quantity.trim()) {
+    if (!quantity?.trim()) {
       return "Quantity is required";
     }
     const numQuantity = parseFloat(quantity);
@@ -90,8 +122,21 @@ export default function AddProductScreen() {
     return "";
   };
 
+  const validateDescription = (description) => {
+    if (!description?.trim()) {
+      return "Description is required";
+    }
+    if (description.length < 10) {
+      return "Description must be at least 10 characters";
+    }
+    if (description.length > 500) {
+      return "Description must be less than 500 characters";
+    }
+    return "";
+  };
+
   const validateHarvestDate = (date) => {
-    if (!date || !date.trim()) {
+    if (!date?.trim()) {
       return ""; // Optional field
     }
     const dateRegex = /^(0[1-9]|1[0-2])\/(0[1-9]|[12]\d|3[01])\/(19|20)\d{2}$/;
@@ -140,30 +185,25 @@ export default function AddProductScreen() {
 
   if (!fontsLoaded) return null;
 
-  const handleInputChange = (field, value, validator) => {
-    setProductData(prev => ({ ...prev, [field]: value }));
-    
-    // Real-time validation
-    if (validator) {
-      const error = validator(value);
-      setErrors(prev => ({ ...prev, [field]: error }));
-    }
-  };
-
-  const handleAddProduct = () => {
+  const performValidation = () => {
     const validationErrors = {
       name: validateProductName(productData.name),
       price: validatePrice(productData.price),
       quantity: validateQuantity(productData.quantity),
+      description: validateDescription(productData.description),
       harvestDate: validateHarvestDate(productData.harvestDate),
     };
     
     // Check if category is selected
     if (!productData.category) {
       Alert.alert("Missing Information", "Please select a product category");
-      return;
+      return null;
     }
     
+    return validationErrors;
+  };
+
+  const handleValidationErrors = (validationErrors) => {
     setErrors(validationErrors);
     
     // Flash borders for invalid fields
@@ -173,25 +213,57 @@ export default function AddProductScreen() {
       }
     });
     
-    const hasErrors = Object.values(validationErrors).some(error => error !== "");
-    
-    if (hasErrors) {
-      Alert.alert("Validation Error", "Please fix the errors below");
-      return;
-    }
-    
-    // Handle product submission
+    Alert.alert("Validation Error", "Please fix the errors below");
+  };
+
+  const submitProduct = () => {
     console.log("Product added:", productData);
     Alert.alert("Success", "Product added successfully!", [
       { text: "OK", onPress: () => router.back() }
     ]);
   };
 
-  const categories = ["Vegetables", "Fruits", "Grains", "Herbs", "Livestock", "Dairy"];
-  const units = ["kg", "pieces", "bundles", "sacks", "liters"];
+  const handleAddProduct = () => {
+    const validationErrors = performValidation();
+    if (!validationErrors) return;
+    
+    const hasErrors = Object.values(validationErrors).some(error => error !== "");
+    
+    if (hasErrors) {
+      handleValidationErrors(validationErrors);
+      return;
+    }
+    
+    submitProduct();
+  };
 
-  return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}>
+  const renderCategorySelection = () => (
+    <View style={styles.inputGroup}>
+      <Text style={[styles.inputLabel, {marginLeft: 25}]}>Category*</Text>
+      <View style={styles.categoryOptions}>
+        {categories.map((category) => (
+          <TouchableOpacity
+            key={category}
+            style={[
+              styles.categoryOption,
+              productData.category === category && styles.categoryOptionSelected
+            ]}
+            onPress={() => handleInputChange("category", category)}
+          >
+            <Text style={[
+              styles.categoryText,
+              productData.category === category && styles.categoryTextSelected
+            ]}>
+              {category}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+    </View>
+  );
+
+  const renderFormHeader = () => (
+    <View>
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
@@ -215,6 +287,51 @@ export default function AddProductScreen() {
           </View>
         </TouchableOpacity>
       </View>
+    </View>
+  );
+
+  const renderUnitDropdown = () => (
+    <View style={[styles.inputGroup, styles.halfWidth]}>
+      <Text style={styles.inputLabel}>Unit</Text>
+      <View style={styles.unitDropdownContainer}>
+        <TouchableOpacity 
+          style={styles.unitDropdownButton}
+          onPress={() => setIsUnitDropdownOpen(!isUnitDropdownOpen)}
+        >
+          <Text style={styles.unitDropdownText}>
+            {productData.unit || "Select Unit"}
+          </Text>
+          <Text style={styles.dropdownArrow}>
+            {isUnitDropdownOpen ? "▲" : "▼"}
+          </Text>
+        </TouchableOpacity>
+        
+        {isUnitDropdownOpen && (
+          <View style={styles.unitDropdownList}>
+            {units.map((unit) => (
+              <TouchableOpacity
+                key={unit}
+                style={styles.unitDropdownItem}
+                onPress={() => {
+                  handleInputChange("unit", unit);
+                  setIsUnitDropdownOpen(false);
+                }}
+              >
+                <Text style={styles.unitDropdownItemText}>{unit}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        )}
+      </View>
+    </View>
+  );
+
+  const categories = ["Vegetables", "Fruits", "Grains", "Herbs", "Livestock", "Dairy"];
+  const units = ["kg", "pieces", "bundles", "sacks", "liters"];
+
+  return (
+    <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}>
+      {renderFormHeader()}
 
       {/* Product Details */}
       <View style={styles.section}>
@@ -241,43 +358,46 @@ export default function AddProductScreen() {
           </Animated.View>
           {errors.name ? <Text style={styles.errorText}>{errors.name}</Text> : null}
         </View>
-
-        <View style={styles.inputGroup}>
-          <Text style={styles.inputLabel}>Category *</Text>
-          <View style={styles.categoryOptions}>
-            {categories.map((category) => (
-              <TouchableOpacity
-                key={category}
-                style={[
-                  styles.categoryOption,
-                  productData.category === category && styles.categoryOptionSelected
-                ]}
-                onPress={() => handleInputChange("category", category)}
-              >
-                <Text style={[
-                  styles.categoryText,
-                  productData.category === category && styles.categoryTextSelected
-                ]}>
-                  {category}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
         </View>
 
-        <View style={styles.inputGroup}>
-          <Text style={styles.inputLabel}>Description</Text>
-          <TextInput
-            style={[styles.textInput, styles.multilineInput]}
-            value={productData.description}
-            onChangeText={(value) => handleInputChange("description", value)}
-            placeholder="Describe your product quality, farming method, etc."
-            placeholderTextColor="#999"
-            multiline
-            numberOfLines={4}
-          />
-        </View>
-      </View>
+        {renderCategorySelection()}
+
+        {/* Description Field */}
+<View style={styles.inputGroup}>
+  <Text style={styles.inputLabel}>Description *</Text>
+  <Animated.View
+    style={[
+      styles.inputWrapper,
+      errors.description && {
+        borderColor: borderAnims.description.interpolate({
+          inputRange: [0, 1],
+          outputRange: ["#ff4444", "#ff0000"],
+        }),
+      },
+    ]}
+  >
+    <TextInput
+      style={[
+        styles.textInput,
+        styles.multilineInput, // add this for height + vertical align
+        errors.description && styles.inputError,
+      ]}
+      value={productData.description}
+      onChangeText={(value) =>
+        handleInputChange("description", value, validateDescription)
+      }
+      placeholder="Enter product details, quality, or usage info..."
+      placeholderTextColor="#999"
+      multiline
+      numberOfLines={4}
+      textAlignVertical="top"
+    />
+  </Animated.View>
+  {errors.description ? (
+    <Text style={styles.errorText}>{errors.description}</Text>
+  ) : null}
+</View>
+
 
       {/* Pricing & Quantity */}
       <View style={styles.section}>
@@ -285,7 +405,7 @@ export default function AddProductScreen() {
         
         <View style={styles.row}>
           <View style={[styles.inputGroup, styles.halfWidth]}>
-            <Text style={styles.inputLabel}>Price *</Text>
+            <Text style={styles.inputLabel}>Price*</Text>
             <Animated.View style={[
               styles.priceInputContainer,
               errors.price && {
@@ -308,32 +428,11 @@ export default function AddProductScreen() {
             {errors.price ? <Text style={styles.errorText}>{errors.price}</Text> : null}
           </View>
 
-          <View style={[styles.inputGroup, styles.halfWidth]}>
-            <Text style={styles.inputLabel}>Unit</Text>
-            <View style={styles.unitOptions}>
-              {units.map((unit) => (
-                <TouchableOpacity
-                  key={unit}
-                  style={[
-                    styles.unitOption,
-                    productData.unit === unit && styles.unitOptionSelected
-                  ]}
-                  onPress={() => handleInputChange("unit", unit)}
-                >
-                  <Text style={[
-                    styles.unitText,
-                    productData.unit === unit && styles.unitTextSelected
-                  ]}>
-                    {unit}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-          </View>
+          {renderUnitDropdown()}
         </View>
 
         <View style={styles.inputGroup}>
-          <Text style={styles.inputLabel}>Available Quantity *</Text>
+          <Text style={styles.inputLabel}>Available Quantity*</Text>
           <Animated.View style={[
             styles.inputWrapper,
             errors.quantity && {
@@ -384,6 +483,7 @@ export default function AddProductScreen() {
 
         <View style={styles.inputGroup}>
           <Text style={styles.inputLabel}>Farm Location</Text>
+          <View style={styles.inputWrapper}>
           <TextInput
             style={styles.textInput}
             value={productData.location}
@@ -422,9 +522,10 @@ export default function AddProductScreen() {
       <TouchableOpacity style={styles.addButton} onPress={handleAddProduct}>
         <Text style={styles.addButtonText}>Add Product to Marketplace</Text>
       </TouchableOpacity>
+    </View>
     </ScrollView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -441,8 +542,12 @@ const styles = StyleSheet.create({
   },
   backButton: {
     flexDirection: "row",
-    alignItems: "center",
-    alignSelf: "flex-start",
+        alignItems: "center",
+        backgroundColor: "#f2f2f2",
+        borderRadius: 20,
+        paddingHorizontal: 15,
+        paddingVertical: 8,
+        alignSelf: "flex-start",
   },
   backIcon: {
     fontSize: 20,
@@ -452,7 +557,7 @@ const styles = StyleSheet.create({
   backText: {
     fontSize: 16,
     color: "#333",
-    fontFamily: "Poppins-Regular",
+    fontFamily: "Poppins-SemiBold",
   },
   title: {
     fontSize: 28,
@@ -514,12 +619,16 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins-Bold",
     color: "#333",
     marginBottom: 8,
+    marginLeft: 20,
   },
   inputWrapper: {
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: "#ddd",
     borderRadius: 8,
     backgroundColor: "#f9f9f9",
+    marginHorizontal: 20,
+    width: "90%", // Make all inputs same width as description
+    alignSelf: "center",
   },
   textInput: {
     paddingHorizontal: 15,
@@ -540,16 +649,21 @@ const styles = StyleSheet.create({
     marginLeft: 4,
   },
   multilineInput: {
-    height: 100,
-    textAlignVertical: "top",
+      minHeight: 120,
+      textAlignVertical: "top",
+      paddingHorizontal: 12,
+      paddingTop: 12,
   },
   categoryOptions: {
     flexDirection: "row",
     flexWrap: "wrap",
+    justifyContent: "flex-start",  // align left
     gap: 10,
-  },
+    marginLeft: 28
+  }
+  ,
   categoryOption: {
-    paddingHorizontal: 16,
+    paddingHorizontal: 11,
     paddingVertical: 10,
     borderRadius: 20,
     borderWidth: 1,
@@ -597,30 +711,62 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins-Regular",
     color: "#333",
   },
-  unitOptions: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 8,
+  unitDropdownContainer: {
+    position: "relative",
   },
-  unitOption: {
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 15,
+  unitDropdownButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     borderWidth: 1,
     borderColor: "#ddd",
+    borderRadius: 8,
     backgroundColor: "#f9f9f9",
+    paddingHorizontal: 15,
+    paddingVertical: 12,
+    height: 50,
   },
-  unitOptionSelected: {
-    backgroundColor: "#0f6d00",
-    borderColor: "#0f6d00",
-  },
-  unitText: {
-    fontSize: 12,
+  unitDropdownText: {
+    fontSize: 16,
     fontFamily: "Poppins-Regular",
-    color: "#666",
+    color: "#333",
   },
-  unitTextSelected: {
-    color: "#fff",
+  dropdownArrow: {
+    fontSize: 12,
+    color: "#666",
+    fontFamily: "Poppins-Bold",
+  },
+  unitDropdownList: {
+    position: "absolute",
+    top: "100%",
+    left: 0,
+    right: 0,
+    backgroundColor: "#fff",
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "#ddd",
+    marginTop: 4,
+    zIndex: 1000,
+    maxHeight: 200,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  unitDropdownItem: {
+    paddingHorizontal: 15,
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: "#f0f0f0",
+  },
+  unitDropdownItemText: {
+    fontSize: 16,
+    fontFamily: "Poppins-Regular",
+    color: "#333",
   },
   previewCard: {
     flexDirection: "row",

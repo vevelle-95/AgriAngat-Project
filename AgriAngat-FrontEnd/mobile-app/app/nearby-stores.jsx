@@ -5,15 +5,17 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  Image,
   TextInput,
+  Modal,
 } from "react-native";
 import * as Font from "expo-font";
 import { useRouter } from "expo-router";
 
 export default function NearbyStoresScreen() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const [showSearchModal, setShowSearchModal] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -30,178 +32,81 @@ export default function NearbyStoresScreen() {
 
   if (!fontsLoaded) return null;
 
-  const categories = [
-    { id: "all", name: "All", icon: "🏪" },
-    { id: "seeds", name: "Seeds", icon: "🌱" },
-    { id: "fertilizer", name: "Fertilizer", icon: "🧪" },
-    { id: "tools", name: "Tools", icon: "🔧" },
-    { id: "equipment", name: "Equipment", icon: "🚜" },
-    { id: "feed", name: "Animal Feed", icon: "🌾" }
-  ];
-
   const stores = [
     {
       id: 1,
-      name: "AgriSupply Central",
-      category: "seeds",
-      rating: 4.8,
-      distance: "0.5 km",
-      address: "123 Rizal Street, Cabanatuan City",
-      phone: "+63 912 345 6789",
-      hours: "8:00 AM - 6:00 PM",
-      specialties: ["Seeds", "Fertilizers", "Pesticides"],
-      verified: true,
+      name: "Aling Myrna Sari-sari store",
+      distance: "2.5 km",
+      needs: "100 kg Rice, 20 kg Tomatoes",
       image: "🏪"
     },
     {
       id: 2,
-      name: "Green Thumb Farm Store",
-      category: "tools",
-      rating: 4.6,
-      distance: "1.2 km",
-      address: "456 Maharlika Highway, Cabanatuan City",
-      phone: "+63 918 765 4321",
-      hours: "7:00 AM - 7:00 PM",
-      specialties: ["Hand Tools", "Irrigation", "Garden Supplies"],
-      verified: true,
-      image: "🌿"
+      name: "Kimilovie Store",
+      distance: "1 km",
+      needs: "50 kg Corn, 20 kg Onions",
+      image: "�"
     },
     {
       id: 3,
-      name: "Farmers Choice Equipment",
-      category: "equipment",
-      rating: 4.7,
-      distance: "2.1 km",
-      address: "789 General Luna St, Cabanatuan City",
-      phone: "+63 925 123 4567",
-      hours: "8:00 AM - 5:00 PM",
-      specialties: ["Tractors", "Plows", "Harvesters"],
-      verified: false,
-      image: "🚜"
+      name: "Neyni Store",
+      distance: "1 km",
+      needs: "50 cabbages, 10 kg Carrots",
+      image: "🏪"
     },
     {
       id: 4,
-      name: "Organic Fertilizer Hub",
-      category: "fertilizer",
-      rating: 4.9,
-      distance: "1.8 km",
-      address: "321 Nueva Ecija St, Cabanatuan City",
-      phone: "+63 917 888 9999",
-      hours: "6:00 AM - 8:00 PM",
-      specialties: ["Organic Fertilizer", "Compost", "Bio-pesticides"],
-      verified: true,
-      image: "🧪"
+      name: "Cris Talipapa",
+      distance: "0.5 km",
+      needs: "10 boxes Eggs, 20 kg Onions, 10 kg Carrots",
+      image: "🏪"
     },
     {
       id: 5,
-      name: "Livestock Feed Center",
-      category: "feed",
-      rating: 4.5,
-      distance: "3.0 km",
-      address: "654 Burgos Avenue, Cabanatuan City",
-      phone: "+63 920 555 7777",
-      hours: "7:00 AM - 6:00 PM",
-      specialties: ["Pig Feed", "Chicken Feed", "Cattle Feed"],
-      verified: true,
-      image: "🐄"
-    },
-    {
-      id: 6,
-      name: "Seed Specialist Store",
-      category: "seeds",
-      rating: 4.4,
-      distance: "2.5 km",
-      address: "987 Del Pilar St, Cabanatuan City",
-      phone: "+63 919 333 2222",
-      hours: "8:00 AM - 6:00 PM",
-      specialties: ["Vegetable Seeds", "Rice Seeds", "Flower Seeds"],
-      verified: false,
-      image: "🌱"
+      name: "K Mini Mart",
+      distance: "0.5 km",
+      needs: "100 kg Rice, 100 kg Banana, 50 kg Carrots",
+      image: "�"
     }
   ];
 
-  const filteredStores = stores.filter(store => {
-    const matchesCategory = selectedCategory === "all" || store.category === selectedCategory;
-    const matchesSearch = store.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         store.specialties.some(specialty => 
-                           specialty.toLowerCase().includes(searchQuery.toLowerCase())
-                         );
-    return matchesCategory && matchesSearch;
-  });
-
-  const handleCallStore = (phone) => {
-    console.log("Calling:", phone);
-  };
-
-  const handleGetDirections = (address) => {
-    console.log("Getting directions to:", address);
-  };
-
   const handleViewStore = (store) => {
-    router.push(`/store-contact?storeId=${store.id}`);
+    router.push(`/store-contact/${store.id}`);
+  };
+
+  const filteredStores = stores.filter(store => 
+    store.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    store.needs.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const handleSearch = () => {
+    setShowSearchModal(true);
   };
 
   const renderStoreCard = (store) => (
-    <TouchableOpacity 
-      key={store.id} 
-      style={styles.storeCard}
-      onPress={() => handleViewStore(store)}
-    >
-      <View style={styles.storeHeader}>
+    <View key={store.id} style={styles.storeCard}>
+      <View style={styles.storeContent}>
         <View style={styles.storeImageContainer}>
-          <Text style={styles.storeImage}>{store.image}</Text>
+          <Image 
+            source={require('../assets/images/baskets.png')} 
+            style={styles.storeImage} 
+            resizeMode="cover"
+          />
         </View>
         <View style={styles.storeInfo}>
-          <View style={styles.storeNameRow}>
-            <Text style={styles.storeName}>{store.name}</Text>
-            {store.verified && (
-              <View style={styles.verifiedBadge}>
-                <Text style={styles.verifiedText}>✓</Text>
-              </View>
-            )}
-          </View>
-          <View style={styles.ratingRow}>
-            <Text style={styles.rating}>⭐ {store.rating}</Text>
-            <Text style={styles.distance}>📍 {store.distance}</Text>
-          </View>
+          <Text style={styles.storeName}>{store.name}</Text>
+          <Text style={styles.distance}>({store.distance} away)</Text>
+          <Text style={styles.needsLabel}>Needs:</Text>
+          <Text style={styles.needsText}>{store.needs}</Text>
         </View>
       </View>
-
-      <Text style={styles.storeAddress}>{store.address}</Text>
-      <Text style={styles.storeHours}>🕒 {store.hours}</Text>
-
-      <View style={styles.specialtiesContainer}>
-        <Text style={styles.specialtiesLabel}>Specialties:</Text>
-        <View style={styles.specialtiesTags}>
-          {store.specialties.map((specialty, index) => (
-            <View key={index} style={styles.specialtyTag}>
-              <Text style={styles.specialtyText}>{specialty}</Text>
-            </View>
-          ))}
-        </View>
-      </View>
-
-      <View style={styles.storeActions}>
-        <TouchableOpacity 
-          style={styles.actionButton}
-          onPress={() => handleCallStore(store.phone)}
-        >
-          <Text style={styles.actionButtonText}>📞 Call</Text>
-        </TouchableOpacity>
-        <TouchableOpacity 
-          style={styles.actionButton}
-          onPress={() => handleGetDirections(store.address)}
-        >
-          <Text style={styles.actionButtonText}>🗺️ Directions</Text>
-        </TouchableOpacity>
-        <TouchableOpacity 
-          style={[styles.actionButton, styles.primaryButton]}
-          onPress={() => handleViewStore(store)}
-        >
-          <Text style={[styles.actionButtonText, styles.primaryButtonText]}>View Store</Text>
-        </TouchableOpacity>
-      </View>
-    </TouchableOpacity>
+      <TouchableOpacity 
+        style={styles.contactButton}
+        onPress={() => handleViewStore(store)}
+      >
+        <Text style={styles.contactButtonText}>Contact Store</Text>
+      </TouchableOpacity>
+    </View>
   );
 
   return (
@@ -212,64 +117,25 @@ export default function NearbyStoresScreen() {
           <Text style={styles.backIcon}>←</Text>
           <Text style={styles.backText}>Back</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.filterButton}>
-          <Text style={styles.filterButtonText}>🔍 Filter</Text>
-        </TouchableOpacity>
       </View>
 
-      {/* Title */}
-      <Text style={styles.title}>Nearby Stores</Text>
-      <Text style={styles.subtitle}>Find agricultural supplies near you</Text>
-
-      {/* Search Bar */}
-      <View style={styles.searchContainer}>
-        <View style={styles.searchBar}>
-          <Text style={styles.searchIcon}>🔍</Text>
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Search stores or products..."
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-            placeholderTextColor="#999"
-          />
-        </View>
-      </View>
-
-      {/* Categories */}
-      <ScrollView 
-        horizontal 
-        showsHorizontalScrollIndicator={false}
-        style={styles.categoriesScroll}
-        contentContainerStyle={styles.categoriesContainer}
-      >
-        {categories.map((category) => (
-          <TouchableOpacity
-            key={category.id}
-            style={[
-              styles.categoryButton,
-              selectedCategory === category.id && styles.categoryButtonSelected
-            ]}
-            onPress={() => setSelectedCategory(category.id)}
+      {/* Title and Actions */}
+      <View style={styles.titleContainer}>
+        <Text style={styles.title}>Nearby Stores</Text>
+        <View style={styles.actionButtons}>
+          <TouchableOpacity 
+            style={styles.registerButton}
+            onPress={() => router.push('/register/welcome-farmer')}
           >
-            <Text style={styles.categoryIcon}>{category.icon}</Text>
-            <Text style={[
-              styles.categoryButtonText,
-              selectedCategory === category.id && styles.categoryButtonTextSelected
-            ]}>
-              {category.name}
-            </Text>
+            <Text style={styles.registerButtonText}>Register as Store</Text>
           </TouchableOpacity>
-        ))}
-      </ScrollView>
-
-      {/* Results Header */}
-      <View style={styles.resultsHeader}>
-        <Text style={styles.resultsText}>
-          {filteredStores.length} stores found
-        </Text>
-        <TouchableOpacity style={styles.sortButton}>
-          <Text style={styles.sortButtonText}>Sort by Distance ↕️</Text>
-        </TouchableOpacity>
+          <TouchableOpacity 
+            style={styles.searchButton}
+            onPress={handleSearch}
+          >
+            <Text style={styles.searchButtonText}>Search</Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
       {/* Stores List */}
@@ -285,11 +151,46 @@ export default function NearbyStoresScreen() {
             <Text style={styles.emptyIcon}>🏪</Text>
             <Text style={styles.emptyTitle}>No stores found</Text>
             <Text style={styles.emptyText}>
-              Try adjusting your search or category filter
+              {searchQuery 
+                ? `No stores match "${searchQuery}"`
+                : "No nearby stores available at the moment"
+              }
             </Text>
           </View>
         )}
       </ScrollView>
+
+      {/* Search Modal */}
+      <Modal
+        visible={showSearchModal}
+        transparent={true}
+        animationType="slide"
+        onRequestClose={() => setShowSearchModal(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.searchModal}>
+            <View style={styles.searchModalHeader}>
+              <Text style={styles.searchModalTitle}>Search Stores</Text>
+              <TouchableOpacity onPress={() => setShowSearchModal(false)}>
+                <Text style={styles.closeButton}>✕</Text>
+              </TouchableOpacity>
+            </View>
+            <TextInput
+              style={styles.searchInput}
+              placeholder="Search by store name or products..."
+              value={searchQuery}
+              onChangeText={setSearchQuery}
+              autoFocus={true}
+            />
+            <TouchableOpacity 
+              style={styles.searchConfirmButton}
+              onPress={() => setShowSearchModal(false)}
+            >
+              <Text style={styles.searchConfirmButtonText}>Search</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -301,7 +202,6 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 16,
     paddingTop: 60,
@@ -309,42 +209,62 @@ const styles = StyleSheet.create({
   },
   backButton: {
     flexDirection: "row",
-    alignItems: "center",
+        alignItems: "center",
+        backgroundColor: "#f2f2f2",
+        borderRadius: 20,
+        paddingHorizontal: 15,
+        paddingVertical: 8,
+        alignSelf: "flex-start",
   },
   backIcon: {
-    fontSize: 20,
-    marginRight: 8,
+    fontSize: 24,
     color: "#333",
   },
   backText: {
     fontSize: 16,
+    marginLeft: 8,
     color: "#333",
-    fontFamily: "Poppins-Regular",
+    fontFamily: "Poppins-SemiBold",
   },
-  filterButton: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    backgroundColor: "#f0f0f0",
-    borderRadius: 6,
-  },
-  filterButtonText: {
-    fontSize: 14,
-    fontFamily: "Poppins-Regular",
-    color: "#666",
+  titleContainer: {
+    paddingHorizontal: 16,
+    marginBottom: 20,
   },
   title: {
-    fontSize: 28,
+    fontSize: 32,
     fontFamily: "Poppins-ExtraBold",
     color: "#111",
-    textAlign: "center",
-    marginBottom: 4,
+    marginBottom: 28,
+    marginTop: -3,
+    marginLeft: 60
   },
-  subtitle: {
+  actionButtons: {
+    flexDirection: "row",
+    gap: 12,
+  },
+  registerButton: {
+    flex: 1,
+    backgroundColor: "#000",
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  registerButtonText: {
+    color: "#fff",
+    fontFamily: "Poppins-Bold",
     fontSize: 14,
-    fontFamily: "Poppins-Regular",
-    color: "#666",
-    textAlign: "center",
-    marginBottom: 20,
+  },
+  searchButton: {
+    flex: 1,
+    backgroundColor: "#f0f0f0",
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  searchButtonText: {
+    color: "#333",
+    fontFamily: "Poppins-Bold",
+    fontSize: 14,
   },
   searchContainer: {
     paddingHorizontal: 20,
@@ -369,19 +289,20 @@ const styles = StyleSheet.create({
     color: "#333",
   },
   categoriesScroll: {
-    marginBottom: 20,
+    marginBottom: 10,
   },
   categoriesContainer: {
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     gap: 12,
   },
   categoryButton: {
     alignItems: "center",
-    paddingHorizontal: 16,
+    paddingHorizontal: 12,
     paddingVertical: 12,
     backgroundColor: "#f0f0f0",
     borderRadius: 12,
     minWidth: 80,
+    height: 70
   },
   categoryButtonSelected: {
     backgroundColor: "#0f6d00",
@@ -404,7 +325,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 20,
-    marginBottom: 15,
+    marginBottom: 10,
+    marginTop: -450,
   },
   resultsText: {
     fontSize: 16,
@@ -416,7 +338,7 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
   },
   sortButtonText: {
-    fontSize: 12,
+    fontSize: 13,
     fontFamily: "Poppins-Regular",
     color: "#666",
   },
@@ -424,131 +346,69 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    paddingHorizontal: 20,
+    paddingHorizontal: 16,
     paddingBottom: 20,
   },
   storeCard: {
-    backgroundColor: "#f9f9f9",
-    borderRadius: 16,
+    backgroundColor: "#f5f5f5",
+    borderRadius: 12,
     padding: 16,
     marginBottom: 16,
   },
-  storeHeader: {
+  storeContent: {
     flexDirection: "row",
     marginBottom: 12,
   },
   storeImageContainer: {
-    width: 60,
-    height: 60,
-    backgroundColor: "#e0e0e0",
-    borderRadius: 12,
+    width: 80,
+    height: 80,
+    borderRadius: 8,
+    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-    marginRight: 12,
+    marginRight: 16,
+    overflow: "hidden",
   },
   storeImage: {
-    fontSize: 24,
+    width: "100%",
+    height: "100%",
   },
   storeInfo: {
     flex: 1,
   },
-  storeNameRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 4,
-  },
   storeName: {
-    fontSize: 18,
+    fontSize: 16,
     fontFamily: "Poppins-Bold",
     color: "#111",
-    flex: 1,
-  },
-  verifiedBadge: {
-    width: 20,
-    height: 20,
-    backgroundColor: "#0f6d00",
-    borderRadius: 10,
-    alignItems: "center",
-    justifyContent: "center",
-    marginLeft: 8,
-  },
-  verifiedText: {
-    fontSize: 12,
-    color: "#fff",
-  },
-  ratingRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 15,
-  },
-  rating: {
-    fontSize: 14,
-    fontFamily: "Poppins-Regular",
-    color: "#666",
+    marginBottom: 2,
   },
   distance: {
     fontSize: 14,
     fontFamily: "Poppins-Regular",
     color: "#666",
+    marginBottom: 8,
   },
-  storeAddress: {
+  needsLabel: {
     fontSize: 14,
     fontFamily: "Poppins-Regular",
     color: "#666",
-    marginBottom: 4,
+    marginBottom: 2,
   },
-  storeHours: {
+  needsText: {
     fontSize: 14,
     fontFamily: "Poppins-Regular",
-    color: "#666",
-    marginBottom: 12,
+    color: "#111",
   },
-  specialtiesContainer: {
-    marginBottom: 15,
-  },
-  specialtiesLabel: {
-    fontSize: 14,
-    fontFamily: "Poppins-Bold",
-    color: "#333",
-    marginBottom: 6,
-  },
-  specialtiesTags: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 6,
-  },
-  specialtyTag: {
-    backgroundColor: "#e8f5e8",
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
-  },
-  specialtyText: {
-    fontSize: 12,
-    fontFamily: "Poppins-Regular",
-    color: "#0f6d00",
-  },
-  storeActions: {
-    flexDirection: "row",
-    gap: 8,
-  },
-  actionButton: {
-    flex: 1,
+  contactButton: {
+    backgroundColor: "#000",
     paddingVertical: 10,
-    backgroundColor: "#f0f0f0",
     borderRadius: 8,
     alignItems: "center",
   },
-  primaryButton: {
-    backgroundColor: "#0f6d00",
-  },
-  actionButtonText: {
-    fontSize: 12,
-    fontFamily: "Poppins-Bold",
-    color: "#666",
-  },
-  primaryButtonText: {
+  contactButtonText: {
     color: "#fff",
+    fontFamily: "Poppins-Bold",
+    fontSize: 14,
   },
   emptyState: {
     alignItems: "center",
@@ -569,5 +429,54 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins-Regular",
     color: "#666",
     textAlign: "center",
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  searchModal: {
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 20,
+    margin: 20,
+    width: '90%',
+  },
+  searchModalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  searchModalTitle: {
+    fontSize: 18,
+    fontFamily: 'Poppins-Bold',
+    color: '#111',
+  },
+  closeButton: {
+    fontSize: 20,
+    color: '#666',
+  },
+  searchInput: {
+    borderWidth: 1,
+    borderColor: '#e5e5e5',
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 12,
+    fontFamily: 'Poppins-Regular',
+    fontSize: 16,
+    marginBottom: 16,
+  },
+  searchConfirmButton: {
+    backgroundColor: '#000',
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  searchConfirmButtonText: {
+    color: '#fff',
+    fontFamily: 'Poppins-Bold',
+    fontSize: 16,
   },
 });

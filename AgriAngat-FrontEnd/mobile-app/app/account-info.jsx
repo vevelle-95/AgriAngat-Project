@@ -5,8 +5,8 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  Image,
   TextInput,
+  Modal,
 } from "react-native";
 import * as Font from "expo-font";
 import { useRouter } from "expo-router";
@@ -14,6 +14,8 @@ import { useRouter } from "expo-router";
 export default function AccountInfoScreen() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [userInfo, setUserInfo] = useState({
     name: "Juan Dela Cruz",
     email: "juan.delacruz@email.com",
@@ -31,6 +33,7 @@ export default function AccountInfoScreen() {
         "Poppins-Bold": require("../assets/fonts/Poppins-Bold.ttf"),
         "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
         "Poppins-ExtraBold": require("../assets/fonts/Poppins-ExtraBold.ttf"),
+        "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
       });
       setFontsLoaded(true);
     }
@@ -48,6 +51,24 @@ export default function AccountInfoScreen() {
     setUserInfo(prev => ({ ...prev, [field]: value }));
   };
 
+  const handleDeleteAccount = () => {
+    setShowDeleteModal(true);
+  };
+
+  const confirmDeleteAccount = () => {
+    setShowDeleteModal(false);
+    // Simulate account deletion process
+    setTimeout(() => {
+      setShowSuccessModal(true);
+    }, 500);
+  };
+
+  const handleSuccessClose = () => {
+    setShowSuccessModal(false);
+    // Navigate back to login or home screen
+    router.replace("/");
+  };
+
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}>
       {/* Header */}
@@ -55,14 +76,6 @@ export default function AccountInfoScreen() {
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
           <Text style={styles.backIcon}>←</Text>
           <Text style={styles.backText}>Back</Text>
-        </TouchableOpacity>
-        <TouchableOpacity 
-          onPress={() => isEditing ? handleSave() : setIsEditing(true)}
-          style={styles.editButton}
-        >
-          <Text style={styles.editButtonText}>
-            {isEditing ? "Save" : "Edit"}
-          </Text>
         </TouchableOpacity>
       </View>
 
@@ -80,7 +93,7 @@ export default function AccountInfoScreen() {
       {/* Personal Information */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Personal Information</Text>
-        
+
         <View style={styles.infoItem}>
           <Text style={styles.infoLabel}>Full Name</Text>
           {isEditing ? (
@@ -141,7 +154,7 @@ export default function AccountInfoScreen() {
       {/* Farm Information */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Farm Information</Text>
-        
+
         <View style={styles.infoItem}>
           <Text style={styles.infoLabel}>Farm Size</Text>
           {isEditing ? (
@@ -169,63 +182,86 @@ export default function AccountInfoScreen() {
         </View>
       </View>
 
-      {/* Account Settings */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Account Settings</Text>
-        
-        <TouchableOpacity style={styles.settingItem}>
-          <Text style={styles.settingLabel}>Change Password</Text>
-          <Text style={styles.settingArrow}>→</Text>
+      {/* Bottom Buttons */}
+      <View style={styles.bottomButtons}>
+        <TouchableOpacity
+          onPress={() => isEditing ? handleSave() : setIsEditing(true)}
+          style={styles.editButton}
+        >
+          <Text style={styles.editButtonText}>
+            {isEditing ? "Save" : "Edit"}
+          </Text>
         </TouchableOpacity>
-
-        <TouchableOpacity style={styles.settingItem}>
-          <Text style={styles.settingLabel}>Notification Settings</Text>
-          <Text style={styles.settingArrow}>→</Text>
+        <TouchableOpacity style={styles.DeleteButton} onPress={handleDeleteAccount}>
+          <Text style={styles.DeleteButtonText}>Delete Account</Text>
         </TouchableOpacity>
+      </View>
 
-        <TouchableOpacity style={styles.settingItem}>
-          <Text style={styles.settingLabel}>Privacy Settings</Text>
-          <Text style={styles.settingArrow}>→</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.settingItem}>
-          <Text style={styles.settingLabel}>Language</Text>
-          <View style={styles.settingRight}>
-            <Text style={styles.settingValue}>English</Text>
-            <Text style={styles.settingArrow}>→</Text>
+      {/* Delete Confirmation Modal */}
+      <Modal
+        visible={showDeleteModal}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setShowDeleteModal(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContainer}>
+            <TouchableOpacity 
+              style={styles.backButtonModal}
+              onPress={() => setShowDeleteModal(false)}
+            >
+              <Text style={styles.backIconModal}>←</Text>
+              <Text style={styles.backTextModal}>Back</Text>
+            </TouchableOpacity>
+            
+            <View style={styles.modalContent}>
+              <View style={styles.warningIconContainer}>
+                <View style={styles.warningIcon}>
+                  <Text style={styles.warningIconText}>👤</Text>
+                </View>
+              </View>
+              
+              <Text style={styles.modalTitle}>Are you sure you want</Text>
+              <Text style={styles.modalTitle}>to DELETE your account?</Text>
+              
+              <TouchableOpacity 
+                style={styles.deleteConfirmButton}
+                onPress={confirmDeleteAccount}
+              >
+                <Text style={styles.deleteConfirmButtonText}>Delete Account</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </TouchableOpacity>
-      </View>
+        </View>
+      </Modal>
 
-      {/* Support */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Support</Text>
-        
-        <TouchableOpacity style={styles.settingItem}>
-          <Text style={styles.settingLabel}>Help Center</Text>
-          <Text style={styles.settingArrow}>→</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.settingItem}>
-          <Text style={styles.settingLabel}>Contact Support</Text>
-          <Text style={styles.settingArrow}>→</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.settingItem}>
-          <Text style={styles.settingLabel}>Terms & Conditions</Text>
-          <Text style={styles.settingArrow}>→</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.settingItem}>
-          <Text style={styles.settingLabel}>Privacy Policy</Text>
-          <Text style={styles.settingArrow}>→</Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* Logout Button */}
-      <TouchableOpacity style={styles.logoutButton}>
-        <Text style={styles.logoutButtonText}>Log Out</Text>
-      </TouchableOpacity>
+      {/* Success Modal */}
+      <Modal
+        visible={showSuccessModal}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={handleSuccessClose}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContainer}>
+            <View style={styles.successContent}>
+              <View style={styles.successIconContainer}>
+                <Text style={styles.successIcon}>✓</Text>
+              </View>
+              
+              <Text style={styles.successTitle}>Thank You!</Text>
+              <Text style={styles.successMessage}>Your account has been deleted</Text>
+              
+              <TouchableOpacity 
+                style={styles.exitButton}
+                onPress={handleSuccessClose}
+              >
+                <Text style={styles.exitButtonText}>Exit</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </ScrollView>
   );
 }
@@ -248,7 +284,12 @@ const styles = StyleSheet.create({
   },
   backButton: {
     flexDirection: "row",
-    alignItems: "center",
+        alignItems: "center",
+        backgroundColor: "#f2f2f2",
+        borderRadius: 20,
+        paddingHorizontal: 15,
+        paddingVertical: 8,
+        alignSelf: "flex-start",
   },
   backIcon: {
     fontSize: 20,
@@ -258,16 +299,23 @@ const styles = StyleSheet.create({
   backText: {
     fontSize: 16,
     color: "#333",
-    fontFamily: "Poppins-Regular",
+    fontFamily: "Poppins-SemiBold",
+  },
+  bottomButtons: {
+    flexDirection: "row",
+    paddingHorizontal: 20,
+    marginTop: 20,
+    gap: 15,
   },
   editButton: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
+    flex: 1,
+    paddingVertical: 15,
     backgroundColor: "#0f6d00",
-    borderRadius: 6,
+    borderRadius: 9999,
+    alignItems: "center",
   },
   editButtonText: {
-    fontSize: 14,
+    fontSize: 16,
     fontFamily: "Poppins-Bold",
     color: "#fff",
   },
@@ -278,6 +326,7 @@ const styles = StyleSheet.create({
   },
   avatarContainer: {
     marginBottom: 15,
+    marginTop: -15
   },
   avatar: {
     width: 80,
@@ -369,17 +418,128 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "#999",
   },
-  logoutButton: {
-    marginHorizontal: 20,
-    marginTop: 20,
+  DeleteButton: {
+    flex: 1,
     paddingVertical: 15,
     backgroundColor: "#ff3b30",
-    borderRadius: 8,
+    borderRadius: 9999,
     alignItems: "center",
   },
-  logoutButtonText: {
+  DeleteButtonText: {
     fontSize: 16,
     fontFamily: "Poppins-Bold",
     color: "#fff",
+  },
+  
+  // Modal Styles
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalContainer: {
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    width: "85%",
+    maxWidth: 400,
+    paddingVertical: 20,
+    paddingHorizontal: 20,
+  },
+  backButtonModal: {
+    flexDirection: "row",
+        alignItems: "center",
+        backgroundColor: "#f2f2f2",
+        borderRadius: 20,
+        paddingHorizontal: 15,
+        paddingVertical: 8,
+        alignSelf: "flex-start",
+  },
+  backIconModal: {
+    fontSize: 18,
+    marginRight: 8,
+    color: "#333",
+  },
+  backTextModal: {
+    fontSize: 14,
+    color: "#333",
+    fontFamily: "Poppins-Regular",
+  },
+  modalContent: {
+    alignItems: "center",
+    paddingVertical: 20,
+  },
+  warningIconContainer: {
+    marginBottom: 30,
+  },
+  warningIcon: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: "#333",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  warningIconText: {
+    fontSize: 40,
+    color: "#fff",
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontFamily: "Poppins-Bold",
+    color: "#333",
+    textAlign: "center",
+    marginBottom: 5,
+  },
+  deleteConfirmButton: {
+    backgroundColor: "#ff3b30",
+    borderRadius: 25,
+    paddingVertical: 12,
+    paddingHorizontal: 40,
+    marginTop: 30,
+  },
+  deleteConfirmButtonText: {
+    fontSize: 16,
+    fontFamily: "Poppins-Bold",
+    color: "#fff",
+  },
+  
+  // Success Modal Styles
+  successContent: {
+    alignItems: "center",
+    paddingVertical: 40,
+  },
+  successIconContainer: {
+    marginBottom: 30,
+  },
+  successIcon: {
+    fontSize: 60,
+    color: "#4CAF50",
+    fontFamily: "Poppins-Bold",
+  },
+  successTitle: {
+    fontSize: 24,
+    fontFamily: "Poppins-Bold",
+    color: "#333",
+    marginBottom: 10,
+  },
+  successMessage: {
+    fontSize: 16,
+    fontFamily: "Poppins-Regular",
+    color: "#666",
+    textAlign: "center",
+    marginBottom: 30,
+  },
+  exitButton: {
+    borderWidth: 2,
+    borderColor: "#333",
+    borderRadius: 25,
+    paddingVertical: 12,
+    paddingHorizontal: 40,
+  },
+  exitButtonText: {
+    fontSize: 16,
+    fontFamily: "Poppins-Bold",
+    color: "#333",
   },
 });

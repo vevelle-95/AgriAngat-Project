@@ -7,19 +7,17 @@ import {
   TouchableOpacity,
   ScrollView,
   ImageBackground,
-  Alert,
   Dimensions,
 } from "react-native";
 import * as Font from "expo-font";
 import { BlurView } from "expo-blur";
 import { useRouter } from "expo-router";
 import Svg, { Circle } from "react-native-svg";
+import { useTheme } from "../../context/ThemeContext";
 // @ts-ignore
 import agriangatLogo from "../../assets/images/agriangat-nobg-logo.png";
 // @ts-ignore
 import terraces from "../../assets/images/rice-terraces.png";
-// @ts-ignore
-import baskets from "../../assets/images/baskets.png";
 // @ts-ignore
 import rings from "../../assets/images/riring.png";
 import redsky from "../../assets/images/skyhalf-red.png";
@@ -28,12 +26,12 @@ import basket from "../../assets/images/baskets.png";
 
 
 export default function HomeScreen() {
+  const { colors } = useTheme();
   const [fontsLoaded, setFontsLoaded] = useState(false);
   const router = useRouter();
   const [currentReminder, setCurrentReminder] = useState(0);
   const remScrollRef = useRef(null);
   const CARD_WIDTH = Dimensions.get("window").width - 32;
-  const CARD_HEIGHT = Dimensions.get("window").height - 40;
   const reminders = [
     {
       id: "r1",
@@ -89,7 +87,7 @@ export default function HomeScreen() {
       {/* Header with tappable logo and greeting */}
       <View style={styles.headerRow}>
         <Image source={agriangatLogo} style={styles.brandIcon} />
-        <Text style={styles.greetingText}>Mabuhay!</Text>
+        <Text style={[styles.greetingText, { color: colors.text }]}>Mabuhay!</Text>
       </View>
 
       {/* Hero card */}
@@ -172,7 +170,10 @@ export default function HomeScreen() {
         <View style={styles.statCard}>
           <Text style={styles.statLabel}>Due Next 30 Days</Text>
           <Text style={styles.statValue}>₱5,000.00</Text>
-          <TouchableOpacity style={styles.darkBtn}>
+          <TouchableOpacity 
+            style={styles.darkBtn}
+            onPress={() => router.push("/loan-payment")}
+          >
             <Text style={styles.darkBtnText}>Pay Now</Text>
           </TouchableOpacity>
         </View>
@@ -181,7 +182,10 @@ export default function HomeScreen() {
 
       <View style={styles.sectionHeader}>
         <Text style={styles.sectionTitle}>Transactions</Text>
-        <TouchableOpacity style={styles.outlineBtn2}>
+        <TouchableOpacity 
+          style={styles.outlineBtn2}
+          onPress={() => router.push("/loan-transactions")}
+        >
           <Text style={styles.outlineBtnText2}>See All</Text>
         </TouchableOpacity>
       </View>
@@ -299,7 +303,10 @@ export default function HomeScreen() {
       {/* Upcoming Payments */}
       <View style={styles.sectionHeader}>
         <Text style={styles.sectionTitle}>Upcoming Payments</Text>
-        <TouchableOpacity style={styles.outlineBtn2}>
+        <TouchableOpacity 
+          style={styles.outlineBtn2}
+          onPress={() => router.push("/upcoming-payments")}
+        >
           <Text style={styles.outlineBtnText2}>See all</Text>
         </TouchableOpacity>
       </View>
@@ -311,7 +318,10 @@ export default function HomeScreen() {
             <Text style={styles.upAmount}>₱5,000.00</Text>
             <Text style={styles.upMeta}>Due: Sept 10,2025</Text>
           </View>
-          <TouchableOpacity style={styles.payPill}>
+          <TouchableOpacity 
+            style={styles.payPill}
+            onPress={() => router.push("/loan-payment")}
+          >
             <Text style={styles.payPillText}>Pay Now</Text>
           </TouchableOpacity>
         </View>
@@ -323,7 +333,10 @@ export default function HomeScreen() {
             <Text style={styles.upAmount}>₱5,000.00</Text>
             <Text style={styles.upMeta}>Due: Oct 10,2025</Text>
           </View>
-          <TouchableOpacity style={styles.payPill}>
+          <TouchableOpacity 
+            style={styles.payPill}
+            onPress={() => router.push("/loan-payment")}
+          >
             <Text style={styles.payPillText}>Pay Now</Text>
           </TouchableOpacity>
         </View>
@@ -335,7 +348,10 @@ export default function HomeScreen() {
             <Text style={styles.upAmount}>₱5,000.00</Text>
             <Text style={styles.upMeta}>Due: Nov 10,2025</Text>
           </View>
-          <TouchableOpacity style={styles.payPill}>
+          <TouchableOpacity 
+            style={styles.payPill}
+            onPress={() => router.push("/loan-payment")}
+          >
             <Text style={styles.payPillText}>Pay Now</Text>
           </TouchableOpacity>
         </View>
