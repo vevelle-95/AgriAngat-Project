@@ -17,6 +17,7 @@ import MapView, { Marker } from "react-native-maps";
 import { useRouter } from "expo-router";
 import CustomDatePicker from "../../components/CustomDatePicker";
 import CustomPicker from "../../components/CustomPicker";
+import VerificationDialog from "../../components/VerificationDialog";
 // @ts-ignore
 import agriangatLogo from "../../assets/images/agriangat-nobg-logo.png";
 
@@ -30,11 +31,14 @@ const CustomerRegistrationScreen = () => {
   const [lastName, setLastName] = useState("");
   const [birthdate, setBirthdate] = useState(null);
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showSexDropdown, setShowSexDropdown] = useState(false);
+  const [showBirthdateDropdown, setShowBirthdateDropdown] = useState(false);
   const [nationality, setNationality] = useState("");
   const [sex, setSex] = useState("");
   const [contactNumber, setContactNumber] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
+  const [showVerificationDialog, setShowVerificationDialog] = useState(false);
 
   // Store info
   const [storeType, setStoreType] = useState("");
@@ -59,6 +63,11 @@ const CustomerRegistrationScreen = () => {
     email: new Animated.Value(0),
     contactNumber: new Animated.Value(0),
     password: new Animated.Value(0),
+    storeType: new Animated.Value(0),
+    storeSize: new Animated.Value(0),
+    storeLocation: new Animated.Value(0),
+    address: new Animated.Value(0),
+    nationality: new Animated.Value(0),
   });
 
   useEffect(() => {
@@ -156,12 +165,17 @@ const CustomerRegistrationScreen = () => {
   // Real-time validation handlers
   const handleFieldChange = (field, value, validator) => {
     // Update field value
-    switch(field) {
+    switch (field) {
       case 'firstName': setFirstName(value); break;
       case 'lastName': setLastName(value); break;
       case 'email': setEmail(value); break;
       case 'contactNumber': setContactNumber(value); break;
       case 'password': setPassword(value); break;
+      case 'storeType': setStoreType(value); break;
+      case 'storeSize': setStoreSize(value); break;
+      case 'storeLocation': setStoreLocation(value); break;
+      case 'address': setAddress(value); break;
+      case 'nationality': setNationality(value); break;
     }
     
     // Validate and update errors
@@ -176,6 +190,11 @@ const CustomerRegistrationScreen = () => {
       email: validateEmail(email),
       contactNumber: validatePhoneNumber(contactNumber),
       password: validatePassword(password),
+      storeType: validateRequired(storeType, "Store type"),
+      storeSize: validateRequired(storeSize, "Store size"),
+      storeLocation: validateRequired(storeLocation, "Store location"),
+      address: validateRequired(address, "Current address"),
+      nationality: validateRequired(nationality, "Nationality"),
     };
     
     setErrors(validationErrors);
@@ -205,6 +224,15 @@ const CustomerRegistrationScreen = () => {
       return;
     }
     
+    // Show verification dialog instead of directly submitting
+    setShowVerificationDialog(true);
+  };
+
+  const handleConfirmSubmit = () => {
+    // Close the verification dialog
+    setShowVerificationDialog(false);
+    
+    // Navigate to the welcome screen
     router.replace("/register/welcome-customer");
   };
 
@@ -280,13 +308,15 @@ const CustomerRegistrationScreen = () => {
             />
           </Animated.View>
           {errors.firstName ? <Text style={styles.errorText}>{errors.firstName}</Text> : null}
-          <TextInput
-            style={styles.input}
-            placeholder="Middle Name (optional)"
-            placeholderTextColor="#9aa0a6"
-            value={middleName}
-            onChangeText={setMiddleName}
-          />
+          <View style={styles.inputWrapper}>
+            <TextInput
+              style={styles.input}
+              placeholder="Middle Name (optional)"
+              placeholderTextColor="#9aa0a6"
+              value={middleName}
+              onChangeText={setMiddleName}
+            />
+          </View>
           <Animated.View style={[
             styles.inputWrapper,
             errors.lastName && {
@@ -306,34 +336,84 @@ const CustomerRegistrationScreen = () => {
           </Animated.View>
           {errors.lastName ? <Text style={styles.errorText}>{errors.lastName}</Text> : null}
           <View style={styles.row}>
-            <TouchableOpacity
-              style={[styles.input, styles.rowItem, styles.dateInput]}
-              onPress={handleDatePress}
-            >
-              <Text style={birthdate ? styles.dateText : styles.placeholderText}>
-                {birthdate ? formatDate(birthdate) : "Birthdate"}
-              </Text>
-            </TouchableOpacity>
-            <TextInput
-              style={[styles.input, styles.rowItem]}
-              placeholder="Nationality"
-              placeholderTextColor="#9aa0a6"
-              value={nationality}
-              onChangeText={setNationality}
-            />
+            <View style={[styles.inputWrapper, styles.rowItem]}>
+              <TouchableOpacity
+                style={[styles.input, styles.dateInput]}
+                onPress={() => {
+                  setShowSexDropdown(false);
+                  setShowDatePicker(true);
+                }}
+              >
+                <Text style={birthdate ? styles.dateText : styles.placeholderText}>
+                  {birthdate ? formatDate(birthdate) : "Birthdate"}
+                </Text>
+                <Text style={styles.dropdownArrow}>📅</Text>
+              </TouchableOpacity>
+            </View>
+            <Animated.View style={[
+              styles.inputWrapper,
+              styles.rowItem,
+              errors.nationality && {
+                borderColor: borderAnims.nationality.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: ['#ff4444', '#ff0000']
+                })
+              }
+            ]}>
+              <TextInput
+                style={[styles.input, errors.nationality && styles.inputError]}
+                placeholder="Nationality"
+                placeholderTextColor="#9aa0a6"
+                value={nationality}
+                onChangeText={(value) => handleFieldChange('nationality', value)}
+              />
+            </Animated.View>
           </View>
           <View style={styles.row}>
-            <CustomPicker
-              selectedValue={sex}
-              onValueChange={setSex}
-              items={[
-                { label: "Select Sex", value: "" },
-                { label: "Male", value: "male" },
-                { label: "Female", value: "female" }
-              ]}
-              placeholder="Select Sex"
-              style={[styles.rowItem, styles.pickerField]}
-            />
+            <View style={[styles.inputWrapper, styles.rowItem]}>
+              <TouchableOpacity
+                style={[styles.input, styles.dateInput]}
+                onPress={() => {
+                  setShowSexDropdown(true);
+                }}
+              >
+                <Text style={sex ? styles.dateText : styles.placeholderText}>
+                  {sex ? (sex === 'male' ? 'Male' : 'Female') : "Select Sex"}
+                </Text>
+                <Text style={styles.dropdownArrow}>▼</Text>
+              </TouchableOpacity>
+              {showSexDropdown && (
+                <View style={styles.dropdown}>
+                  <TouchableOpacity
+                    style={styles.dropdownItem}
+                    onPress={() => {
+                      setSex('');
+                      setShowSexDropdown(false);
+                    }}
+                  >
+                    <Text style={[styles.dropdownText, styles.placeholderDropdownText]}>Select Sex</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.dropdownItem}
+                    onPress={() => {
+                      setSex('male');
+                      setShowSexDropdown(false);
+                    }}
+                  >
+                    <Text style={styles.dropdownText}>Male</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.dropdownItem}
+                    onPress={() => {
+                      setSex('female');
+                      setShowSexDropdown(false);
+                    }}
+                  >
+                    <Text style={styles.dropdownText}>Female</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+            </View>
             <Animated.View style={[
               styles.inputWrapper,
               styles.rowItem,
@@ -374,13 +454,24 @@ const CustomerRegistrationScreen = () => {
             />
           </Animated.View>
           {errors.email ? <Text style={styles.errorText}>{errors.email}</Text> : null}
-          <TextInput
-            style={styles.input}
-            placeholder="Current Address"
-            placeholderTextColor="#9aa0a6"
-            value={address}
-            onChangeText={setAddress}
-          />
+          <Animated.View style={[
+            styles.inputWrapper,
+            errors.address && {
+              borderColor: borderAnims.address.interpolate({
+                inputRange: [0, 1],
+                outputRange: ['#ff4444', '#ff0000']
+              })
+            }
+          ]}>
+            <TextInput
+              style={[styles.input, errors.address && styles.inputError]}
+              placeholder="Current Address"
+              placeholderTextColor="#9aa0a6"
+              value={address}
+              onChangeText={(value) => handleFieldChange('address', value)}
+            />
+          </Animated.View>
+          {errors.address ? <Text style={styles.errorText}>{errors.address}</Text> : null}
 
           {/* Store Info */}
           <View
@@ -395,27 +486,60 @@ const CustomerRegistrationScreen = () => {
             <Text style={styles.sectionTitleInner}>Your Store Location</Text>
             <Text style={styles.sectionTitleInner2}>(for store owners)</Text>
           </View>
-          <TextInput
-            style={styles.input}
-            placeholder="Store Type (e.g., Sari-sari store, Mini mart, Stall)"
-            placeholderTextColor="#9aa0a6"
-            value={storeType}
-            onChangeText={setStoreType}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Store Size (e.g., 20 sqm)"
-            placeholderTextColor="#9aa0a6"
-            value={storeSize}
-            onChangeText={setStoreSize}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Store Location (tap on map to select)"
-            placeholderTextColor="#9aa0a6"
-            value={storeLocation}
-            onChangeText={setStoreLocation}
-          />
+          <Animated.View style={[
+            styles.inputWrapper,
+            errors.storeType && {
+              borderColor: borderAnims.storeType.interpolate({
+                inputRange: [0, 1],
+                outputRange: ['#ff4444', '#ff0000']
+              })
+            }
+          ]}>
+            <TextInput
+              style={[styles.input, errors.storeType && styles.inputError]}
+              placeholder="Store Type (e.g., Sari-sari store, Mini mart, Stall)"
+              placeholderTextColor="#9aa0a6"
+              value={storeType}
+              onChangeText={(value) => handleFieldChange('storeType', value)}
+            />
+          </Animated.View>
+          {errors.storeType ? <Text style={styles.errorText}>{errors.storeType}</Text> : null}
+          <Animated.View style={[
+            styles.inputWrapper,
+            errors.storeSize && {
+              borderColor: borderAnims.storeSize.interpolate({
+                inputRange: [0, 1],
+                outputRange: ['#ff4444', '#ff0000']
+              })
+            }
+          ]}>
+            <TextInput
+              style={[styles.input, errors.storeSize && styles.inputError]}
+              placeholder="Store Size (e.g., 20 sqm)"
+              placeholderTextColor="#9aa0a6"
+              value={storeSize}
+              onChangeText={(value) => handleFieldChange('storeSize', value)}
+            />
+          </Animated.View>
+          {errors.storeSize ? <Text style={styles.errorText}>{errors.storeSize}</Text> : null}
+          <Animated.View style={[
+            styles.inputWrapper,
+            errors.storeLocation && {
+              borderColor: borderAnims.storeLocation.interpolate({
+                inputRange: [0, 1],
+                outputRange: ['#ff4444', '#ff0000']
+              })
+            }
+          ]}>
+            <TextInput
+              style={[styles.input, errors.storeLocation && styles.inputError]}
+              placeholder="Store Location (tap on map to select)"
+              placeholderTextColor="#9aa0a6"
+              value={storeLocation}
+              onChangeText={(value) => handleFieldChange('storeLocation', value)}
+            />
+          </Animated.View>
+          {errors.storeLocation ? <Text style={styles.errorText}>{errors.storeLocation}</Text> : null}
           <View style={styles.mapContainer}>
             <MapView
               style={styles.map}
@@ -502,9 +626,21 @@ const CustomerRegistrationScreen = () => {
         value={birthdate}
         onChange={handleDateChange}
         visible={showDatePicker}
-        onClose={() => setShowDatePicker(false)}
+        onClose={() => {
+          setShowDatePicker(false);
+          setShowSexDropdown(false);
+        }}
         maximumDate={new Date()}
         placeholder="Birthdate"
+      />
+      
+      {/* Verification Dialog */}
+      <VerificationDialog
+        visible={showVerificationDialog}
+        onClose={() => setShowVerificationDialog(false)}
+        onConfirm={handleConfirmSubmit}
+        title="Confirm Customer Registration"
+        message="Are you sure all the information you provided is correct? Please review before submitting."
       />
     </KeyboardAvoidingView>
   );
@@ -692,5 +828,47 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Poppins-Regular',
     color: '#007AFF',
+  },
+  dropdownArrow: {
+    position: 'absolute',
+    right: 12,
+    fontSize: 12,
+    color: '#666',
+  },
+  dropdown: {
+    position: 'absolute',
+    top: '100%',
+    left: 0,
+    right: 0,
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#e5e5e5',
+    borderRadius: 8,
+    marginTop: 2,
+    zIndex: 1000,
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  },
+  dropdownItem: {
+    paddingHorizontal: 12,
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0f0f0',
+  },
+  dropdownText: {
+    fontSize: 14,
+    fontFamily: 'Poppins-Regular',
+    color: '#333',
+  },
+  customDateText: {
+    color: '#007AFF',
+    fontFamily: 'Poppins-Bold',
+  },
+  placeholderDropdownText: {
+    color: '#9aa0a6',
+    fontStyle: 'italic',
   },
 });

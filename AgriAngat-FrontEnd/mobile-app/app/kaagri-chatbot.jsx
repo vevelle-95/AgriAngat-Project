@@ -18,7 +18,25 @@ export default function KaAgriChatbotScreen() {
   const [messages, setMessages] = useState([
     {
       id: 1,
-      text: "Hello! I'm KaAgri, your AI farming assistant. How can I help you today?",
+      text: "Hi! 👋 Ako si KaAgri, ang inyong AgriAngat AI assistant.",
+      sender: "bot",
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    },
+    {
+      id: 2,
+      text: "Pwede mo akong tanungin tungkol sa tanim, panahon, o loan tips para sa inyong sakahan.",
+      sender: "bot",
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    },
+    {
+      id: 3,
+      text: "Mataas pa ba interest kapag umutang ngayon?",
+      sender: "user",
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    },
+    {
+      id: 4,
+      text: "Sa ngayon, normal pa ang loan rates. Pero may forecast na 2 bagyo sa susunod na buwan, kaya mainam mag-loan bago pumasok ang mas matinding ulan.",
       sender: "bot",
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     }
@@ -76,7 +94,7 @@ export default function KaAgriChatbotScreen() {
 
   const generateBotResponse = (userMessage) => {
     const lowerMessage = userMessage.toLowerCase();
-    
+
     if (lowerMessage.includes("rice") || lowerMessage.includes("planting")) {
       return "For rice planting, the best time is during the wet season (June-July). Make sure your field is well-prepared with proper leveling and adequate water supply. Plant seedlings 20-25cm apart for optimal growth.";
     } else if (lowerMessage.includes("pest") || lowerMessage.includes("control")) {
@@ -129,8 +147,8 @@ export default function KaAgriChatbotScreen() {
   );
 
   return (
-    <KeyboardAvoidingView 
-      style={styles.container} 
+    <KeyboardAvoidingView
+      style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       {/* Header */}
@@ -139,37 +157,24 @@ export default function KaAgriChatbotScreen() {
           <Text style={styles.backIcon}>←</Text>
           <Text style={styles.backText}>Back</Text>
         </TouchableOpacity>
-        <View style={styles.headerInfo}>
-          <Text style={styles.headerTitle}>KaAgri Assistant</Text>
-          <Text style={styles.headerStatus}>🟢 Online</Text>
-        </View>
-        <View style={styles.headerActions}>
-          <TouchableOpacity style={styles.headerButton}>
-            <Text style={styles.headerButtonText}>ℹ️</Text>
-          </TouchableOpacity>
+        <View style={styles.headerRight}>
+          <Text style={styles.studyHubTitle}>Study Hub</Text>
+          <View style={styles.kaagriTab}>
+            <View style={styles.kaagriTabActive}>
+              <Text style={styles.kaagriTextActive}>KaAgri</Text>
+            </View>
+            <TouchableOpacity
+              style={styles.videosTab}
+              onPress={() => router.push("/study-hub-videos")}
+            >
+              <Text style={styles.videosText}>Videos</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
 
-      {/* Quick Questions */}
-      {messages.length === 1 && (
-        <View style={styles.quickQuestionsContainer}>
-          <Text style={styles.quickQuestionsTitle}>Quick Questions</Text>
-          <View style={styles.quickQuestionsGrid}>
-            {quickQuestions.map((question, index) => (
-              <TouchableOpacity
-                key={index}
-                style={styles.quickQuestionButton}
-                onPress={() => handleQuickQuestion(question)}
-              >
-                <Text style={styles.quickQuestionText}>{question}</Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </View>
-      )}
-
       {/* Messages */}
-      <ScrollView 
+      <ScrollView
         style={styles.messagesContainer}
         contentContainerStyle={styles.messagesContent}
         showsVerticalScrollIndicator={false}
@@ -179,17 +184,28 @@ export default function KaAgriChatbotScreen() {
 
       {/* Input Area */}
       <View style={styles.inputContainer}>
+        <View style={styles.inputActions}>
+          <TouchableOpacity style={styles.actionButton}>
+            <Text style={styles.actionIcon}>📷</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.actionButton}>
+            <Text style={styles.actionIcon}>🖼️</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.actionButton}>
+            <Text style={styles.actionIcon}>📁</Text>
+          </TouchableOpacity>
+        </View>
         <View style={styles.inputWrapper}>
           <TextInput
             style={styles.textInput}
             value={message}
             onChangeText={setMessage}
-            placeholder="Ask me about farming..."
+            placeholder="Ask Anything"
             placeholderTextColor="#999"
             multiline
             maxLength={500}
           />
-          <TouchableOpacity 
+          <TouchableOpacity
             style={[styles.sendButton, message.trim() === "" && styles.sendButtonDisabled]}
             onPress={handleSendMessage}
             disabled={message.trim() === ""}
@@ -197,9 +213,6 @@ export default function KaAgriChatbotScreen() {
             <Text style={styles.sendButtonText}>➤</Text>
           </TouchableOpacity>
         </View>
-        <Text style={styles.inputHint}>
-          Ask about planting, pest control, harvesting, or any farming topic
-        </Text>
       </View>
     </KeyboardAvoidingView>
   );
@@ -216,9 +229,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 16,
     paddingTop: 60,
-    paddingBottom: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: "#f0f0f0",
+    paddingBottom: 20,
   },
   backButton: {
     flexDirection: "row",
@@ -234,59 +245,42 @@ const styles = StyleSheet.create({
     color: "#333",
     fontFamily: "Poppins-Regular",
   },
-  headerInfo: {
-    flex: 1,
+  headerRight: {
     alignItems: "center",
+    flex: 1,
   },
-  headerTitle: {
-    fontSize: 18,
-    fontFamily: "Poppins-Bold",
+  studyHubTitle: {
+    fontSize: 24,
+    fontFamily: "Poppins-ExtraBold",
     color: "#111",
+    marginBottom: 8,
   },
-  headerStatus: {
-    fontSize: 12,
-    fontFamily: "Poppins-Regular",
-    color: "#666",
-  },
-  headerActions: {
-    width: 60,
-    alignItems: "flex-end",
-  },
-  headerButton: {
-    padding: 8,
-  },
-  headerButtonText: {
-    fontSize: 16,
-  },
-  quickQuestionsContainer: {
-    padding: 20,
-    backgroundColor: "#f8f8f8",
-  },
-  quickQuestionsTitle: {
-    fontSize: 16,
-    fontFamily: "Poppins-Bold",
-    color: "#111",
-    marginBottom: 15,
-  },
-  quickQuestionsGrid: {
+  kaagriTab: {
     flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 10,
-  },
-  quickQuestionButton: {
-    backgroundColor: "#fff",
-    paddingHorizontal: 12,
-    paddingVertical: 8,
+    backgroundColor: "#f0f0f0",
     borderRadius: 20,
-    borderWidth: 1,
-    borderColor: "#e0e0e0",
-    flexBasis: "48%",
+    padding: 2,
   },
-  quickQuestionText: {
-    fontSize: 12,
-    fontFamily: "Poppins-Regular",
+  kaagriTabActive: {
+    paddingHorizontal: 16,
+    paddingVertical: 6,
+    borderRadius: 18,
+    backgroundColor: "#007AFF",
+  },
+  kaagriTextActive: {
+    fontSize: 14,
+    fontFamily: "Poppins-Bold",
+    color: "#fff",
+  },
+  videosTab: {
+    paddingHorizontal: 16,
+    paddingVertical: 6,
+    borderRadius: 18,
+  },
+  videosText: {
+    fontSize: 14,
+    fontFamily: "Poppins-Bold",
     color: "#666",
-    textAlign: "center",
   },
   messagesContainer: {
     flex: 1,
@@ -310,7 +304,7 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: "#0f6d00",
+    backgroundColor: "#007AFF",
     alignItems: "center",
     justifyContent: "center",
     marginRight: 8,
@@ -319,13 +313,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   messageBubble: {
-    maxWidth: "75%",
+    maxWidth: "80%",
     paddingHorizontal: 15,
-    paddingVertical: 10,
+    paddingVertical: 12,
     borderRadius: 18,
   },
   userMessage: {
-    backgroundColor: "#0f6d00",
+    backgroundColor: "#007AFF",
     borderBottomRightRadius: 4,
   },
   botMessage: {
@@ -335,7 +329,7 @@ const styles = StyleSheet.create({
   messageText: {
     fontSize: 16,
     fontFamily: "Poppins-Regular",
-    lineHeight: 20,
+    lineHeight: 22,
   },
   userMessageText: {
     color: "#fff",
@@ -358,9 +352,23 @@ const styles = StyleSheet.create({
   inputContainer: {
     paddingHorizontal: 20,
     paddingVertical: 15,
-    borderTopWidth: 1,
-    borderTopColor: "#f0f0f0",
     backgroundColor: "#fff",
+  },
+  inputActions: {
+    flexDirection: "row",
+    gap: 12,
+    marginBottom: 12,
+  },
+  actionButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: "#f0f0f0",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  actionIcon: {
+    fontSize: 18,
   },
   inputWrapper: {
     flexDirection: "row",
@@ -369,7 +377,6 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     paddingHorizontal: 15,
     paddingVertical: 8,
-    marginBottom: 8,
   },
   textInput: {
     flex: 1,
@@ -383,7 +390,7 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: "#0f6d00",
+    backgroundColor: "#007AFF",
     alignItems: "center",
     justifyContent: "center",
     marginLeft: 8,
@@ -394,11 +401,5 @@ const styles = StyleSheet.create({
   sendButtonText: {
     fontSize: 16,
     color: "#fff",
-  },
-  inputHint: {
-    fontSize: 12,
-    fontFamily: "Poppins-Regular",
-    color: "#999",
-    textAlign: "center",
   },
 });

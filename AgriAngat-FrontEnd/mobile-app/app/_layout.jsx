@@ -9,6 +9,42 @@ import { StatusBar } from "expo-status-bar";
 import "react-native-reanimated";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
+import { ThemeProvider as CustomThemeProvider } from "../context/ThemeContext";
+
+// Screen configurations
+const screenConfigs = [
+  { name: "index", options: { headerShown: false } },
+  {
+    name: "login",
+    options: {
+      headerShown: false,
+      gestureEnabled: true,
+      fullScreenGestureEnabled: true,
+    }
+  },
+  { name: "register/farmer", options: { headerShown: false } },
+  { name: "register/customer", options: { headerShown: false } },
+  { name: "register/welcome-customer", options: { headerShown: false } },
+  { name: "register/welcome-farmer", options: { headerShown: false } },
+  { name: "forgot-password", options: { headerShown: false } },
+  { name: "reset-password", options: { headerShown: false } },
+  { name: "angatscore-explainer", options: { headerShown: false } },
+  { name: "account-info", options: { headerShown: false } },
+  { name: "add-product", options: { headerShown: false } },
+  { name: "nearby-stores", options: { headerShown: false } },
+  { name: "your-listings", options: { headerShown: false } },
+  { name: "loan-application", options: { headerShown: false } },
+  { name: "loan-application-success", options: { headerShown: false } },
+  { name: "weather-analysis", options: { headerShown: false } },
+  { name: "study-hub-videos", options: { headerShown: false } },
+  { name: "kaagri-chatbot", options: { headerShown: false } },
+  { name: "store-contact", options: { headerShown: false } },
+  { name: "store-contact/[storeId]", options: { headerShown: false } },
+  { name: "loan-payment", options: { headerShown: false } },
+  { name: "loan-transactions", options: { headerShown: false } },
+  { name: "sales-transactions", options: { headerShown: false } },
+  { name: "upcoming-payments", options: { headerShown: false } },
+];
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -17,50 +53,31 @@ export default function RootLayout() {
   });
 
   if (!loaded) {
-    // Async font loading only occurs in development.
     return null;
   }
 
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen
-          name="login"
-          options={{
-            headerShown: false,
-            gestureEnabled: true,
-            // iOS: allow swipe anywhere on screen
-            fullScreenGestureEnabled: true,
-          }}
-        />
-        <Stack.Screen name="register/farmer" options={{ headerShown: false }} />
-        <Stack.Screen
-          name="register/customer"
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen name="register/welcome-customer" options={{ headerShown: false }} />
-        <Stack.Screen name="register/welcome-farmer" options={{ headerShown: false }} />
-        <Stack.Screen name="forgot-password" options={{ headerShown: false }} />
-        <Stack.Screen name="reset-password" options={{ headerShown: false }} />
-        <Stack.Screen name="angatscore-explainer" options={{ headerShown: false }} />
-        <Stack.Screen name="account-info" options={{ headerShown: false }} />
-        <Stack.Screen name="add-product" options={{ headerShown: false }} />
-        <Stack.Screen name="nearby-stores" options={{ headerShown: false }} />
-        <Stack.Screen name="your-listings" options={{ headerShown: false }} />
-        <Stack.Screen name="loan-application" options={{ headerShown: false }} />
-        <Stack.Screen name="loan-application-success" options={{ headerShown: false }} />
-        <Stack.Screen name="loan-application-failure" options={{ headerShown: false }} />
-        <Stack.Screen name="loan-application-details" options={{ headerShown: false }} />
-        <Stack.Screen name="weather-analysis" options={{ headerShown: false }} />
-        <Stack.Screen name="study-hub" options={{ headerShown: false }} />
-        <Stack.Screen name="study-hub-videos" options={{ headerShown: false }} />
-        <Stack.Screen name="kaagri-chatbot" options={{ headerShown: false }} />
-        <Stack.Screen name="store-contact" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <CustomThemeProvider>
+      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+        <Stack>
+          <Stack.Screen 
+            name="(tabs)" 
+            options={{ 
+              headerShown: false,
+              gestureEnabled: false,
+            }} 
+          />
+          {screenConfigs.map((screen) => (
+            <Stack.Screen
+              key={screen.name}
+              name={screen.name}
+              options={screen.options}
+            />
+          ))}
+          <Stack.Screen name="+not-found" />
+        </Stack>
+        <StatusBar style="auto" />
+      </ThemeProvider>
+    </CustomThemeProvider>
   );
 }

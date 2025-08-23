@@ -5,8 +5,6 @@ import { useRouter } from "expo-router";
 // @ts-ignore
 import agriangatLogo from "../../assets/images/agriangat-nobg-logo.png";
 // @ts-ignore
-import terraces from "../../assets/images/rice-terraces.png";
-// @ts-ignore
 import rings from "../../assets/images/rings.png";
 import redsky from "../../assets/images/skyhalf-red.png";
 import greenBag from "../../assets/images/green-bag.png";
@@ -77,7 +75,7 @@ export default function ServicesScreen() {
           <View style={styles.backgroundImageContainer}>
             <Image source={rings} style={styles.backgroundImage} />
           </View>
-          
+
           {/* Content on top */}
           <View style={styles.welcomeContentContainer}>
             <Text style={[styles.serviceTitle, { marginBottom: -5, marginTop: -20, fontSize: 20 }]}>Welcome to</Text>
@@ -111,7 +109,7 @@ export default function ServicesScreen() {
         </View>
       </ScrollView>
       <View style={styles.dotsWrap}>
-        {[0,1,2].map((i) => (
+        {[0, 1, 2].map((i) => (
           <View key={i} style={[styles.dot, i === heroIndex && styles.dotActive]} />
         ))}
       </View>
@@ -125,7 +123,7 @@ export default function ServicesScreen() {
           <Text style={styles.tileSub}>
             Apply for loan offered by our partners
           </Text>
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.ctaDark}
             onPress={() => router.push("/loan-application")}
           >
@@ -138,7 +136,7 @@ export default function ServicesScreen() {
           <Text style={styles.tileSub}>
             Check weather, forecasts and insights.
           </Text>
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.ctaLight}
             onPress={() => router.push("/weather-analysis")}
           >
@@ -154,9 +152,9 @@ export default function ServicesScreen() {
           Learn tips and how-tos from AgriAngat videos and the AgriAngat
           Assistant.
         </Text>
-        <TouchableOpacity 
+        <TouchableOpacity
           style={styles.ctaDark}
-          onPress={() => router.push("/study-hub")}
+          onPress={() => router.push("/study-hub-videos")}
         >
           <Text style={styles.ctaDarkText}>Learn now</Text>
         </TouchableOpacity>
@@ -187,13 +185,13 @@ const styles = StyleSheet.create({
   serviceCard: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#d7ffd4",
+    backgroundColor: "#E6FFD6",
     borderRadius: 16,
     padding: 16,
     marginBottom: 10,
     overflow: 'hidden', // Prevents background image from extending beyond card bounds
   },
-  
+
   // NEW STYLES FOR OVERLAPPING BACKGROUND
   backgroundImageContainer: {
     position: 'absolute',
@@ -205,7 +203,7 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     zIndex: 1,
   },
-  
+
   backgroundImage: {
     width: 300,
     height: 500,
@@ -213,7 +211,7 @@ const styles = StyleSheet.create({
     marginRight: -100,
     transform: [{ rotate: "97deg" }],
   },
-  
+
   welcomeContentContainer: {
     flex: 1,
     paddingLeft: 0,
@@ -222,7 +220,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     zIndex: 2, // Ensure content is above image
   },
-  
+
   serviceTitle: {
     fontFamily: "Poppins-Bold",
     fontSize: 20,
@@ -253,9 +251,9 @@ const styles = StyleSheet.create({
     height: 150,
     marginRight: -30,
   },
-  heroTitle: { 
-    fontFamily: "Poppins-Bold", 
-    fontSize: 18, 
+  heroTitle: {
+    fontFamily: "Poppins-Bold",
+    fontSize: 18,
     color: "#111",
     marginBottom: 0,
   },
@@ -265,10 +263,10 @@ const styles = StyleSheet.create({
     marginTop: 10,
     color: "#174c1a",
   },
-  heroImage: { 
-    width: 120, 
-    height: 120, 
-    borderRadius: 60, 
+  heroImage: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
     marginLeft: 12,
     backgroundColor: "rgba(255, 255, 255, 0.3)",
   },
