@@ -93,6 +93,22 @@ const OnboardingScreen = () => {
     setCurrentIndex(index);
   };
 
+  // Handle scroll begin to prevent scrolling from first page
+  const handleScrollBeginDrag = (event) => {
+    if (currentIndex === 0) {
+      // Lock scrolling on first page
+      return false;
+    }
+  };
+
+  // Handle momentum scroll begin to prevent scrolling from first page
+  const handleMomentumScrollBegin = (event) => {
+    if (currentIndex === 0) {
+      // Lock scrolling on first page
+      return false;
+    }
+  };
+
   // Fade animation function
   const animateButtonPress = (buttonOpacity, callback) => {
     Animated.sequence([
@@ -171,7 +187,7 @@ const OnboardingScreen = () => {
           {/* AngatScore Screen - Custom Layout */}
           {item.showScoreInterface && (
             <View style={styles.scoreContainer}>
-title              {/* Text Content - Top Left */}
+              {/* Text Content - Top Left */}
               <View style={styles.scoreTopContent}>
                 <Text style={styles.scoreTitle}>{item.title}</Text>
                 <Text style={styles.scoreDescription}>{item.description}</Text>
@@ -350,10 +366,14 @@ title              {/* Text Content - Top Left */}
     <View style={styles.container}>
       <ScrollView
         ref={scrollViewRef}
-        horizontal
-        pagingEnabled
+        horizontal={true}
+        pagingEnabled={true}
+        scrollEnabled={currentIndex > 0}
         showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
         onMomentumScrollEnd={handleScroll}
+        onScrollBeginDrag={handleScrollBeginDrag}
+        onMomentumScrollBegin={handleMomentumScrollBegin}
         scrollEventThrottle={16}
       >
         {onboardingData.map((item, index) => renderScreen(item, index))}

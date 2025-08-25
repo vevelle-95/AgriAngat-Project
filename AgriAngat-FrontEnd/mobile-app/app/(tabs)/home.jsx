@@ -141,6 +141,13 @@ export default function HomeScreen() {
                     <View style={styles.scoreValueWrapper}>
                       <Text style={styles.scoreText}>88</Text>
                     </View>
+                    {/* Increase Button below the score */}
+                    <TouchableOpacity 
+                      style={styles.increaseButton}
+                      onPress={() => router.push("/increase-angatscore")}
+                    >
+                      <Text style={styles.increaseButtonText}>Increase</Text>
+                    </TouchableOpacity>
                   </>
                 );
               })()}
@@ -454,6 +461,28 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   scoreText: { color: "#fff", fontFamily: "Poppins-ExtraBold", fontSize: 40 },
+  increaseButton: {
+    position: "absolute",
+    bottom: -15,
+    alignSelf: "center",
+    backgroundColor: "rgba(255, 255, 255, 0.9)",
+    paddingHorizontal: 16,
+    paddingVertical: 6,
+    borderRadius: 15,
+    borderWidth: 1,
+    borderColor: "rgba(255, 255, 255, 0.3)",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  increaseButtonText: {
+    color: "#0f6d00",
+    fontFamily: "Poppins-Bold",
+    fontSize: 12,
+    textAlign: "center",
+  },
   statRow: { flexDirection: "row", gap: 12, marginTop: -50, marginBottom: 35 },
   statCard: {
     flex: 1,
