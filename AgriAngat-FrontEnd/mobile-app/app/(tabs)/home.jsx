@@ -154,7 +154,7 @@ export default function HomeScreen() {
                         cx={size / 2}
                         cy={size / 2}
                         r={radius}
-                        stroke={ringColor}
+                        stroke="#ff2d55"
                         strokeWidth={strokeWidth}
                         strokeLinecap="round"
                         strokeDasharray={`${circumference} ${circumference}`}
@@ -164,17 +164,8 @@ export default function HomeScreen() {
                       />
                     </Svg>
                     <View style={styles.scoreValueWrapper}>
-                      <Text style={styles.scoreText}>{score}</Text>
+                      <Text style={styles.scoreText}>88</Text>
                     </View>
-                    {/* Conditional Increase Button */}
-                    {showIncreaseButton && (
-                      <TouchableOpacity 
-                        style={styles.increaseButton}
-                        onPress={() => router.push("/increase-angatscore")}
-                      >
-                        <Text style={styles.increaseButtonText}>Increase</Text>
-                      </TouchableOpacity>
-                    )}
                   </>
                 );
               })()}
