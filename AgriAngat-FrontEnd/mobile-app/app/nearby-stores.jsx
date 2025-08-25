@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import * as Font from "expo-font";
 import { useRouter } from "expo-router";
+import { NEARBY_STORES } from "../data/mockData";
 
 export default function NearbyStoresScreen() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
@@ -32,43 +33,7 @@ export default function NearbyStoresScreen() {
 
   if (!fontsLoaded) return null;
 
-  const stores = [
-    {
-      id: 1,
-      name: "Aling Myrna Sari-sari store",
-      distance: "2.5 km",
-      needs: "100 kg Rice, 20 kg Tomatoes",
-      image: "🏪"
-    },
-    {
-      id: 2,
-      name: "Kimilovie Store",
-      distance: "1 km",
-      needs: "50 kg Corn, 20 kg Onions",
-      image: "�"
-    },
-    {
-      id: 3,
-      name: "Neyni Store",
-      distance: "1 km",
-      needs: "50 cabbages, 10 kg Carrots",
-      image: "🏪"
-    },
-    {
-      id: 4,
-      name: "Cris Talipapa",
-      distance: "0.5 km",
-      needs: "10 boxes Eggs, 20 kg Onions, 10 kg Carrots",
-      image: "🏪"
-    },
-    {
-      id: 5,
-      name: "K Mini Mart",
-      distance: "0.5 km",
-      needs: "100 kg Rice, 100 kg Banana, 50 kg Carrots",
-      image: "�"
-    }
-  ];
+  const stores = NEARBY_STORES;
 
   const handleViewStore = (store) => {
     router.push(`/store-contact/${store.id}`);
@@ -282,7 +247,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginRight: 10,
   },
-  searchInput: {
+  searchInputBar: {
     flex: 1,
     fontSize: 16,
     fontFamily: "Poppins-Regular",

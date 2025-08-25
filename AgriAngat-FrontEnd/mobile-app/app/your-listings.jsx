@@ -13,6 +13,7 @@ import {
 import * as Font from "expo-font";
 import { useRouter } from "expo-router";
 import { useTheme } from "../context/ThemeContext";
+import { USER_LISTINGS } from "../data/mockData";
 
 export default function YourListingsScreen() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
@@ -20,36 +21,7 @@ export default function YourListingsScreen() {
   const [searchQuery, setSearchQuery] = useState("");
   const [showSearchModal, setShowSearchModal] = useState(false);
   const { colors, isDark } = useTheme();
-  const [listings, setListings] = useState({
-    active: [
-      {
-        id: 1,
-        name: "Saging",
-        price: "P50",
-        status: "Available",
-        image: require("../assets/images/banana.png"),
-        description: "Fresh bananas from our farm"
-      },
-      {
-        id: 2,
-        name: "Mangga",
-        price: "P80",
-        status: "Available", 
-        image: require("../assets/images/mango.png"),
-        description: "Sweet ripe mangoes"
-      },
-      {
-        id: 3,
-        name: "Orange",
-        price: "P60",
-        status: "Available",
-        image: require("../assets/images/oranges.png"),
-        description: "Juicy oranges"
-      }
-    ],
-    sold: [],
-    expired: []
-  });
+  const [listings, setListings] = useState(USER_LISTINGS);
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [editingListing, setEditingListing] = useState(null);
   const [editedName, setEditedName] = useState("");

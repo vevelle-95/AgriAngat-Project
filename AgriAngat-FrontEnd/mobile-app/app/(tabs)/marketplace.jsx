@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, Dimensions, Modal, TextInput, FlatList } from "react-native";
 import * as Font from "expo-font";
 import { useRouter } from "expo-router";
+import { NEARBY_STORES, USER_LISTINGS } from "../../data/mockData";
 import agriangatLogo from "../../assets/images/agriangat-nobg-logo.png";
 import banana from "../../assets/images/banana.png";
 import papaya from "../../assets/images/papaya.png";
@@ -331,7 +332,7 @@ export default function MarketplaceScreen() {
       {/* Stats Cards */}
       <View style={styles.statsRow}>
         <View style={styles.statCard}>
-          <Text style={styles.statNumber}>10</Text>
+          <Text style={styles.statNumber}>{NEARBY_STORES.length}</Text>
           <Text style={styles.statLabel}>Stores Nearby</Text>
           <TouchableOpacity 
             style={styles.statButton}
@@ -341,8 +342,8 @@ export default function MarketplaceScreen() {
           </TouchableOpacity>
         </View>
         <View style={styles.statCard}>
-          <Text style={styles.statNumber}>1</Text>
-          <Text style={styles.statLabel}>Active Listing</Text>
+          <Text style={styles.statNumber}>{USER_LISTINGS.active.length}</Text>
+          <Text style={styles.statLabel}>Active Listing{USER_LISTINGS.active.length !== 1 ? 's' : ''}</Text>
           <TouchableOpacity 
             style={styles.statButton}
             onPress={() => router.push("/your-listings")}
