@@ -13,7 +13,7 @@ import {
   Animated,
 } from "react-native";
 import * as Font from "expo-font";
-import { useRouter } from "expo-router";
+import { useRouter, useLocalSearchParams } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 // @ts-ignore
 import agriangatLogo from "../assets/images/agriangat-nobg-logo.png";
@@ -22,7 +22,6 @@ const LoginScreen = () => {
   const [fontsLoaded, setFontsLoaded] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
 
   // Validation states
@@ -32,6 +31,10 @@ const LoginScreen = () => {
   const [passwordBorderAnim] = useState(new Animated.Value(0));
 
   const router = useRouter();
+  const { mode } = useLocalSearchParams();
+  
+  // Set initial state based on URL parameter
+  const [isLogin, setIsLogin] = useState(mode !== "register");
 
   useEffect(() => {
     async function loadFonts() {

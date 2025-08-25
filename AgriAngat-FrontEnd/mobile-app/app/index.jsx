@@ -80,10 +80,10 @@ const OnboardingScreen = () => {
       title: "Marketplace",
       description: "Dito, puwede mong ibenta ang ani sa mga kalapit na tindahan at buyers. Dagdag kita, dagdag tiwala, dagdag oportunidad.",
       image: page3,
-      buttonText: "Log In / Sign In",
+      buttonText: "Next",
       backgroundColor: "#000",
       showMarketplace: true,
-      isLastScreen: true,
+      isLastScreen: false,
     }
   ];
 
@@ -142,7 +142,8 @@ const OnboardingScreen = () => {
         });
         setCurrentIndex(nextIndex);
       } else {
-        router.push("login");
+        // Navigate to data privacy consent page instead of login
+        router.push("data-privacy-consent");
       }
     });
   };
@@ -213,6 +214,7 @@ const OnboardingScreen = () => {
                         styles.scoreIndicator,
                         {
                           backgroundColor: dotIndex === (index - 1) ? '#fff' : 'rgba(255,255,255,0.3)',
+                          paddingHorizontal: 4,
                         }
                       ]}
                     />
@@ -306,7 +308,8 @@ const OnboardingScreen = () => {
                 {/* Log In Button - Right Side */}
                 <Animated.View style={{ opacity: marketplaceButtonOpacity }}>
                   <TouchableOpacity style={styles.marketplaceNextButton} onPress={handleNext}>
-                    <Text style={styles.marketplaceNextText}>Log In / Sign In</Text>
+                    <Text style={styles.marketplaceNextText}>Next</Text>
+                    <Text style={styles.marketplaceArrow}>→</Text>
                   </TouchableOpacity>
                 </Animated.View>
               </View>
@@ -335,7 +338,7 @@ const OnboardingScreen = () => {
                       styles.indicator,
                       {
                         backgroundColor: dotIndex === (index - 1) ? '#fff' : 'rgba(255,255,255,0.3)',
-                        width: dotIndex === (index - 1) ? 24 : 8,
+                        width: dotIndex === (index - 1) ? 50 : 8,
                       }
                     ]}
                   />
@@ -880,7 +883,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   marketplaceNextButton: {
-    backgroundColor: '#21AA3A',
+    backgroundColor: '#fff',
     paddingHorizontal: 25,
     paddingVertical: 12,
     borderRadius: 25,
@@ -889,17 +892,12 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   marketplaceNextText: {
-    color: '#fff',
-    fontFamily: 'Poppins-Bold',
-    fontSize: 16,
-  },
-  marketplaceStartText: {
-    color: '#fff',
+    color: '#333',
     fontFamily: 'Poppins-Bold',
     fontSize: 16,
   },
   marketplaceArrow: {
-    color: '#fff',
+    color: '#333',
     fontSize: 16,
     fontFamily: 'Poppins-Bold',
   },

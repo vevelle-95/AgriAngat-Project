@@ -49,6 +49,7 @@ const screenConfigs = [
   { name: "farming-practices", options: { headerShown: false } },
   { name: "increase-success", options: { headerShown: false } },
   { name: "community-links", options: { headerShown: false } },
+  { name: "data-privacy-consent", options: { headerShown: false } },
 ];
 
 export default function RootLayout() {
