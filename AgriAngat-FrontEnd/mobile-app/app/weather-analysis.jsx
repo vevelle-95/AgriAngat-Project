@@ -70,7 +70,16 @@ export default function WeatherAnalysisScreen() {
 
       {/* 3-Day Forecast */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>3-Day Forecast</Text>
+        <View style={styles.forecastHeader}>
+          <Text style={styles.sectionTitle}>3-Day Forecast</Text>
+          <Text style={styles.forecastDate}>
+            as of {new Date().toLocaleDateString('en-US', { 
+              month: 'numeric', 
+              day: 'numeric', 
+              year: 'numeric' 
+            })}
+          </Text>
+        </View>
         <View style={styles.forecastContainer}>
           <View style={styles.forecastItem}>
             <Text style={styles.forecastDay}>Today</Text>
@@ -268,6 +277,18 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins-Bold",
     color: "#111",
     marginBottom: 10,
+  },
+  forecastHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  forecastDate: {
+    fontSize: 12,
+    fontFamily: "Poppins-Regular",
+    color: "#666",
+    fontStyle: "italic",
   },
   forecastContainer: {
     flexDirection: "row",

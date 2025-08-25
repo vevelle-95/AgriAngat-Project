@@ -45,6 +45,10 @@ const screenConfigs = [
   { name: "sales-transactions", options: { headerShown: false } },
   { name: "upcoming-payments", options: { headerShown: false } },
   { name: "increase-angatscore", options: { headerShown: false } },
+  { name: "financial-health", options: { headerShown: false } },
+  { name: "farming-practices", options: { headerShown: false } },
+  { name: "increase-success", options: { headerShown: false } },
+  { name: "community-links", options: { headerShown: false } },
 ];
 
 export default function RootLayout() {

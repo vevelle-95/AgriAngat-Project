@@ -24,6 +24,21 @@ import redsky from "../../assets/images/skyhalf-red.png";
 import greenBag from "../../assets/images/green-bag.png";
 import basket from "../../assets/images/baskets.png";
 
+// Helper function to check for severe weather conditions
+const checkForHeavyWeather = () => {
+  // TODO: Replace with actual weather API integration
+  // This should check for: heavy rain, thunderstorm, typhoon
+  // Example conditions: "Heavy Rain", "Thunderstorm", "Typhoon", "Severe Weather Alert"
+  const currentWeatherCondition = "Partly Cloudy"; // This should come from weather API
+  const severeWeatherConditions = [
+    "Heavy Rain", "Thunderstorm", "Typhoon", "Severe Thunderstorm",
+    "Heavy Thunderstorm", "Tropical Storm", "Cyclone"
+  ];
+  return severeWeatherConditions.some(condition => 
+    currentWeatherCondition.toLowerCase().includes(condition.toLowerCase())
+  );
+};
+
 
 export default function HomeScreen() {
   const { colors } = useTheme();
@@ -114,6 +129,16 @@ export default function HomeScreen() {
                 const score = 88; // 0-100
                 const progress = Math.max(0, Math.min(100, score)) / 100; // clamp 0..1
                 const dashOffset = circumference * (1 - progress);
+                
+                // Weather conditions that trigger increase button
+                const hasHeavyWeather = checkForHeavyWeather();
+                
+                // Show increase button if score < 50 OR if there's heavy weather incoming
+                const showIncreaseButton = score < 50 || hasHeavyWeather;
+                
+                // Ring color: red if score < 50, otherwise green
+                const ringColor = score < 50 ? "#ff2d55" : "#00C851";
+                
                 return (
                   <>
                     <Svg width={size} height={size}>
@@ -129,7 +154,7 @@ export default function HomeScreen() {
                         cx={size / 2}
                         cy={size / 2}
                         r={radius}
-                        stroke="#ff2d55"
+                        stroke={ringColor}
                         strokeWidth={strokeWidth}
                         strokeLinecap="round"
                         strokeDasharray={`${circumference} ${circumference}`}
@@ -139,15 +164,17 @@ export default function HomeScreen() {
                       />
                     </Svg>
                     <View style={styles.scoreValueWrapper}>
-                      <Text style={styles.scoreText}>88</Text>
+                      <Text style={styles.scoreText}>{score}</Text>
                     </View>
-                    {/* Increase Button below the score */}
-                    <TouchableOpacity 
-                      style={styles.increaseButton}
-                      onPress={() => router.push("/increase-angatscore")}
-                    >
-                      <Text style={styles.increaseButtonText}>Increase</Text>
-                    </TouchableOpacity>
+                    {/* Conditional Increase Button */}
+                    {showIncreaseButton && (
+                      <TouchableOpacity 
+                        style={styles.increaseButton}
+                        onPress={() => router.push("/increase-angatscore")}
+                      >
+                        <Text style={styles.increaseButtonText}>Increase</Text>
+                      </TouchableOpacity>
+                    )}
                   </>
                 );
               })()}

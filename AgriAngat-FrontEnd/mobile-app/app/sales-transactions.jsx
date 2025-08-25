@@ -272,7 +272,10 @@ export default function SalesTransactionsScreen() {
                 </TouchableOpacity>
               ))}
             </View>
-          </View>        <View style={styles.transactionsList}>
+          </View>
+
+          {/* Transactions List */}
+          <View style={styles.transactionsList}>
           <Text style={styles.sectionTitle}>Transaction History</Text>
           
           {transactions.map((transaction) => (
