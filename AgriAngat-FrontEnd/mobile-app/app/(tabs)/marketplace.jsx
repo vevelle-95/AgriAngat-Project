@@ -15,6 +15,12 @@ import fruits from "../../assets/images/fruits.png";
 import dairy from "../../assets/images/dairy.png";
 import beverages from "../../assets/images/beverages.png";
 import vegetables from "../../assets/images/vegetables.png";
+import tomato from "../../assets/images/fresh-tomatoes.png";
+import lettuce from "../../assets/images/fresh-lettuce.png";
+import tea from "../../assets/images/herbal-tea.png";
+import juice from "../../assets/images/natural-juice.png";
+import milk from "../../assets/images/fresh-milk.png";
+import eggs from "../../assets/images/farm-egg.png";
 import rings from "../../assets/images/riring.png";
 import basket from "../../assets/images/baskets.png";
 import redsky from "../../assets/images/skyhalf-red.png";
@@ -28,12 +34,12 @@ const MOCK_PRODUCTS = [
   { id: "4", name: "Pakwan", price: "₱60", image: pakwan, category: "1" },
   { id: "5", name: "Mangga", price: "₱40", image: mangga, category: "1" },
   { id: "6", name: "Strawberry", price: "₱90", image: strawberry, category: "1" },
-  { id: "7", name: "Fresh Milk", price: "₱120", image: dairy, category: "2" },
-  { id: "8", name: "Farm Eggs", price: "₱180", image: dairy, category: "2" },
-  { id: "9", name: "Natural Juice", price: "₱85", image: beverages, category: "3" },
-  { id: "10", name: "Herbal Tea", price: "₱65", image: beverages, category: "3" },
-  { id: "11", name: "Fresh Lettuce", price: "₱45", image: vegetables, category: "4" },
-  { id: "12", name: "Organic Tomatoes", price: "₱55", image: vegetables, category: "4" },
+  { id: "7", name: "Fresh Milk", price: "₱120", image: milk, category: "2" },
+  { id: "8", name: "Farm Eggs", price: "₱180", image: eggs, category: "2" },
+  { id: "9", name: "Natural Juice", price: "₱85", image: juice, category: "3" },
+  { id: "10", name: "Herbal Tea", price: "₱65", image: tea, category: "3" },
+  { id: "11", name: "Fresh Lettuce", price: "₱45", image: lettuce, category: "4" },
+  { id: "12", name: "Organic Tomatoes", price: "₱55", image: tomato, category: "4" },
 ];
 
 const CATEGORIES = [
@@ -134,7 +140,7 @@ export default function MarketplaceScreen() {
       quantity: 2,
       unit: "kg",
       seller: "Rice Farm Co.",
-      image: require("../../assets/images/rice-terraces.png"),
+      image: require("../../assets/images/organic-rice.png"),
     },
     {
       id: 2,
