@@ -44,6 +44,7 @@ const screenConfigs = [
   { name: "loan-transactions", options: { headerShown: false } },
   { name: "sales-transactions", options: { headerShown: false } },
   { name: "upcoming-payments", options: { headerShown: false } },
+  { name: "increase-angatscore", options: { headerShown: false } },
 ];
 
 export default function RootLayout() {
