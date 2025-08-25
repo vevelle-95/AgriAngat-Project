@@ -11,10 +11,17 @@ const LoanApplication = () => {
         loanType: '',
         loanAmount: '',
         purpose: '',
-        installmentPlan: ''
+        installmentPlan: '',
+        homeAddressOwnership: '',
+        mothersMaidenName: '',
+        registeredBusinessName: '',
+        yearsInOperation: '',
+        sourceOfFunds: '',
+        primaryCropType: ''
     });
     const [showLoanTypeDropdown, setShowLoanTypeDropdown] = useState(false);
     const [showInstallmentDropdown, setShowInstallmentDropdown] = useState(false);
+    const [showYearsInOperationDropdown, setShowYearsInOperationDropdown] = useState(false);
     const [showVerificationDialog, setShowVerificationDialog] = useState(false);
     const loanTypeRef = useRef(null);
     const installmentRef = useRef(null);
@@ -33,6 +40,14 @@ const LoanApplication = () => {
         { label: 'Bi-weekly', description: 'Pay every 2 weeks. Good for semi-monthly sales.' },
         { label: 'Monthly', description: 'Pay once a month, the most common option.' },
         { label: 'Seasonal', description: 'Pay during harvest season only (every 3–6 months).' }
+    ];
+
+    const yearsInOperationOptions = [
+        'Less than 1 year',
+        '1-2 years',
+        '3-5 years',
+        '6-10 years',
+        'More than 10 years'
     ];
 
     useEffect(() => {
@@ -70,6 +85,30 @@ const LoanApplication = () => {
         }
         if (!formData.installmentPlan) {
             Alert.alert("Error", "Please select an installment plan");
+            return;
+        }
+        if (!formData.homeAddressOwnership) {
+            Alert.alert("Error", "Please enter home address ownership information");
+            return;
+        }
+        if (!formData.mothersMaidenName) {
+            Alert.alert("Error", "Please enter mother's maiden name");
+            return;
+        }
+        if (!formData.registeredBusinessName) {
+            Alert.alert("Error", "Please enter registered business name");
+            return;
+        }
+        if (!formData.yearsInOperation) {
+            Alert.alert("Error", "Please select years in operation");
+            return;
+        }
+        if (!formData.sourceOfFunds) {
+            Alert.alert("Error", "Please enter source of funds");
+            return;
+        }
+        if (!formData.primaryCropType) {
+            Alert.alert("Error", "Please enter primary crop type");
             return;
         }
 
@@ -228,12 +267,12 @@ const LoanApplication = () => {
                                 style={StyleSheet.absoluteFill}
                                 onPress={() => setShowInstallmentDropdown(false)}
                               />
-                              <View style={styles.modalCard}>
+                              <View style={styles.installmentModalCard}>
                                 <Text style={styles.modalTitle}>Select Installment Plan</Text>
                                 {installmentOptions.map((option, index) => (
                                   <TouchableOpacity
                                     key={option.label}
-                                    style={index === installmentOptions.length - 1 ? styles.modalOptionLast : styles.modalOption}
+                                    style={index === installmentOptions.length - 1 ? styles.installmentModalOptionLast : styles.installmentModalOption}
                                     onPress={() => {
                                         setFormData(prev => ({ ...prev, installmentPlan: option.label }));
                                         setTimeout(() => setShowInstallmentDropdown(false), 0);
@@ -246,6 +285,9 @@ const LoanApplication = () => {
                                     ]}>
                                       {option.label}
                                     </Text>
+                                    <Text style={styles.modalOptionDescription}>
+                                      {option.description}
+                                    </Text>
                                   </TouchableOpacity>
                                 ))}
                               </View>
@@ -254,35 +296,122 @@ const LoanApplication = () => {
                         )}
                     </View>
 
-                    {/* Payment Options Grid */}
-                    <View style={styles.paymentOptionsGrid}>
-                        <View style={styles.paymentRow}>
-                            <View style={styles.paymentCard}>
-                                <Text style={styles.paymentTitle}>Daily</Text>
-                                <Text style={styles.paymentDescription}>
-                                    Pay a small amount every day. Best for those with daily income from selling goods.
-                                </Text>
-                            </View>
-                            <View style={styles.paymentCard}>
-                                <Text style={styles.paymentTitle}>Bi-weekly</Text>
-                                <Text style={styles.paymentDescription}>
-                                    Pay every 2 weeks. Good for semi-monthly sales.
-                                </Text>
-                            </View>
+                    {/* Additional Information Section */}
+                    <View style={styles.section}>
+                        <Text style={styles.sectionTitle}>Additional Information</Text>
+                        
+                        {/* Home Address Ownership */}
+                        <View style={styles.formSection}>
+                            <Text style={styles.fieldLabel}>Home Address Ownership</Text>
+                            <TextInput
+                                style={styles.textField}
+                                placeholder="e.g., Owned, Rented, Family Property"
+                                value={formData.homeAddressOwnership}
+                                onChangeText={(value) => handleInputChange('homeAddressOwnership', value)}
+                                placeholderTextColor="#C7C7CD"
+                            />
                         </View>
-                        <View style={styles.paymentRow}>
-                            <View style={styles.paymentCard}>
-                                <Text style={styles.paymentTitle}>Monthly</Text>
-                                <Text style={styles.paymentDescription}>
-                                    Pay once a month, the most common option.
+
+                        {/* Mother's Maiden Name */}
+                        <View style={styles.formSection}>
+                            <Text style={styles.fieldLabel}>Mother's Maiden Name</Text>
+                            <TextInput
+                                style={styles.textField}
+                                placeholder="Enter mother's maiden name"
+                                value={formData.mothersMaidenName}
+                                onChangeText={(value) => handleInputChange('mothersMaidenName', value)}
+                                placeholderTextColor="#C7C7CD"
+                            />
+                        </View>
+
+                        {/* Registered Business Name */}
+                        <View style={styles.formSection}>
+                            <Text style={styles.fieldLabel}>Registered Business Name</Text>
+                            <TextInput
+                                style={styles.textField}
+                                placeholder="Enter your registered business name"
+                                value={formData.registeredBusinessName}
+                                onChangeText={(value) => handleInputChange('registeredBusinessName', value)}
+                                placeholderTextColor="#C7C7CD"
+                            />
+                        </View>
+
+                        {/* Years in Operation */}
+                        <View style={styles.formSection}>
+                            <Text style={styles.fieldLabel}>Years in Operation</Text>
+                            <TouchableOpacity
+                                style={[styles.selectField, formData.yearsInOperation && styles.selectFieldActive]}
+                                onPress={() => {
+                                    setShowYearsInOperationDropdown(!showYearsInOperationDropdown);
+                                    setShowLoanTypeDropdown(false);
+                                    setShowInstallmentDropdown(false);
+                                }}
+                            >
+                                <Text style={[styles.selectText, !formData.yearsInOperation && styles.placeholderText]}>
+                                    {formData.yearsInOperation || 'Select Years in Operation'}
                                 </Text>
-                            </View>
-                            <View style={styles.paymentCard}>
-                                <Text style={styles.paymentTitle}>Seasonal</Text>
-                                <Text style={styles.paymentDescription}>
-                                    Pay during harvest season only (every 3–6 months).
-                                </Text>
-                            </View>
+                                <Text style={styles.selectArrow}>▼</Text>
+                            </TouchableOpacity>
+                            {showYearsInOperationDropdown && (
+                              <Modal
+                                transparent
+                                visible={showYearsInOperationDropdown}
+                                animationType="fade"
+                                onRequestClose={() => setShowYearsInOperationDropdown(false)}
+                              >
+                                <View style={styles.modalOverlay}>
+                                  <Pressable
+                                    style={StyleSheet.absoluteFill}
+                                    onPress={() => setShowYearsInOperationDropdown(false)}
+                                  />
+                                  <View style={styles.modalCard}>
+                                    <Text style={styles.modalTitle}>Select Years in Operation</Text>
+                                    {yearsInOperationOptions.map((option, index) => (
+                                      <TouchableOpacity
+                                        key={option}
+                                        style={index === yearsInOperationOptions.length - 1 ? styles.modalOptionLast : styles.modalOption}
+                                        onPress={() => {
+                                            setFormData(prev => ({ ...prev, yearsInOperation: option }));
+                                            setTimeout(() => setShowYearsInOperationDropdown(false), 0);
+                                        }}
+                                        activeOpacity={0.7}
+                                      >
+                                        <Text style={[
+                                          styles.modalOptionText,
+                                          formData.yearsInOperation === option && styles.modalOptionTextSelected
+                                        ]}>
+                                          {option}
+                                        </Text>
+                                      </TouchableOpacity>
+                                    ))}
+                                  </View>
+                                </View>
+                              </Modal>
+                            )}
+                        </View>
+
+                        {/* Source of Funds */}
+                        <View style={styles.formSection}>
+                            <Text style={styles.fieldLabel}>Source of Funds</Text>
+                            <TextInput
+                                style={styles.textField}
+                                placeholder="e.g., Farm Income, Savings, Business Revenue"
+                                value={formData.sourceOfFunds}
+                                onChangeText={(value) => handleInputChange('sourceOfFunds', value)}
+                                placeholderTextColor="#C7C7CD"
+                            />
+                        </View>
+
+                        {/* Primary Crop Type */}
+                        <View style={styles.formSection}>
+                            <Text style={styles.fieldLabel}>Primary Crop Type</Text>
+                            <TextInput
+                                style={styles.textField}
+                                placeholder="e.g., Rice, Corn, Vegetables, Fruits"
+                                value={formData.primaryCropType}
+                                onChangeText={(value) => handleInputChange('primaryCropType', value)}
+                                placeholderTextColor="#C7C7CD"
+                            />
                         </View>
                     </View>
 
@@ -365,16 +494,75 @@ const styles = StyleSheet.create({
         marginBottom: 25,
     },
     sectionTitle: {
-        fontSize: 18,
-        fontFamily: "Poppins-Bold",
+        fontSize: 22,
+        fontFamily: "Poppins-ExtraBold",
         color: "#333",
+        marginBottom: 15,
+        marginTop: 25
+    },
+    formSection: {
+        marginBottom: 20,
+        position: 'relative',
+    },
+    fieldLabel: {
+        fontSize: 18,
+        fontFamily: 'Poppins-Bold',
+        color: '#1F2937',
         marginBottom: 8,
     },
-    sectionSubtitle: {
+    textField: {
+        borderWidth: 1,
+        borderColor: '#E5E7EB',
+        borderRadius: 12,
+        paddingHorizontal: 16,
+        paddingVertical: 14,
+        fontSize: 16,
+        fontFamily: 'Poppins-Regular',
+        backgroundColor: '#FFFFFF',
+        color: '#1F2937',
+    },
+    textAreaField: {
+        borderWidth: 1,
+        borderColor: '#E5E7EB',
+        borderRadius: 12,
+        paddingHorizontal: 16,
+        paddingVertical: 14,
+        fontSize: 16,
+        fontFamily: 'Poppins-Regular',
+        backgroundColor: '#FFFFFF',
+        color: '#1F2937',
+        minHeight: 80,
+    },
+    selectField: {
+        borderWidth: 1,
+        borderColor: '#E5E7EB',
+        borderRadius: 12,
+        paddingHorizontal: 16,
+        paddingVertical: 14,
+        backgroundColor: '#FFFFFF',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    selectFieldActive: {
+        borderColor: '#3B82F6',
+        backgroundColor: '#F0F9FF',
+    },
+    selectText: {
+        fontSize: 16,
+        fontFamily: 'Poppins-Regular',
+        color: '#1F2937',
+        flex: 1,
+    },
+    selectArrow: {
         fontSize: 14,
-        fontFamily: "Poppins-Regular",
-        color: "#666",
-        marginBottom: 15,
+        color: '#6B7280',
+    },
+    fieldDescription: {
+        fontSize: 14,
+        fontFamily: 'Poppins-Regular',
+        color: '#6B7280',
+        marginBottom: 12,
         lineHeight: 20,
     },
     dropdown: {
@@ -446,31 +634,17 @@ const styles = StyleSheet.create({
         height: 100,
         textAlignVertical: "top",
     },
-    paymentGrid: {
-        marginBottom: 30,
-    },
-    paymentRow: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        marginBottom: 15,
-    },
-    paymentOption: {
-        flex: 1,
-        marginHorizontal: 5,
-    },
     paymentTitle: {
         fontSize: 14,
         fontFamily: "Poppins-Bold",
         color: "#333",
         marginBottom: 5,
-        opacity: 0.8,
     },
     paymentDescription: {
         fontSize: 12,
         fontFamily: "Poppins-Regular",
         color: "#666",
         lineHeight: 16,
-        opacity: 0.8,
     },
     buttonContainer: {
         flexDirection: "row",
@@ -512,121 +686,14 @@ const styles = StyleSheet.create({
         textAlign: "justify",
         marginTop: 10,
     },
-    formSection: {
-        marginBottom: 20,
-        position: 'relative',
-    },
-    fieldLabel: {
-        fontSize: 18,
-        fontFamily: 'Poppins-SemiBold',
-        color: '#1F2937',
-        marginBottom: 8,
-    },
-    fieldDescription: {
-        fontSize: 14,
-        fontFamily: 'Poppins-Regular',
-        color: '#6B7280',
-        marginBottom: 12,
-        lineHeight: 20,
-    },
-    selectField: {
-        borderWidth: 1,
-        borderColor: '#E5E7EB',
-        borderRadius: 12,
-        paddingHorizontal: 16,
-        paddingVertical: 14,
-        backgroundColor: '#FFFFFF',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-    },
-    selectFieldActive: {
-        borderColor: '#3B82F6',
-        backgroundColor: '#F0F9FF',
-    },
-    selectText: {
-        fontSize: 16,
-        fontFamily: 'Poppins-Regular',
-        color: '#1F2937',
-        flex: 1,
-    },
-    selectArrow: {
-        fontSize: 14,
-        color: '#6B7280',
-    },
-    floatingDropdown: {
-        position: 'absolute',
-        top: '100%',
-        left: 0,
-        right: 0,
-        zIndex: 1000,
-        borderWidth: 1,
-        borderColor: '#E5E7EB',
-        borderRadius: 12,
-        backgroundColor: '#FFFFFF',
-        marginTop: 4,
-        maxHeight: 300,
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 4,
-        },
-        shadowOpacity: 0.15,
-        shadowRadius: 6,
-        elevation: 8,
-        overflow: 'hidden',
-    },
-    floatingOption: {
-        paddingHorizontal: 16,
-        paddingVertical: 16,
-        borderBottomWidth: 1,
-        borderBottomColor: '#F3F4F6',
-        backgroundColor: 'transparent',
-    },
-    floatingOptionLast: {
-        paddingHorizontal: 16,
-        paddingTop: 16,
-        paddingBottom: 18,
-        borderBottomWidth: 0,
-        backgroundColor: 'transparent',
-    },
-    floatingOptionText: {
-        fontSize: 16,
-        fontFamily: 'Poppins-Regular',
-        color: '#1F2937',
-    },
-    floatingOptionSelected: {
-        backgroundColor: '#EFF6FF',
-    },
-    floatingOptionTextSelected: {
-        color: '#3B82F6',
-        fontFamily: 'Poppins-SemiBold',
-    },
-    textField: {
-        borderWidth: 1,
-        borderColor: '#E5E7EB',
-        borderRadius: 12,
-        paddingHorizontal: 16,
-        paddingVertical: 14,
-        fontSize: 16,
-        fontFamily: 'Poppins-Regular',
-        backgroundColor: '#FFFFFF',
-        color: '#1F2937',
-    },
-    textAreaField: {
-        borderWidth: 1,
-        borderColor: '#E5E7EB',
-        borderRadius: 12,
-        paddingHorizontal: 16,
-        paddingVertical: 14,
-        fontSize: 16,
-        fontFamily: 'Poppins-Regular',
-        backgroundColor: '#FFFFFF',
-        color: '#1F2937',
-        minHeight: 80,
-    },
     paymentOptionsGrid: {
         marginBottom: 24,
+    },
+    paymentRow: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        marginBottom: 15,
+        gap: 12,
     },
     paymentCard: {
         flex: 1,
@@ -635,6 +702,7 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         borderWidth: 1,
         borderColor: '#E2E8F0',
+        minHeight: 100,
     },
     actionButtons: {
         flexDirection: 'row',
@@ -707,7 +775,7 @@ const styles = StyleSheet.create({
     },
     modalTitle: {
         fontSize: 16,
-        fontFamily: 'Poppins-SemiBold',
+        fontFamily: 'Poppins-ExtraBold',
         color: '#1F2937',
         paddingHorizontal: 16,
         paddingVertical: 12,
@@ -726,11 +794,40 @@ const styles = StyleSheet.create({
     },
     modalOptionText: {
         fontSize: 16,
-        fontFamily: 'Poppins-Regular',
+        fontFamily: 'Poppins-Bold',
         color: '#1F2937',
     },
     modalOptionTextSelected: {
         color: '#3B82F6',
         fontFamily: 'Poppins-SemiBold',
+    },
+    installmentModalCard: {
+        width: '100%',
+        maxWidth: 420,
+        backgroundColor: '#FFFFFF',
+        borderRadius: 12,
+        paddingVertical: 8,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.15,
+        shadowRadius: 6,
+        elevation: 8,
+    },
+    installmentModalOption: {
+        paddingHorizontal: 16,
+        paddingVertical: 12,
+        borderBottomWidth: 1,
+        borderBottomColor: '#F3F4F6',
+    },
+    installmentModalOptionLast: {
+        paddingHorizontal: 16,
+        paddingVertical: 12,
+    },
+    modalOptionDescription: {
+        fontSize: 14,
+        fontFamily: 'Poppins-SemiBold',
+        color: '#6B7280',
+        marginTop: 4,
+        lineHeight: 18,
     },
 });

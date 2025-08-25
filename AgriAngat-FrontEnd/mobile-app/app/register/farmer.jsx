@@ -11,6 +11,8 @@ import {
   Platform,
   Animated,
   Alert,
+  Modal,
+  Pressable,
 } from "react-native";
 import * as Font from "expo-font";
 import { useRouter } from "expo-router";
@@ -28,13 +30,15 @@ const FarmerRegistrationScreen = () => {
   const [firstName, setFirstName] = useState("");
   const [middleName, setMiddleName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [civilStatus, setCivilStatus] = useState("");
+  const [showCivilStatusModal, setShowCivilStatusModal] = useState(false);
   const [birthdate, setBirthdate] = useState(null);
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [placeOfBirth, setPlaceOfBirth] = useState("");
   const [showSexDropdown, setShowSexDropdown] = useState(false);
   const [nationality, setNationality] = useState("");
   const [sex, setSex] = useState("");
   const [contactNumber, setContactNumber] = useState("");
-  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
   const [showVerificationDialog, setShowVerificationDialog] = useState(false);
@@ -53,7 +57,6 @@ const FarmerRegistrationScreen = () => {
   const [borderAnims] = useState({
     firstName: new Animated.Value(0),
     lastName: new Animated.Value(0),
-    username: new Animated.Value(0),
     email: new Animated.Value(0),
     contactNumber: new Animated.Value(0),
     password: new Animated.Value(0),
@@ -62,6 +65,8 @@ const FarmerRegistrationScreen = () => {
     landLocation: new Animated.Value(0),
     address: new Animated.Value(0),
     nationality: new Animated.Value(0),
+    civilStatus: new Animated.Value(0),
+    placeOfBirth: new Animated.Value(0),
   });
   
   const defaultMapRegion = {
@@ -132,25 +137,6 @@ const FarmerRegistrationScreen = () => {
     return "";
   };
 
-  const validateUsername = (username) => {
-    if (!username.trim()) {
-      return "Username is required";
-    }
-    if (username.length < 3) {
-      return "Username must be at least 3 characters";
-    }
-    if (username.length > 20) {
-      return "Username must be less than 20 characters";
-    }
-    if (!/^[a-zA-Z0-9_]+$/.test(username)) {
-      return "Username can only contain letters, numbers, and underscores";
-    }
-    if (/^[0-9]/.test(username)) {
-      return "Username cannot start with a number";
-    }
-    return "";
-  };
-
   const validateRequired = (value, fieldName) => {
     if (!value?.trim()) {
       return `${fieldName} is required`;
@@ -203,7 +189,6 @@ const FarmerRegistrationScreen = () => {
     const setters = {
       firstName: setFirstName,
       lastName: setLastName,
-      username: setUsername,
       email: setEmail,
       contactNumber: setContactNumber,
       password: setPassword,
@@ -212,6 +197,8 @@ const FarmerRegistrationScreen = () => {
       landLocation: setLandLocation,
       address: setAddress,
       nationality: setNationality,
+      civilStatus: setCivilStatus,
+      placeOfBirth: setPlaceOfBirth,
     };
     setters[field]?.(value);
   };
@@ -229,7 +216,6 @@ const FarmerRegistrationScreen = () => {
     return {
       firstName: validateRequired(firstName, "First name"),
       lastName: validateRequired(lastName, "Last name"),
-      username: validateUsername(username),
       email: validateEmail(email),
       contactNumber: validatePhoneNumber(contactNumber),
       password: validatePassword(password),
@@ -238,6 +224,8 @@ const FarmerRegistrationScreen = () => {
       landLocation: validateRequired(landLocation, "Land location"),
       address: validateRequired(address, "Current address"),
       nationality: validateRequired(nationality, "Nationality"),
+      civilStatus: validateRequired(civilStatus, "Civil status"),
+      placeOfBirth: validateRequired(placeOfBirth, "Place of birth"),
     };
   };
 
@@ -304,7 +292,8 @@ const FarmerRegistrationScreen = () => {
   };
 
   const handleSexDropdownToggle = () => {
-    setShowSexDropdown(true);
+    setShowDatePicker(false);
+    setShowSexDropdown(!showSexDropdown);
   };
 
   const handleSexSelection = (selectedSex) => {
@@ -413,18 +402,29 @@ const FarmerRegistrationScreen = () => {
             />
           </Animated.View>
           {errors.lastName ? <Text style={styles.errorText}>{errors.lastName}</Text> : null}
+          
+          {/* Civil Status */}
+          <Animated.View style={[
+            styles.inputWrapper,
+            errors.civilStatus && {
+              borderColor: borderAnims.civilStatus.interpolate({
+                inputRange: [0, 1],
+                outputRange: ['#ff4444', '#ff0000']
+              })
+            }
+          ]}>
+            <Pressable
+              style={[styles.input, styles.dateInput]}
+              onPress={() => setShowCivilStatusModal(true)}
+            >
+              <Text style={civilStatus ? styles.dateText : styles.placeholderText}>
+                {civilStatus || "Civil Status"}
+              </Text>
+              <Text style={styles.dropdownArrow}>▼</Text>
+            </Pressable>
+          </Animated.View>
+          {errors.civilStatus ? <Text style={styles.errorText}>{errors.civilStatus}</Text> : null}
           <View style={styles.row}>
-            <View style={[styles.inputWrapper, styles.rowItem]}>
-              <TouchableOpacity
-                style={[styles.input, styles.dateInput]}
-                onPress={handleDatePickerOpen}
-              >
-                <Text style={birthdate ? styles.dateText : styles.placeholderText}>
-                  {birthdate ? formatDate(birthdate) : "Birthdate"}
-                </Text>
-                <Text style={styles.dropdownArrow}>📅</Text>
-              </TouchableOpacity>
-            </View>
             <Animated.View style={[
               styles.inputWrapper,
               styles.rowItem,
@@ -443,8 +443,38 @@ const FarmerRegistrationScreen = () => {
                 onChangeText={(value) => handleFieldChange('nationality', value)}
               />
             </Animated.View>
+            <View style={[styles.inputWrapper, styles.rowItem]}>
+              <TouchableOpacity
+                style={[styles.input, styles.dateInput]}
+                onPress={handleDatePickerOpen}
+              >
+                <Text style={birthdate ? styles.dateText : styles.placeholderText}>
+                  {birthdate ? formatDate(birthdate) : "Birthdate"}
+                </Text>
+                <Text style={styles.dropdownArrow}>📅</Text>
+              </TouchableOpacity>
+            </View>
           </View>
           <View style={styles.row}>
+            <Animated.View style={[
+              styles.inputWrapper,
+              styles.rowItem,
+              errors.contactNumber && {
+                borderColor: borderAnims.contactNumber.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: ['#ff4444', '#ff0000']
+                })
+              }
+            ]}>
+              <TextInput
+                style={[styles.input, errors.contactNumber && styles.inputError]}
+                placeholder="Contact Number"
+                placeholderTextColor="#9aa0a6"
+                value={contactNumber}
+                onChangeText={(value) => handleFieldChange('contactNumber', value, validatePhoneNumber)}
+                keyboardType="phone-pad"
+              />
+            </Animated.View>
             <View style={[styles.inputWrapper, styles.rowItem]}>
               <TouchableOpacity
                 style={[styles.input, styles.dateInput]}
@@ -478,46 +508,27 @@ const FarmerRegistrationScreen = () => {
                 </View>
               )}
             </View>
-            <Animated.View style={[
-              styles.inputWrapper,
-              styles.rowItem,
-              errors.contactNumber && {
-                borderColor: borderAnims.contactNumber.interpolate({
-                  inputRange: [0, 1],
-                  outputRange: ['#ff4444', '#ff0000']
-                })
-              }
-            ]}>
-              <TextInput
-                style={[styles.input, errors.contactNumber && styles.inputError]}
-                placeholder="Contact Number"
-                placeholderTextColor="#9aa0a6"
-                value={contactNumber}
-                onChangeText={(value) => handleFieldChange('contactNumber', value, validatePhoneNumber)}
-                keyboardType="phone-pad"
-              />
-            </Animated.View>
           </View>
           {errors.contactNumber ? <Text style={styles.errorText}>{errors.contactNumber}</Text> : null}
           <Animated.View style={[
             styles.inputWrapper,
-            errors.username && {
-              borderColor: borderAnims.username.interpolate({
+            errors.placeOfBirth && {
+              borderColor: borderAnims.placeOfBirth.interpolate({
                 inputRange: [0, 1],
                 outputRange: ['#ff4444', '#ff0000']
               })
             }
           ]}>
             <TextInput
-              style={[styles.input, errors.username && styles.inputError]}
-              placeholder="Username"
+              style={[styles.input, errors.placeOfBirth && styles.inputError]}
+              placeholder="Place of Birth"
               placeholderTextColor="#9aa0a6"
-              value={username}
-              onChangeText={(value) => handleFieldChange('username', value, validateUsername)}
-              autoCapitalize="none"
+              value={placeOfBirth}
+              onChangeText={(value) => handleFieldChange('placeOfBirth', value)}
+              autoCapitalize="words"
             />
           </Animated.View>
-          {errors.username ? <Text style={styles.errorText}>{errors.username}</Text> : null}
+          {errors.placeOfBirth ? <Text style={styles.errorText}>{errors.placeOfBirth}</Text> : null}
           <Animated.View style={[
             styles.inputWrapper,
             errors.email && {
@@ -685,6 +696,78 @@ const FarmerRegistrationScreen = () => {
         title="Confirm Farmer Registration"
         message="Are you sure all the information you provided is correct? Please review before submitting."
       />
+
+      {/* Civil Status Modal */}
+      <Modal
+        visible={showCivilStatusModal}
+        transparent={true}
+        animationType="slide"
+        onRequestClose={() => setShowCivilStatusModal(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>Select Civil Status</Text>
+              <Pressable 
+                style={styles.modalCloseButton}
+                onPress={() => setShowCivilStatusModal(false)}
+              >
+                <Text style={styles.modalCloseButtonText}>✕</Text>
+              </Pressable>
+            </View>
+            <View style={styles.modalOptions}>
+              <Pressable
+                style={[styles.modalOption, civilStatus === 'Single' && styles.modalOptionSelected]}
+                onPress={() => {
+                  setCivilStatus('Single');
+                  setShowCivilStatusModal(false);
+                }}
+              >
+                <Text style={[styles.modalOptionText, civilStatus === 'Single' && styles.modalOptionTextSelected]}>
+                  Single
+                </Text>
+                {civilStatus === 'Single' && <Text style={styles.modalOptionCheck}>✓</Text>}
+              </Pressable>
+              <Pressable
+                style={[styles.modalOption, civilStatus === 'Married' && styles.modalOptionSelected]}
+                onPress={() => {
+                  setCivilStatus('Married');
+                  setShowCivilStatusModal(false);
+                }}
+              >
+                <Text style={[styles.modalOptionText, civilStatus === 'Married' && styles.modalOptionTextSelected]}>
+                  Married
+                </Text>
+                {civilStatus === 'Married' && <Text style={styles.modalOptionCheck}>✓</Text>}
+              </Pressable>
+              <Pressable
+                style={[styles.modalOption, civilStatus === 'Separated' && styles.modalOptionSelected]}
+                onPress={() => {
+                  setCivilStatus('Separated');
+                  setShowCivilStatusModal(false);
+                }}
+              >
+                <Text style={[styles.modalOptionText, civilStatus === 'Separated' && styles.modalOptionTextSelected]}>
+                  Separated
+                </Text>
+                {civilStatus === 'Separated' && <Text style={styles.modalOptionCheck}>✓</Text>}
+              </Pressable>
+              <Pressable
+                style={[styles.modalOption, civilStatus === 'Widowed' && styles.modalOptionSelected]}
+                onPress={() => {
+                  setCivilStatus('Widowed');
+                  setShowCivilStatusModal(false);
+                }}
+              >
+                <Text style={[styles.modalOptionText, civilStatus === 'Widowed' && styles.modalOptionTextSelected]}>
+                  Widowed
+                </Text>
+                {civilStatus === 'Widowed' && <Text style={styles.modalOptionCheck}>✓</Text>}
+              </Pressable>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </KeyboardAvoidingView>
   );
 };
@@ -1009,6 +1092,53 @@ const styles = StyleSheet.create({
   placeholderDropdownText: {
     color: '#9aa0a6',
     fontStyle: 'italic',
+  },
+  // Civil Status Modal specific styles
+  modalOptions: {
+    paddingHorizontal: 20,
+    paddingTop: 10,
+  },
+  modalOption: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 16,
+    paddingHorizontal: 16,
+    backgroundColor: '#f8f9fa',
+    borderRadius: 12,
+    marginBottom: 12,
+    borderWidth: 2,
+    borderColor: 'transparent',
+  },
+  modalOptionSelected: {
+    backgroundColor: '#e3f2fd',
+    borderColor: '#007AFF',
+  },
+  modalOptionText: {
+    fontSize: 16,
+    fontFamily: 'Poppins-Regular',
+    color: '#333',
+  },
+  modalOptionTextSelected: {
+    color: '#007AFF',
+    fontFamily: 'Poppins-SemiBold',
+  },
+  modalOptionCheck: {
+    fontSize: 16,
+    color: '#007AFF',
+    fontFamily: 'Poppins-Bold',
+  },
+  modalCloseButton: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    backgroundColor: '#f0f0f0',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalCloseButtonText: {
+    fontSize: 16,
+    color: '#666',
   },
 });
 

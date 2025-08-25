@@ -53,7 +53,7 @@ export default function NearbyStoresScreen() {
       <View style={styles.storeContent}>
         <View style={styles.storeImageContainer}>
           <Image 
-            source={require('../assets/images/baskets.png')} 
+            source={store.image} 
             style={styles.storeImage} 
             resizeMode="cover"
           />

@@ -133,11 +133,8 @@ export default function HomeScreen() {
                 // Weather conditions that trigger increase button
                 const hasHeavyWeather = checkForHeavyWeather();
                 
-                // Show increase button if score < 50 OR if there's heavy weather incoming
-                const showIncreaseButton = score < 50 || hasHeavyWeather;
-                
-                // Ring color: red if score < 50, otherwise green
-                const ringColor = score < 50 ? "#ff2d55" : "#00C851";
+                // Show increase button if score < 90 OR if there's heavy weather incoming (changed from 50 to 90 for testing)
+                const showIncreaseButton = score < 90 || hasHeavyWeather;
                 
                 return (
                   <>
@@ -166,6 +163,14 @@ export default function HomeScreen() {
                     <View style={styles.scoreValueWrapper}>
                       <Text style={styles.scoreText}>88</Text>
                     </View>
+                    {showIncreaseButton && (
+                      <TouchableOpacity
+                        style={styles.increaseButton}
+                        onPress={() => router.push("/increase-angatscore")}
+                      >
+                        <Text style={styles.increaseButtonText}>Increase</Text>
+                      </TouchableOpacity>
+                    )}
                   </>
                 );
               })()}
@@ -481,24 +486,24 @@ const styles = StyleSheet.create({
   scoreText: { color: "#fff", fontFamily: "Poppins-ExtraBold", fontSize: 40 },
   increaseButton: {
     position: "absolute",
-    bottom: 35,
+    bottom: 30,
     alignSelf: "center",
-    backgroundColor: "rgba(255, 255, 255, 0.9)",
-    paddingHorizontal: 13,
-    paddingVertical: 3,
-    borderRadius: 15,
+    backgroundColor: "rgba(255, 255, 255, 0.95)",
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 20,
     borderWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.3)",
+    borderColor: "#0f6d00",
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    elevation: 5,
   },
   increaseButtonText: {
     color: "#0f6d00",
     fontFamily: "Poppins-ExtraBold",
-    fontSize: 13,
+    fontSize: 14,
     textAlign: "center",
   },
   statRow: { flexDirection: "row", gap: 12, marginTop: -50, marginBottom: 35 },
