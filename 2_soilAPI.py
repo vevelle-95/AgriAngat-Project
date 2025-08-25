@@ -1,6 +1,7 @@
 import json
 import requests
 from typing import Dict, List, Optional
+from ph_cities import CITY_CENTERS 
 
 class SoilGridsExtractor:
     """Extract agriculturally relevant soil data from SoilGrids API"""
@@ -194,10 +195,28 @@ def main():
     # Initialize the extractor
     extractor = SoilGridsExtractor()
     
-    # Example coordinates (Manila, Philippines)
-    lat, lon = 14.69, 121.3
+    # Show available cities
+    citylist = input("Do you want to see all the Philippine Cities? (y/n) ").strip().lower()
+    if citylist == "y":
+        print("🏙️ Available Philippine Cities:")
+        print("-" * 40)
+        for city in sorted(CITY_CENTERS.keys()):
+            print(f"  • {city.title()}")
+        print()
     
-    print(f"🌱 Soil Analysis for coordinates: {lat}, {lon}")
+    user_city = input("Enter a Philippine city: ").strip().lower()
+    
+    # Check if the city exists in our database
+    if user_city not in CITY_CENTERS:
+        print(f"❌ City '{user_city.title()}' not found in our database.")
+        print("Please check the spelling or choose from the available cities above.")
+        return
+    
+    # Get coordinates for the selected city
+    lat, lon = CITY_CENTERS[user_city]
+    
+    print(f"🌱 Soil Analysis for {user_city.title()}")
+    print(f"📍 Coordinates: {lat}, {lon}")
     print("=" * 50)
     
     # Get agricultural summary for topsoil

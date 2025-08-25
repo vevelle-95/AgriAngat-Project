@@ -1,4 +1,4 @@
-
+# ph_cities.py
 CITY_CENTERS = {
     # metro manila cities
     "san juan": [14.6042, 121.0300],
