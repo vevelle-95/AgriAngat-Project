@@ -433,6 +433,18 @@ export default function WeatherAnalysisScreen() {
         >
           Find more Crop Care tips and sustainable farming practices in Study Hub.
         </Text>
+        <Text
+          style={[
+            styles.sectionTitle,
+            {
+              fontSize: 20,
+              fontFamily: "Poppins-SemiBold",
+              marginTop: 30,
+            },
+          ]}
+        >
+          Find more Crop Care tips and sustainable farming practices in Study Hub.
+        </Text>
 
         {/* Card (display only, not clickable) */}
         <View style={styles.studyHubCard}>
