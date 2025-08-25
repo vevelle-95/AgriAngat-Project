@@ -6,33 +6,81 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
-  ActivityIndicator,
-  RefreshControl,
   TextInput,
+  Alert,
+  ActivityIndicator,
   Modal,
-  FlatList,
+  Platform,
 } from "react-native";
 import * as Font from "expo-font";
 import { useRouter } from "expo-router";
-import { useWeatherData } from "../hooks/useWeatherData";
-import { useCities } from "../hooks/useCities";
 
 export default function WeatherAnalysisScreen() {
+  // Geolocation support
+  useEffect(() => {
+    (async () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            const { latitude, longitude } = position.coords;
+            // Call backend API to get city name from lat/lon
+            try {
+              const API_URLS = __DEV__ ? [
+                Platform.OS === 'ios' ? 'http://localhost:5000/api' : 'http://10.0.2.2:5000/api',
+                'http://192.168.254.203:5000/api',
+                'http://127.0.0.1:5000/api'
+              ] : ['http://localhost:5000/api'];
+              let response;
+              for (const API_BASE_URL of API_URLS) {
+                try {
+                  response = await fetch(`${API_BASE_URL}/city-from-coords?lat=${latitude}&lon=${longitude}`);
+                  if (response.ok) break;
+                } catch (error) { continue; }
+              }
+              if (response?.ok) {
+                const result = await response.json();
+                if (result.success && result.city) {
+                  fetchWeatherData(result.city);
+                }
+              }
+            } catch (error) {
+              // fallback: do nothing
+            }
+          },
+          (error) => {
+            // fallback: do nothing
+          }
+        );
+      }
+    })();
+  }, []);
   const [fontsLoaded, setFontsLoaded] = useState(false);
-  const [selectedCity, setSelectedCity] = useState("manila");
-  const [showCityModal, setShowCityModal] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchCity, setSearchCity] = useState("");
+  const [weatherData, setWeatherData] = useState({
+    city: "",
+    condition: "",
+    temperature: 0,
+    humidity: 0,
+    windSpeed: 0,
+    rainChance: 0,
+    forecast: [],
+    tips: []
+  });
+  const [soilData, setSoilData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [showCitySearch, setShowCitySearch] = useState(false);
+  const [availableCities, setAvailableCities] = useState([
+    "Manila", "Quezon City", "Cebu City", "Davao City", "Baguio",
+    "Iloilo City", "Bacolod", "Cagayan de Oro", "General Santos",
+    "Tacloban", "Naga", "Legazpi", "Angeles", "Tarlac City",
+    "Cabanatuan", "San Fernando", "Dagupan", "Lucena", "Batangas City",
+    "Lipa", "Antipolo", "Caloocan", "Las Piñas", "Makati",
+    "Mandaluyong", "Marikina", "Muntinlupa", "Navotas", "Parañaque",
+    "Pasay", "Pasig", "San Juan", "Taguig", "Valenzuela",
+    "Malabon", "Tayabas"
+  ]);
+  const [debugInfo, setDebugInfo] = useState('Ready to test connection...');
   const router = useRouter();
-
-  // Use the weather data hook with selected city
-  const { weatherData, loading, error, refetch } = useWeatherData(selectedCity);
-  
-  // Get cities from API
-  const { cities, loading: citiesLoading } = useCities();
-
-  const filteredCities = cities.filter(city => 
-    city.toLowerCase().includes(searchQuery.toLowerCase())
-  );
 
   useEffect(() => {
     async function loadFonts() {
@@ -44,387 +92,485 @@ export default function WeatherAnalysisScreen() {
       });
       setFontsLoaded(true);
     }
+    
+    async function loadCities() {
+      try {
+        const API_URLS = __DEV__ ? [
+          Platform.OS === 'ios' ? 'http://localhost:5000/api' : 'http://10.0.2.2:5000/api',
+          'http://192.168.254.203:5000/api',
+          'http://127.0.0.1:5000/api'
+        ] : ['http://localhost:5000/api'];
+
+        let response;
+        
+        for (const API_BASE_URL of API_URLS) {
+          try {
+            response = await fetch(`${API_BASE_URL}/cities`);
+            if (response.ok) {
+              break;
+            }
+          } catch (error) {
+            continue;
+          }
+        }
+        
+        if (response?.ok) {
+          const result = await response.json();
+          if (result.success && result.cities) {
+            const cityNames = result.cities.map(city => city.name);
+            setAvailableCities(cityNames);
+          }
+        }
+      } catch (error) {
+        console.log('Could not load cities from API, using default list');
+      }
+    }
+    
     loadFonts();
+    loadCities();
+    
+    // Initialize with Manila as default city
+    setTimeout(() => {
+      fetchWeatherData('Manila');
+    }, 1000);
   }, []);
 
-  const getWeatherIcon = (condition) => {
-    const lowerCondition = condition?.toLowerCase() || '';
-    if (lowerCondition.includes('rain') || lowerCondition.includes('drizzle')) {
-      return require("../assets/images/rain.png");
-    } else if (lowerCondition.includes('cloud')) {
-      return require("../assets/images/sun.png"); // You might want a cloudy icon
-    } else {
-      return require("../assets/images/sun.png");
+  // API integration functions
+  const fetchWeatherData = async (cityName) => {
+    setLoading(true);
+    try {
+      // Call our Flask backend API with multiple URL fallbacks
+      const API_URLS = __DEV__ ? [
+        Platform.OS === 'ios' ? 'http://localhost:5000/api' : 'http://10.0.2.2:5000/api',
+        'http://192.168.254.203:5000/api',  // Your specific network IP
+        'http://127.0.0.1:5000/api'         // Local fallback
+      ] : ['http://localhost:5000/api'];
+
+      let response;
+      let lastError;
+      
+      // Try each URL until one works
+      for (const API_BASE_URL of API_URLS) {
+        try {
+          console.log(`Trying API URL: ${API_BASE_URL}`);
+          setDebugInfo(`Connecting to: ${API_BASE_URL}`);
+          
+          response = await fetch(`${API_BASE_URL}/weather/${encodeURIComponent(cityName)}`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            timeout: 10000, // 10 second timeout
+          });
+          
+          if (response.ok) {
+            setDebugInfo(`Connected successfully to: ${API_BASE_URL}`);
+            break; // Success! Exit the loop
+          } else {
+            console.log(`API URL ${API_BASE_URL} returned ${response.status}`);
+            lastError = new Error(`HTTP ${response.status}: ${response.statusText}`);
+          }
+        } catch (error) {
+          console.log(`API URL ${API_BASE_URL} failed:`, error.message);
+          setDebugInfo(`Failed: ${API_BASE_URL} - ${error.message}`);
+          lastError = error;
+          continue; // Try next URL
+        }
+      }
+      
+      if (!response || !response.ok) {
+        throw lastError || new Error('All API URLs failed');
+      }
+      
+      const result = await response.json();
+      
+      if (!result.success) {
+        throw new Error(result.error || 'Failed to fetch weather data');
+      }
+      
+      const weatherApiData = result.weatherData;
+      
+      // Update weather data state with the correct structure from our Flask API
+      setWeatherData({
+        city: weatherApiData.location,
+        condition: weatherApiData.description,
+        temperature: Math.round(weatherApiData.temperature),
+        humidity: weatherApiData.humidity,
+        windSpeed: Math.round(weatherApiData.windSpeed),
+        rainChance: weatherApiData.rainChance || 0,
+        forecast: weatherApiData.forecast || [],
+        tips: weatherApiData.tips || []
+      });
+      
+      // Fetch soil data for this city
+      fetchSoilData(cityName);
+      
+    } catch (error) {
+      console.error('Weather API Error:', error);
+      Alert.alert(
+        "Connection Error", 
+        `Could not connect to weather service for ${cityName}.\n\nPlease check:\n• Internet connection\n• Flask server is running\n• Try a different city\n\nError: ${error.message}`
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
-  const getAssessmentColor = (level) => {
-    switch (level) {
-      case 'optimal':
-      case 'good':
-      case 'light':
-      case 'calm':
-        return '#4CAF50'; // Green
-      case 'cool':
-      case 'low':
-      case 'moderate':
-        return '#FF9800'; // Orange
-      case 'hot':
-      case 'high':
-      case 'none':
-        return '#FF5722'; // Red-Orange
-      case 'very_hot':
-      case 'heavy':
-      case 'strong':
-        return '#F44336'; // Red
-      case 'cold':
-        return '#2196F3'; // Blue
-      default:
-        return '#757575'; // Grey
+  const fetchSoilData = async (cityName) => {
+    try {
+      // Try multiple API URLs for soil data
+      const API_URLS = __DEV__ ? [
+        Platform.OS === 'ios' ? 'http://localhost:5000/api' : 'http://10.0.2.2:5000/api',
+        'http://192.168.254.203:5000/api',  // Your specific network IP
+        'http://127.0.0.1:5000/api'         // Local fallback
+      ] : ['http://localhost:5000/api'];
+
+      let response;
+      
+      // Try each URL until one works
+      for (const API_BASE_URL of API_URLS) {
+        try {
+          response = await fetch(`${API_BASE_URL}/soil/${encodeURIComponent(cityName)}`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            timeout: 15000, // 15 second timeout for soil data (can be slower)
+          });
+          
+          if (response.ok) {
+            break; // Success! Exit the loop
+          }
+        } catch (error) {
+          console.log(`Soil API URL ${API_BASE_URL} failed:`, error.message);
+          continue; // Try next URL
+        }
+      }
+      
+      if (response?.ok) {
+        const result = await response.json();
+        if (result.success && result.soilData) {
+          // Format soil data for display
+          const formattedSoilData = {};
+          Object.entries(result.soilData).forEach(([key, value]) => {
+            if (key === 'pH Level') {
+              formattedSoilData.pH = value;
+            } else if (key === 'Organic Carbon') {
+              formattedSoilData.organicCarbon = value;
+            } else if (key === 'Clay Content') {
+              formattedSoilData.clay = value;
+            } else if (key === 'Sand Content') {
+              formattedSoilData.sand = value;
+            }
+          });
+          setSoilData(formattedSoilData);
+        }
+      }
+    } catch (error) {
+      console.error('Soil API Error:', error);
+      // Soil data is optional, so we don't show an error to the user
     }
   };
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { 
-      weekday: 'short',
-      month: 'numeric', 
-      day: 'numeric' 
-    });
+  const handleCitySearch = (city) => {
+    setShowCitySearch(false);
+    if (city?.trim()) {
+      fetchWeatherData(city.trim());
+    }
   };
+
+  const testConnection = async () => {
+    setDebugInfo('Testing connection...');
+    try {
+      await fetchWeatherData('Manila'); // Test with Manila
+    } catch (error) {
+      setDebugInfo(`Connection test failed: ${error.message}`);
+    }
+  };
+
+  // Simple API URL configuration
+
 
   if (!fontsLoaded) return null;
 
-  if (loading) {
-    return (
-      <View style={[styles.container, styles.centered]}>
-        <ActivityIndicator size="large" color="#007AFF" />
-        <Text style={styles.loadingText}>Loading weather data...</Text>
-      </View>
-    );
-  }
-
-  if (error) {
-    return (
-      <View style={[styles.container, styles.centered]}>
-        <Text style={styles.errorText}>Error: {error}</Text>
-        <TouchableOpacity style={styles.retryButton} onPress={refetch}>
-          <Text style={styles.retryButtonText}>Retry</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  }
-
-  // Simple API URL configuration
   return (
-    <>
-    <ScrollView 
-      style={styles.container} 
-      contentContainerStyle={styles.scrollContent}
-      refreshControl={
-        <RefreshControl refreshing={loading} onRefresh={refetch} />
-      }
-    >
+    <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}>
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
           <Text style={styles.backIcon}>←</Text>
           <Text style={styles.backText}>Back</Text>
         </TouchableOpacity>
-        
-        <TouchableOpacity 
-          onPress={() => setShowCityModal(true)} 
-          style={styles.searchButton}
-        >
-          <Text style={styles.searchIcon}>🔍</Text>
-          <Text style={styles.searchText}>Search City</Text>
-        </TouchableOpacity>
       </View>
 
       {/* Title */}
       <Text style={styles.title}>Weather & Analysis</Text>
 
-      {/* Current Weather Card - Using Real Data */}
+      {/* City Search Section - moved below title */}
+      <View style={styles.section}>
+        <TouchableOpacity 
+          style={styles.searchButton}
+          onPress={() => setShowCitySearch(true)}
+        >
+          <Text style={styles.searchButtonText}>🔍 Search City Weather</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Current Weather Card - Blue Design */}
       <View style={styles.currentWeatherCard}>
-        <Text style={styles.weatherLocation}>Current Location</Text>
-        <Text style={styles.weatherCity}>{weatherData?.city || 'Unknown City'}</Text>
-        <Text style={styles.weatherCondition}>
-          {weatherData?.current?.description?.replace(/^\w/, c => c.toUpperCase()) || 'Unknown'}
-        </Text>
+        <Text style={styles.weatherLocation}>My Location</Text>
+        <Text style={styles.weatherCity}>{weatherData.city}</Text>
+        <Text style={styles.weatherCondition}>{weatherData.condition}</Text>
 
         <View style={styles.temperatureSection}>
-          <Text style={styles.temperature}>{weatherData?.current?.temperature || 0}°C</Text>
+          <Text style={styles.temperature}>{weatherData.temperature}°C</Text>
         </View>
 
         <View style={styles.weatherDetails}>
           <View style={styles.weatherDetailItem}>
             <Text style={styles.weatherDetailLabel}>Humidity</Text>
-            <Text style={styles.weatherDetailValue}>{weatherData?.current?.humidity || 0}%</Text>
+            <Text style={styles.weatherDetailValue}>{weatherData.humidity}%</Text>
           </View>
           <View style={styles.weatherDetailItem}>
             <Text style={styles.weatherDetailLabel}>Wind</Text>
-            <Text style={styles.weatherDetailValue}>
-              {weatherData?.current?.wind_speed ? `${(weatherData.current.wind_speed * 3.6).toFixed(1)} km/h` : '0 km/h'}
-            </Text>
+            <Text style={styles.weatherDetailValue}>{weatherData.windSpeed} km/h</Text>
           </View>
           <View style={styles.weatherDetailItem}>
-            <Text style={styles.weatherDetailLabel}>Rain</Text>
-            <Text style={styles.weatherDetailValue}>{weatherData?.current?.rain || 0} mm</Text>
+            <Text style={styles.weatherDetailLabel}>Rain Chance</Text>
+            <Text style={styles.weatherDetailValue}>{weatherData.rainChance}%</Text>
           </View>
         </View>
       </View>
 
-      {/* 3-Day Forecast - Using Real Data */}
+      {/* Display soil data if available */}
+      {soilData && (
+        <View style={styles.soilDataCard}>
+          <Text style={styles.soilDataTitle}>Soil Analysis for {weatherData.city}</Text>
+          <View style={styles.soilDataGrid}>
+            {soilData.pH && (
+              <View style={styles.soilDataItem}>
+                <Text style={styles.soilDataLabel}>pH Level</Text>
+                <Text style={styles.soilDataValue}>{soilData.pH}</Text>
+              </View>
+            )}
+            {soilData.organicCarbon && (
+              <View style={styles.soilDataItem}>
+                <Text style={styles.soilDataLabel}>Organic Carbon</Text>
+                <Text style={styles.soilDataValue}>{soilData.organicCarbon} g/kg</Text>
+              </View>
+            )}
+            {soilData.clay && (
+              <View style={styles.soilDataItem}>
+                <Text style={styles.soilDataLabel}>Clay Content</Text>
+                <Text style={styles.soilDataValue}>{soilData.clay}%</Text>
+              </View>
+            )}
+            {soilData.sand && (
+              <View style={styles.soilDataItem}>
+                <Text style={styles.soilDataLabel}>Sand Content</Text>
+                <Text style={styles.soilDataValue}>{soilData.sand}%</Text>
+              </View>
+            )}
+          </View>
+        </View>
+      )}
+
+      {/* 3-Day Forecast */}
       <View style={styles.section}>
         <View style={styles.forecastHeader}>
           <Text style={styles.sectionTitle}>3-Day Forecast</Text>
-          <Text style={styles.forecastHeaderDate}>
-            as of {new Date().toLocaleDateString('en-US', { 
-              month: 'numeric', 
-              day: 'numeric', 
-              year: 'numeric' 
-            })}
+          <Text style={styles.forecastDate}>
+            as of {new Date().toLocaleDateString('en-US', { month: 'numeric', day: 'numeric', year: 'numeric' })}
           </Text>
         </View>
-        <View style={styles.forecastContainer}>
-          {weatherData?.forecast?.slice(0, 3).map((day, index) => (
-            <View key={index} style={[
-              styles.forecastItem,
-              index === 2 && styles.lastForecastItem
-            ]}>
-              <View style={styles.forecastLeftSection}>
-                <Text style={styles.forecastDay}>
-                  {index === 0 ? 'Today' : formatDate(day.date).split(' ')[0]}
-                </Text>
-                <Text style={styles.forecastDate}>
-                  {index === 0 ? formatDate(new Date().toISOString()).replace(/^\w+\s/, '') : formatDate(day.date).replace(/^\w+\s/, '')}
-                </Text>
-              </View>
-              
-              <View style={styles.forecastCenterSection}>
+        <View style={styles.forecastContainerCustom}>
+          {weatherData.forecast.map((item, index) => (
+            <View key={`${item.day}-${item.tempRange}-${index}`} style={styles.forecastItemCustom}>
+              <View style={styles.forecastLeft}>
+                <Text style={styles.forecastDayCustom}>{item.day}</Text>
                 <Image 
-                  source={getWeatherIcon(day.condition)} 
-                  style={[
-                    styles.forecastIcon,
-                    day.condition?.toLowerCase().includes('rain') && styles.rainIcon
-                  ]} 
+                  source={item.icon === 'rain' 
+                    ? require("../assets/images/rain.png") 
+                    : require("../assets/images/sun.png")} 
+                  style={item.icon === 'rain' ? styles.forecastIcon2 : styles.forecastIcon} 
                 />
               </View>
-              
-              <View style={styles.forecastRightSection}>
-                <Text style={styles.forecastCondition}>
-                  {day.condition?.replace(/^\w/, c => c.toUpperCase()) || 'Unknown'}
-                </Text>
-                <Text style={styles.forecastTemp}>
-                  {Math.round(day.temp_min)}°C - {Math.round(day.temp_max)}°C
-                </Text>
+              <View style={styles.forecastRight}>
+                <Text style={styles.forecastConditionCustom}>{item.condition}</Text>
+                <Text style={styles.forecastTempCustom}>{item.tempRange}</Text>
               </View>
-            </View>
-          )) || (
-            // Fallback if no forecast data
-            [1, 2, 3].map((day, index) => (
-              <View key={index} style={[
-                styles.forecastItem,
-                index === 2 && styles.lastForecastItem
-              ]}>
-                <View style={styles.forecastLeftSection}>
-                  <Text style={styles.forecastDay}>Day {day}</Text>
-                  <Text style={styles.forecastDate}>Aug {24 + index}</Text>
-                </View>
-                
-                <View style={styles.forecastCenterSection}>
-                  <Image source={require("../assets/images/sun.png")} style={styles.forecastIcon} />
-                </View>
-                
-                <View style={styles.forecastRightSection}>
-                  <Text style={styles.forecastCondition}>No data</Text>
-                  <Text style={styles.forecastTemp}>-- °C</Text>
-                </View>
-              </View>
-            ))
-          )}
-        </View>
-      </View>
-
-      {/* Agricultural Assessment - Using Real Data */}
-      {weatherData?.agricultural_assessment && (
-        <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { marginTop: 10, fontSize: 20, fontFamily: "Poppins-Bold" }]}>
-            Agricultural Weather Assessment
-          </Text>
-          
-          {Object.entries(weatherData.agricultural_assessment).map(([key, assessment]) => (
-            <View key={key} style={[styles.advisoryCard, { backgroundColor: '#f8f8f8' }]}>
-              <Text style={[styles.advisoryTitle, { color: getAssessmentColor(assessment.level) }]}>
-                {key.charAt(0).toUpperCase() + key.slice(1)} Status
-              </Text>
-              <Text style={styles.advisoryDescription}>
-                {assessment.message}
-              </Text>
             </View>
           ))}
         </View>
-      )}
+      </View>
 
-      {/* Farming Recommendations - Using Real Data */}
-      {weatherData?.farming_recommendations && (
-        <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { marginTop: 10, fontSize: 20, fontFamily: "Poppins-Bold" }]}>
-            Today's Farming Recommendations
-          </Text>
-          
-          <View style={[styles.advisoryCard, { backgroundColor: "#ecfadc" }]}>
-            <Text style={[styles.advisoryTitle, { color: "#0a8701" }]}>Farming Advisory</Text>
-            <Text style={styles.advisoryDescription}>
-              {weatherData.farming_recommendations.map((rec, index) => 
-                `• ${rec.replace('• ', '')}`
-              ).join('\n')}
-            </Text>
-          </View>
-        </View>
-      )}
+      {/* Agricultural Weather Assessment */}
+      <View style={styles.section}>
+        <Text style={[styles.sectionTitle, { marginTop: 10, fontSize: 20, fontFamily: "Poppins-Bold" }]}>Agricultural Weather Assessment</Text>
+        {/* Tips from API */}
+        {weatherData.tips && weatherData.tips.length > 0 ? (
+          weatherData.tips.map((tip, idx) => (
+            <View key={idx} style={[styles.advisoryCard, { backgroundColor: idx % 2 === 0 ? "#ffb6c1" : "#ecfadc" }]}> 
+              <Text style={styles.advisoryTitle}>{tip.title}</Text>
+              <Text style={styles.advisoryDescription}>{tip.description}</Text>
+            </View>
+          ))
+        ) : (
+          <Text style={styles.advisoryDescription}>No assessment available for current weather.</Text>
+        )}
+      </View>
 
       <View style={styles.section}>
-  <Text
-    style={[
-      styles.sectionTitle,
-      {
-        fontSize: 20,
-        fontFamily: "Poppins-SemiBold",
-        marginTop: 30,
-      },
-    ]}
-  >
-    Find more Crop Care tips and sustainable farming practices in Study Hub.
-  </Text>
+        <Text
+          style={[
+            styles.sectionTitle,
+            {
+              fontSize: 20,
+              fontFamily: "Poppins-SemiBold",
+              marginTop: 30,
+            },
+          ]}
+        >
+          Find more Crop Care tips and sustainable farming practices in Study Hub.
+        </Text>
 
-  {/* Card (display only, not clickable) */}
-  <View style={styles.studyHubCard}>
-    <Image
-      source={require("../assets/images/study-hub.png")}
-      style={styles.studyHubIcon}
-    />
-    <View style={styles.studyHubContent}>
-      <Text style={styles.studyHubTitle}>Study Hub</Text>
-      <Text style={styles.studyHubSubtitle}>
-      Learn tips and how-tos from AgriAngat videos and the AgriAngat Assistant      </Text>
-    </View>
-  </View>
+        {/* Card (display only, not clickable) */}
+        <View style={styles.studyHubCard}>
+          <Image
+            source={require("../assets/images/study-hub.png")}
+            style={styles.studyHubIcon}
+          />
+          <View style={styles.studyHubContent}>
+            <Text style={styles.studyHubTitle}>Study Hub</Text>
+            <Text style={styles.studyHubSubtitle}>
+            Learn tips and how-tos from AgriAngat videos and the AgriAngat Assistant      </Text>
+          </View>
+        </View>
 
-  {/* Learn More button → navigates to Study Hub */}
-  <TouchableOpacity
-    style={styles.learnMoreButton}
-    onPress={() => router.push("/study-hub-videos")}
-  >
-    <Text style={styles.learnMoreText}>Learn More</Text>
-  </TouchableOpacity>
-</View>
-    </ScrollView>
+        {/* Learn More button → navigates to Study Hub */}
+        <TouchableOpacity
+          style={styles.learnMoreButton}
+          onPress={() => router.push("/study-hub-videos")}
+        >
+          <Text style={styles.learnMoreText}>Learn More</Text>
+        </TouchableOpacity>
+      </View>
 
-    {/* City Selection Modal */}
-    <Modal
-      visible={showCityModal}
-      animationType="slide"
-      transparent={true}
-      onRequestClose={() => setShowCityModal(false)}
-    >
-      <View style={styles.modalOverlay}>
-        <View style={styles.modalContent}>
+      {/* City Search Modal */}
+      <Modal
+        visible={showCitySearch}
+        animationType="slide"
+        presentationStyle="pageSheet"
+        onRequestClose={() => setShowCitySearch(false)}
+      >
+        <View style={styles.modalContainer}>
           <View style={styles.modalHeader}>
-            <Text style={styles.modalTitle}>Select City</Text>
+            <Text style={styles.modalTitle}>Select Philippine City</Text>
             <TouchableOpacity 
-              onPress={() => setShowCityModal(false)}
               style={styles.closeButton}
+              onPress={() => setShowCitySearch(false)}
             >
-              <Text style={styles.closeButtonText}>×</Text>
+              <Text style={styles.closeButtonText}>✕</Text>
             </TouchableOpacity>
           </View>
-          
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Search for a city..."
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-            placeholderTextColor="#999"
-          />
-          
-          <FlatList
-            data={filteredCities}
-            keyExtractor={(item) => item}
-            style={styles.cityList}
-            renderItem={({ item }) => (
+
+          <View style={styles.searchInputContainer}>
+            <TextInput
+              style={styles.searchInput}
+              placeholder="Type city name..."
+              value={searchCity}
+              onChangeText={setSearchCity}
+              placeholderTextColor="#999"
+            />
+          </View>
+
+          <ScrollView style={styles.citiesContainer}>
+            {availableCities
+              .filter(city => city.toLowerCase().includes(searchCity.toLowerCase()))
+              .map((city, index) => (
               <TouchableOpacity
-                style={[
-                  styles.cityItem,
-                  selectedCity === item && styles.selectedCityItem
-                ]}
-                onPress={() => {
-                  setSelectedCity(item);
-                  setShowCityModal(false);
-                  setSearchQuery("");
-                }}
+                key={`${city}-${index}`}
+                style={styles.cityItem}
+                onPress={() => handleCitySearch(city)}
+                disabled={loading}
               >
-                <Text style={[
-                  styles.cityText,
-                  selectedCity === item && styles.selectedCityText
-                ]}>
-                  {item.charAt(0).toUpperCase() + item.slice(1)}
-                </Text>
-                {selectedCity === item && (
-                  <Text style={styles.checkmark}>✓</Text>
+                <Text style={styles.cityItemText}>{city}</Text>
+                {loading && searchCity === city && (
+                  <ActivityIndicator size="small" color="#007AFF" />
                 )}
               </TouchableOpacity>
-            )}
-            showsVerticalScrollIndicator={false}
-          />
+            ))}
+          </ScrollView>
+
+          {loading && (
+            <View style={styles.loadingContainer}>
+              <ActivityIndicator size="large" color="#007AFF" />
+              <Text style={styles.loadingText}>Fetching weather data...</Text>
+            </View>
+          )}
         </View>
-      </View>
-    </Modal>
-    </>
+      </Modal>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
+  forecastContainerCustom: {
+    flexDirection: 'column',
+    gap: 12,
+    marginHorizontal: 20,
+    marginTop: 10,
+  },
+  forecastItemCustom: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#eaf6ff',
+    borderRadius: 12,
+    padding: 12,
+    paddingHorizontal: 6,
+    marginBottom: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.08,
+    shadowRadius: 2,
+    elevation: 1,
+  },
+  forecastLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+    gap: 8,
+  },
+  forecastRight: {
+    flex: 2,
+    flexDirection: 'column',
+    alignItems: 'flex-end',
+    gap: 2,
+  },
+  forecastDayCustom: {
+    fontSize: 16,
+    fontFamily: 'Poppins-Bold',
+    color: '#007AFF',
+    marginRight: 8,
+  },
+  forecastConditionCustom: {
+    fontSize: 15,
+    fontFamily: 'Poppins-Regular',
+    color: '#333',
+  },
+  forecastTempCustom: {
+    fontSize: 15,
+    fontFamily: 'Poppins-SemiBold',
+    color: '#007AFF',
+  },
   container: {
     flex: 1,
     backgroundColor: "#fff",
   },
-  centered: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   scrollContent: {
     paddingBottom: 40,
   },
-  loadingText: {
-    marginTop: 16,
-    fontSize: 16,
-    fontFamily: "Poppins-Regular",
-    color: "#666",
-  },
-  errorText: {
-    fontSize: 16,
-    fontFamily: "Poppins-Regular",
-    color: "#F44336",
-    textAlign: 'center',
-    marginBottom: 16,
-    paddingHorizontal: 20,
-  },
-  retryButton: {
-    backgroundColor: "#007AFF",
-    borderRadius: 25,
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-  },
-  retryButtonText: {
-    fontSize: 14,
-    fontFamily: "Poppins-Bold",
-    color: "#fff",
-  },
   header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
     paddingHorizontal: 16,
     paddingTop: 60,
     paddingBottom: 20,
@@ -461,6 +607,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     padding: 20,
     marginBottom: 25,
+    marginTop: -20
   },
   weatherLocation: {
     fontSize: 12,
@@ -488,7 +635,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   temperature: {
-    fontSize: 40,
+    fontSize: 48,
     fontFamily: "Poppins-SemiBold",
     color: "#fff",
     marginLeft: 180,
@@ -519,100 +666,63 @@ const styles = StyleSheet.create({
     marginBottom: 25,
   },
   sectionTitle: {
-    fontSize: 18,
+    fontSize: 12,
     fontFamily: "Poppins-Bold",
     color: "#111",
-    marginBottom: 12,
+    marginBottom: 10,
   },
   forecastHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginTop: 2,
-    marginBottom: 5,
-  },
-  forecastHeaderDate: {
-    fontSize: 14,
-    fontFamily: "Poppins-Regular",
-    color: "#666",
-    fontStyle: "italic",
-  },
-  forecastContainer: {
-    backgroundColor: "transparent",
-    borderRadius: 12,
-    padding: 4,
-    paddingVertical: -5,
-    marginTop: -5,
-    marginBottom: 15,
-  },
-  forecastItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingVertical: 12,
-    paddingHorizontal: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: "#e0e0e0",
-    backgroundColor: "#f8f8f8",
-    borderRadius: 8,
-    marginBottom: 4,
-    minHeight: 48,
-  },
-  lastForecastItem: {
-    borderBottomWidth: 0,
-    marginBottom: 0,
-  },
-  forecastLeftSection: {
-    flex: 2,
-    alignItems: "flex-start",
-  },
-  forecastCenterSection: {
-    flex: 1,
-    alignItems: "center",
-    paddingVertical: 2,
-  },
-  forecastRightSection: {
-    flex: 2,
-    alignItems: "flex-end",
-  },
-  forecastDay: {
-    fontSize: 16,
-    fontFamily: "Poppins-Bold",
-    color: "#333",
-    marginBottom: 1,
+    marginBottom: 10,
   },
   forecastDate: {
     fontSize: 12,
     fontFamily: "Poppins-Regular",
     color: "#666",
+    fontStyle: "italic",
+  },
+  forecastContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    gap: 12,
+  },
+  forecastItem: {
+    flex: 1,
+    backgroundColor: "#f9f9f9",
+    borderRadius: 12,
+    padding: 15,
+    alignItems: "center",
+  },
+  forecastDay: {
+    fontSize: 14,
+    fontFamily: "Poppins-Bold",
+    color: "#333",
+    marginBottom: 8,
   },
   forecastIcon: {
     width: 32,
-    height: 36,
-    resizeMode: 'contain',
+    height: 32,
+    marginBottom: 8,
   },
   forecastIcon2: {
     width: 32,
-    height: 40,
-    resizeMode: 'contain',
-  },
-  rainIcon: {
-    width: 34,
-    height: 38,
-    resizeMode: 'contain',
+    height: 43,
+    marginBottom: 8,
   },
   forecastCondition: {
-    fontSize: 14,
-    fontFamily: "Poppins-SemiBold",
-    color: "#333",
-    textAlign: "right",
-    marginBottom: 1,
-  },
-  forecastTemp: {
     fontSize: 12,
     fontFamily: "Poppins-Regular",
     color: "#666",
-    textAlign: "right",
+    textAlign: "center",
+    marginBottom: 4,
+  },
+  forecastTemp: {
+    fontSize: 12,
+    fontFamily: "Poppins-Bold",
+    color: "#111",
+    textAlign: "center",
   },
   advisoryCard: {
     backgroundColor: "#f8f8f8",
@@ -672,41 +782,76 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins-Bold",
     color: "#fff",
   },
-  searchButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#007AFF",
-    borderRadius: 20,
-    paddingHorizontal: 15,
-    paddingVertical: 8,
-  },
-  searchIcon: {
-    fontSize: 16,
-    marginRight: 6,
-  },
-  searchText: {
+  searchDescription: {
     fontSize: 14,
-    color: "#fff",
-    fontFamily: "Poppins-SemiBold",
+    fontFamily: "Poppins-Regular",
+    color: "#666",
+    marginBottom: 15,
+    lineHeight: 18,
   },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    justifyContent: "center",
+  searchButton: {
+    backgroundColor: "#007AFF",
+    borderRadius: 9999,
+    paddingVertical: 14,
+    paddingHorizontal: 20,
+    alignItems: "center",
+    marginBottom: 20,
+    marginTop: -15,
+  },
+  searchButtonText: {
+    fontSize: 16,
+    fontFamily: "Poppins-SemiBold",
+    color: "#fff",
+  },
+  soilDataCard: {
+    backgroundColor: "#f8f8f8",
+    borderRadius: 12,
+    padding: 16,
+    marginTop: 10,
+  },
+  soilDataTitle: {
+    fontSize: 16,
+    fontFamily: "Poppins-Bold",
+    color: "#111",
+    marginBottom: 12,
+  },
+  soilDataGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+  },
+  soilDataItem: {
+    width: "48%",
+    backgroundColor: "#fff",
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 8,
     alignItems: "center",
   },
-  modalContent: {
+  soilDataLabel: {
+    fontSize: 12,
+    fontFamily: "Poppins-Regular",
+    color: "#666",
+    marginBottom: 4,
+  },
+  soilDataValue: {
+    fontSize: 16,
+    fontFamily: "Poppins-Bold",
+    color: "#111",
+  },
+  modalContainer: {
+    flex: 1,
     backgroundColor: "#fff",
-    borderRadius: 16,
-    width: "90%",
-    maxHeight: "80%",
-    padding: 20,
   },
   modalHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 20,
+    paddingHorizontal: 20,
+    paddingTop: 60,
+    paddingBottom: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: "#eee",
   },
   modalTitle: {
     fontSize: 20,
@@ -718,13 +863,16 @@ const styles = StyleSheet.create({
     height: 32,
     borderRadius: 16,
     backgroundColor: "#f0f0f0",
-    justifyContent: "center",
     alignItems: "center",
+    justifyContent: "center",
   },
   closeButtonText: {
-    fontSize: 20,
+    fontSize: 18,
     color: "#666",
-    fontFamily: "Poppins-Regular",
+  },
+  searchInputContainer: {
+    paddingHorizontal: 20,
+    paddingVertical: 15,
   },
   searchInput: {
     borderWidth: 1,
@@ -734,35 +882,52 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     fontSize: 16,
     fontFamily: "Poppins-Regular",
-    marginBottom: 20,
+    backgroundColor: "#fff",
   },
-  cityList: {
-    maxHeight: 300,
+  citiesContainer: {
+    flex: 1,
+    paddingHorizontal: 20,
   },
   cityItem: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingVertical: 12,
+    paddingVertical: 15,
     paddingHorizontal: 16,
-    borderRadius: 8,
-    marginBottom: 4,
+    borderBottomWidth: 1,
+    borderBottomColor: "#eee",
   },
-  selectedCityItem: {
-    backgroundColor: "#e3f2fd",
-  },
-  cityText: {
+  cityItemText: {
     fontSize: 16,
     fontFamily: "Poppins-Regular",
-    color: "#333",
+    color: "#111",
   },
-  selectedCityText: {
-    color: "#007AFF",
-    fontFamily: "Poppins-SemiBold",
+  loadingContainer: {
+    alignItems: "center",
+    paddingVertical: 20,
   },
-  checkmark: {
+  loadingText: {
+    fontSize: 14,
+    fontFamily: "Poppins-Regular",
+    color: "#666",
+    marginTop: 10,
+  },
+  controlButton: {
+    backgroundColor: "#0066cc",
+    borderRadius: 12,
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    alignItems: "center",
+    marginHorizontal: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  controlButtonText: {
     fontSize: 16,
-    color: "#007AFF",
-    fontFamily: "Poppins-Bold",
+    fontFamily: "Poppins-SemiBold",
+    color: "#fff",
   },
 });
