@@ -27,7 +27,7 @@ export default function WeatherAnalysisScreen() {
             try {
               const API_URLS = __DEV__ ? [
                 Platform.OS === 'ios' ? 'http://localhost:5000/api' : 'http://10.0.2.2:5000/api',
-                'http://192.168.254.203:5000/api',
+                'http://192.168.254.205:5000/api',
                 'http://127.0.0.1:5000/api'
               ] : ['http://localhost:5000/api'];
               let response;
@@ -97,7 +97,7 @@ export default function WeatherAnalysisScreen() {
       try {
         const API_URLS = __DEV__ ? [
           Platform.OS === 'ios' ? 'http://localhost:5000/api' : 'http://10.0.2.2:5000/api',
-          'http://192.168.254.203:5000/api',
+          'http://192.168.254.205:5000/api',
           'http://127.0.0.1:5000/api'
         ] : ['http://localhost:5000/api'];
 
@@ -142,7 +142,7 @@ export default function WeatherAnalysisScreen() {
       // Call our Flask backend API with multiple URL fallbacks
       const API_URLS = __DEV__ ? [
         Platform.OS === 'ios' ? 'http://localhost:5000/api' : 'http://10.0.2.2:5000/api',
-        'http://192.168.254.203:5000/api',  // Your specific network IP
+        'http://192.168.254.205:5000/api',  // Updated IP address to match server output
         'http://127.0.0.1:5000/api'         // Local fallback
       ] : ['http://localhost:5000/api'];
 
@@ -207,9 +207,14 @@ export default function WeatherAnalysisScreen() {
       
     } catch (error) {
       console.error('Weather API Error:', error);
+      console.log('Full error details:', {
+        message: error.message,
+        stack: error.stack,
+        name: error.name
+      });
       Alert.alert(
         "Connection Error", 
-        `Could not connect to weather service for ${cityName}.\n\nPlease check:\n• Internet connection\n• Flask server is running\n• Try a different city\n\nError: ${error.message}`
+        `Could not connect to weather service for ${cityName}.\n\nPlease check:\n• Internet connection\n• Flask server is running\n• Try a different city\n\nError: ${error.message}\n\nDebug: ${debugInfo}`
       );
     } finally {
       setLoading(false);
@@ -221,7 +226,7 @@ export default function WeatherAnalysisScreen() {
       // Try multiple API URLs for soil data
       const API_URLS = __DEV__ ? [
         Platform.OS === 'ios' ? 'http://localhost:5000/api' : 'http://10.0.2.2:5000/api',
-        'http://192.168.254.203:5000/api',  // Your specific network IP
+        'http://192.168.254.205:5000/api',  // Updated IP address to match server output
         'http://127.0.0.1:5000/api'         // Local fallback
       ] : ['http://localhost:5000/api'];
 
@@ -305,6 +310,17 @@ export default function WeatherAnalysisScreen() {
 
       {/* Title */}
       <Text style={styles.title}>Weather & Analysis</Text>
+
+      {/* Debug Section - Add this temporarily for testing */}
+      <View style={styles.section}>
+        <TouchableOpacity 
+          style={styles.controlButton}
+          onPress={testConnection}
+        >
+          <Text style={styles.controlButtonText}>🔧 Test Connection</Text>
+        </TouchableOpacity>
+        <Text style={styles.debugText}>Debug: {debugInfo}</Text>
+      </View>
 
       {/* City Search Section - moved below title */}
       <View style={styles.section}>
@@ -941,5 +957,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: "Poppins-SemiBold",
     color: "#fff",
+  },
+  debugText: {
+    fontSize: 12,
+    fontFamily: "Poppins-Regular",
+    color: "#666",
+    marginTop: 8,
+    padding: 8,
+    backgroundColor: "#f0f0f0",
+    borderRadius: 4,
   },
 });
