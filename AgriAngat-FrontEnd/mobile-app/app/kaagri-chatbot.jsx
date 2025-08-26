@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+/* Kaagri-chatbot.jsx */
+import React, { useEffect, useState, useRef } from "react";
 import {
   View,
   Text,
@@ -8,40 +9,111 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Platform,
+  Alert,
+  ActivityIndicator,
 } from "react-native";
 import * as Font from "expo-font";
 import { useRouter } from "expo-router";
 
+// KaAgri API Configuration
+const API_BASE_URL = 'http://192.168.50.114:5001/api';
+
 export default function KaAgriChatbotScreen() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
   const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState([
-    {
-      id: 1,
-      text: "Hi! 👋 Ako si KaAgri, ang inyong AgriAngat AI assistant.",
-      sender: "bot",
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    },
-    {
-      id: 2,
-      text: "Pwede mo akong tanungin tungkol sa tanim, panahon, o loan tips para sa inyong sakahan.",
-      sender: "bot",
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    },
-    {
-      id: 3,
-      text: "Mataas pa ba interest kapag umutang ngayon?",
-      sender: "user",
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    },
-    {
-      id: 4,
-      text: "Sa ngayon, normal pa ang loan rates. Pero may forecast na 2 bagyo sa susunod na buwan, kaya mainam mag-loan bago pumasok ang mas matinding ulan.",
-      sender: "bot",
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    }
-  ]);
+  const [messages, setMessages] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isInitializing, setIsInitializing] = useState(true);
+  const [environmentalData, setEnvironmentalData] = useState(null);
+  const scrollViewRef = useRef(null);
   const router = useRouter();
+
+  // API Service Functions
+  const initializeChat = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/chat/history`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        setMessages(data.history);
+        setEnvironmentalData(data.environmental_data);
+        console.log('✅ Chat initialized with KaAgri API');
+      } else {
+        throw new Error(data.error || 'Failed to initialize chat');
+      }
+    } catch (error) {
+      console.error('❌ Failed to initialize chat:', error);
+      // Fallback to welcome message if API fails
+      setMessages([{
+        id: 1,
+        text: "Hi! 👋 Ako si KaAgri, ang inyong AgriAngat AI assistant.",
+        sender: "bot",
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      }]);
+      Alert.alert(
+        'Connection Error', 
+        'Unable to connect to KaAgri AI. Using offline mode.',
+        [{ text: 'OK' }]
+      );
+    } finally {
+      setIsInitializing(false);
+    }
+  };
+
+  const sendMessageToAPI = async (userMessage) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/chat`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: userMessage }),
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        // Update messages with both user and bot messages
+        setMessages(prev => [...prev, data.user_message, data.bot_response]);
+        setEnvironmentalData(data.environmental_data);
+        console.log('✅ Message sent to KaAgri API');
+      } else {
+        throw new Error(data.error || 'Failed to send message');
+      }
+    } catch (error) {
+      console.error('❌ Failed to send message:', error);
+      
+      // Add user message even if API fails
+      const userMsg = {
+        id: messages.length + 1,
+        text: userMessage,
+        sender: "user",
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      };
+      
+      // Generate fallback response
+      const fallbackResponse = {
+        id: messages.length + 2,
+        text: "Pasensya na, may problema sa connection sa KaAgri AI. Subukan ninyo ulit mamaya.",
+        sender: "bot",
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      };
+      
+      setMessages(prev => [...prev, userMsg, fallbackResponse]);
+      
+      Alert.alert(
+        'Connection Error',
+        'Unable to reach KaAgri AI. Please check your internet connection.',
+        [{ text: 'OK' }]
+      );
+    }
+  };
 
   useEffect(() => {
     async function loadFonts() {
@@ -55,6 +127,22 @@ export default function KaAgriChatbotScreen() {
     loadFonts();
   }, []);
 
+  useEffect(() => {
+    // Initialize chat when fonts are loaded
+    if (fontsLoaded) {
+      initializeChat();
+    }
+  }, [fontsLoaded]);
+
+  useEffect(() => {
+    // Auto-scroll to bottom when new messages arrive
+    if (scrollViewRef.current && messages.length > 0) {
+      setTimeout(() => {
+        scrollViewRef.current.scrollToEnd({ animated: true });
+      }, 100);
+    }
+  }, [messages]);
+
   if (!fontsLoaded) return null;
 
   const quickQuestions = [
@@ -66,54 +154,35 @@ export default function KaAgriChatbotScreen() {
     "Weather impact on crops?"
   ];
 
-  const handleSendMessage = () => {
-    if (message.trim() === "") return;
+  const handleSendMessage = async () => {
+    if (message.trim() === "" || isLoading) return;
 
-    const newUserMessage = {
-      id: messages.length + 1,
-      text: message,
-      sender: "user",
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    };
-
-    setMessages(prev => [...prev, newUserMessage]);
+    const userMessage = message.trim();
     setMessage("");
+    setIsLoading(true);
 
-    // Simulate bot response
-    setTimeout(() => {
-      const botResponse = generateBotResponse(message);
-      const newBotMessage = {
-        id: messages.length + 2,
-        text: botResponse,
-        sender: "bot",
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      };
-      setMessages(prev => [...prev, newBotMessage]);
-    }, 1000);
-  };
-
-  const generateBotResponse = (userMessage) => {
-    const lowerMessage = userMessage.toLowerCase();
-
-    if (lowerMessage.includes("rice") || lowerMessage.includes("planting")) {
-      return "For rice planting, the best time is during the wet season (June-July). Make sure your field is well-prepared with proper leveling and adequate water supply. Plant seedlings 20-25cm apart for optimal growth.";
-    } else if (lowerMessage.includes("pest") || lowerMessage.includes("control")) {
-      return "Natural pest control methods include: 1) Neem oil spray, 2) Companion planting with marigolds, 3) Beneficial insects like ladybugs, 4) Crop rotation. These methods are safer for both crops and environment.";
-    } else if (lowerMessage.includes("harvest") || lowerMessage.includes("corn")) {
-      return "Corn is ready for harvest when kernels are plump and milky. This usually occurs 60-100 days after planting, depending on the variety. Look for brown silks and firm kernels when pressed.";
-    } else if (lowerMessage.includes("fertilizer") || lowerMessage.includes("vegetables")) {
-      return "For vegetables, use a balanced NPK fertilizer (10-10-10) during planting, then switch to nitrogen-rich fertilizer during growth phase. Organic options include compost, chicken manure, and fish emulsion.";
-    } else if (lowerMessage.includes("soil") || lowerMessage.includes("quality")) {
-      return "Improve soil quality by: 1) Adding organic matter like compost, 2) Testing pH levels (6.0-7.0 is ideal), 3) Proper drainage, 4) Crop rotation, 5) Cover cropping during off-season.";
-    } else if (lowerMessage.includes("weather") || lowerMessage.includes("climate")) {
-      return "Weather greatly affects crops. Monitor rainfall, temperature, and humidity. Use weather forecasts to plan irrigation, pest control, and harvest timing. Consider climate-resilient varieties for your area.";
-    } else {
-      return "That's a great question! I'd be happy to help you with farming advice. Could you provide more specific details about your crop, location, or the particular challenge you're facing?";
+    try {
+      await sendMessageToAPI(userMessage);
+    } catch (error) {
+      console.error('Error in handleSendMessage:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const handleQuickQuestion = (question) => {
+  const handleQuickQuestion = async (question) => {
+    if (isLoading) return;
+    
     setMessage(question);
+    setIsLoading(true);
+    
+    try {
+      await sendMessageToAPI(question);
+    } catch (error) {
+      console.error('Error in handleQuickQuestion:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const renderMessage = (msg) => (
@@ -146,6 +215,18 @@ export default function KaAgriChatbotScreen() {
     </View>
   );
 
+  // Show loading spinner while initializing
+  if (!fontsLoaded || isInitializing) {
+    return (
+      <View style={[styles.container, styles.loadingContainer]}>
+        <ActivityIndicator size="large" color="#007AFF" />
+        <Text style={styles.loadingText}>
+          {!fontsLoaded ? "Loading fonts..." : "Connecting to KaAgri AI..."}
+        </Text>
+      </View>
+    );
+  }
+
   return (
     <KeyboardAvoidingView
       style={styles.container}
@@ -173,13 +254,37 @@ export default function KaAgriChatbotScreen() {
         </View>
       </View>
 
+      {/* Environmental Data Status */}
+      {environmentalData && (
+        <View style={styles.environmentalStatus}>
+          <Text style={styles.environmentalText}>
+            🌍 Current conditions: {environmentalData.location} - {
+              environmentalData.weather ? 
+              `${environmentalData.weather.temperature_c}°C, ${environmentalData.weather.humidity_pct}% humidity` : 
+              'Environmental data loading...'
+            }
+          </Text>
+        </View>
+      )}
+
       {/* Messages */}
       <ScrollView
+        ref={scrollViewRef}
         style={styles.messagesContainer}
         contentContainerStyle={styles.messagesContent}
         showsVerticalScrollIndicator={false}
       >
         {messages.map(renderMessage)}
+        {isLoading && (
+          <View style={styles.loadingMessage}>
+            <View style={styles.botAvatar}>
+              <ActivityIndicator size="small" color="#007AFF" />
+            </View>
+            <View style={styles.botMessage}>
+              <Text style={styles.botMessageText}>KaAgri is thinking...</Text>
+            </View>
+          </View>
+        )}
       </ScrollView>
 
       {/* Input Area */}
@@ -206,11 +311,18 @@ export default function KaAgriChatbotScreen() {
             maxLength={500}
           />
           <TouchableOpacity
-            style={[styles.sendButton, message.trim() === "" && styles.sendButtonDisabled]}
+            style={[
+              styles.sendButton, 
+              (message.trim() === "" || isLoading) && styles.sendButtonDisabled
+            ]}
             onPress={handleSendMessage}
-            disabled={message.trim() === ""}
+            disabled={message.trim() === "" || isLoading}
           >
-            <Text style={styles.sendButtonText}>➤</Text>
+            {isLoading ? (
+              <ActivityIndicator size="small" color="#fff" />
+            ) : (
+              <Text style={styles.sendButtonText}>➤</Text>
+            )}
           </TouchableOpacity>
         </View>
       </View>
@@ -222,6 +334,35 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+  },
+  loadingContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  loadingText: {
+    marginTop: 16,
+    fontSize: 16,
+    fontFamily: "Poppins-Regular",
+    color: "#666",
+  },
+  environmentalStatus: {
+    backgroundColor: "#f0f8ff",
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: "#e0e0e0",
+  },
+  environmentalText: {
+    fontSize: 12,
+    fontFamily: "Poppins-Regular",
+    color: "#007AFF",
+    textAlign: "center",
+  },
+  loadingMessage: {
+    flexDirection: "row",
+    marginBottom: 15,
+    alignItems: "flex-end",
+    justifyContent: "flex-start",
   },
   header: {
     flexDirection: "row",
