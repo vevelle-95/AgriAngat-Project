@@ -61,6 +61,50 @@ def get_weather(city_name: str, display_output: bool = True):
     
     return weather_data
 
+def get_weather_by_coordinates(lat: float, lon: float, location_name: str = None, display_output: bool = True):
+    """Get weather data using latitude and longitude coordinates"""
+    cache_key = f"{lat:.4f},{lon:.4f}"
+    if cache_key in _weather_cache:
+        if display_output:
+            _display_weather_analysis(_weather_cache[cache_key], location_name or f"{lat}, {lon}")
+        return _weather_cache[cache_key]
+
+    url = f"http://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={OWM_API_KEY}&units=metric"
+    try:
+        resp = requests.get(url, timeout=10).json()
+    except requests.RequestException as e:
+        error_data = {"error": f"Weather API request failed: {str(e)}"}
+        if display_output:
+            print(f"❌ Weather data unavailable: {error_data['error']}")
+        return error_data
+
+    if "main" not in resp:
+        error_data = {"error": "Weather API failed - invalid response"}
+        if display_output:
+            print(f"❌ Weather data unavailable: {error_data['error']}")
+        return error_data
+
+    ph_tz = timezone(timedelta(hours=8))
+    dt_ph = datetime.fromtimestamp(resp["dt"], tz=ph_tz)
+
+    weather_data = {
+        "description": resp["weather"][0]["description"],
+        "temperature_c": resp["main"]["temp"],
+        "humidity_pct": resp["main"]["humidity"],
+        "rain_mm": resp.get("rain", {}).get("1h", 0),
+        "wind_speed": resp.get("wind", {}).get("speed", 0),
+        "pressure": resp["main"]["pressure"],
+        "timestamp": dt_ph.strftime('%Y-%m-%d %H:%M:%S %Z'),
+        "city": location_name or resp.get("name", f"{lat}, {lon}"),
+        "coordinates": {"lat": lat, "lon": lon}
+    }
+    _weather_cache[cache_key] = weather_data
+
+    if display_output:
+        _display_weather_analysis(weather_data, location_name or f"{lat}, {lon}")
+    
+    return weather_data
+
 def _get_weather_forecast(city_name: str):
     """Get 3-day weather forecast"""
     url = f"http://api.openweathermap.org/data/2.5/forecast?q={city_name}&appid={OWM_API_KEY}&units=metric&cnt=24"
