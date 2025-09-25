@@ -7,12 +7,10 @@ import {
   Image,
   TouchableOpacity,
   Modal,
-  Switch,
   Alert,
 } from "react-native";
 import { useRouter } from "expo-router";
 import * as Font from "expo-font";
-import { useTheme } from "../../context/ThemeContext";
 // @ts-ignore
 import agriangatLogo from "../../assets/images/agriangat-nobg-logo.png";
 
@@ -22,7 +20,7 @@ export default function AccountScreen() {
   const [showPaymentsModal, setShowPaymentsModal] = useState(false);
   const [showTransactionsModal, setShowTransactionsModal] = useState(false);
   const [selectedPayment, setSelectedPayment] = useState("Gcash");
-  const { colors, isDark, themeMode, setThemeMode } = useTheme();
+  const [themeMode, setThemeMode] = useState("light");
   const router = useRouter();
 
   // Mock transaction data
@@ -38,6 +36,18 @@ export default function AccountScreen() {
   const getThemeDisplayText = () => {
     if (themeMode === 'system') return 'System';
     return themeMode === 'dark' ? 'Dark' : 'Light';
+  };
+
+  // Define static colors (simplified approach)
+  const colors = {
+    background: '#fff',
+    surface: '#f5f5f5',
+    card: '#fff',
+    text: '#111',
+    textSecondary: '#666',
+    textTertiary: '#9a9a9a',
+    border: '#eee',
+    primary: '#000',
   };
 
   useEffect(() => {
@@ -92,7 +102,7 @@ export default function AccountScreen() {
   return (
     <ScrollView
       style={[styles.container, { backgroundColor: colors.background }]}
-      contentContainerStyle={{ paddingBottom: 100 }} // Add padding to avoid navbar overlap
+      contentContainerStyle={{ paddingBottom: 130 }} // Add padding to avoid navbar overlap
       showsVerticalScrollIndicator={false}
     >
       {/* Header */}
@@ -117,7 +127,7 @@ export default function AccountScreen() {
           style={[styles.viewBtn, { backgroundColor: colors.primary }]}
           onPress={() => router.push("/account-info")}
         >
-          <Text style={[styles.viewBtnText, { color: isDark ? colors.background : '#fff' }]}>View More</Text>
+          <Text style={[styles.viewBtnText, { color: '#fff' }]}>View More</Text>
         </TouchableOpacity>
       </View>
 
@@ -125,14 +135,12 @@ export default function AccountScreen() {
       <View style={[styles.list, { backgroundColor: colors.card, borderColor: colors.border }]}>
         <TouchableOpacity style={[styles.row, { borderBottomColor: colors.border }]} onPress={() => setShowPaymentsModal(true)}>
           <View style={styles.rowLeft}>
-            <Image source={require("../../assets/images/payments.png")} style={[styles.rowIcon, { tintColor: colors.textSecondary }]} />
             <Text style={[styles.rowText, { color: colors.text }]}>Payments</Text>
           </View>
           <Text style={[styles.rowSub, { color: colors.textTertiary }]}>{selectedPayment} →</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.row, { borderBottomColor: colors.border }]} onPress={() => setShowTransactionsModal(true)}>
           <View style={styles.rowLeft}>
-            <Image source={require("../../assets/images/refresh.png")} style={[styles.rowIcon, { tintColor: colors.textSecondary }]} />
             <Text style={[styles.rowText, { color: colors.text }]}>Transactions</Text>
           </View>
           <Text style={[styles.rowSub, { color: colors.textTertiary }]}>→</Text>
@@ -184,27 +192,26 @@ export default function AccountScreen() {
         </TouchableOpacity>
       </View>
 
-      {/* Spacing before logout */}
-      <View style={styles.logoutSpacing} />
-
-      {/* Logout */}
-      <TouchableOpacity
-        style={[styles.row, styles.logoutRow, { borderTopColor: colors.border }]}
-        onPress={handleLogout}
-      >
-        <View style={styles.rowLeft}>
-          <Image source={require("../../assets/images/logout.png")} style={[styles.rowIcon, { tintColor: "#c0392b" }]} />
-          <Text
-            style={[
-              styles.rowText,
-              { color: "#c0392b", fontFamily: "Poppins-Bold" },
-            ]}
-          >
-            Logout
-          </Text>
-        </View>
-        <Text style={styles.rowSub}> </Text>
-      </TouchableOpacity>
+      {/* Logout Section */}
+      <View style={[styles.list, { backgroundColor: colors.card, borderColor: colors.border, marginTop: 20 }]}>
+        <TouchableOpacity
+          style={[styles.row, { borderBottomColor: 'transparent' }]}
+          onPress={handleLogout}
+        >
+          <View style={styles.rowLeft}>
+            <Image source={require("../../assets/images/logout.png")} style={[styles.rowIcon, { tintColor: "#c0392b" }]} />
+            <Text
+              style={[
+                styles.rowText,
+                { color: "#c0392b", fontFamily: "Poppins-Bold" },
+              ]}
+            >
+              Logout
+            </Text>
+          </View>
+          <Text style={[styles.rowSub, { color: colors.textTertiary }]}>→</Text>
+        </TouchableOpacity>
+      </View>
 
       {/* Modals */}
       {/* Theme Modal */}

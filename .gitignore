@@ -4,3 +4,11 @@
 *.java
 .env
 .env*
+venv/
+*.bin
+*.pyc
+*.gguf
+*.ckpt
+*.pickle
+chroma/
+*.safetensors

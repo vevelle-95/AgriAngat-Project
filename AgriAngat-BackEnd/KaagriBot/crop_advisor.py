@@ -45,8 +45,16 @@ logger = logging.getLogger(__name__)
 class CropKnowledgeBase:
     """Manages crop data and vector database for RAG retrieval"""
     
-    def __init__(self, csv_path: str = "ecocrop.csv", db_path: str = "./chroma_db"):
-        self.csv_path = csv_path
+    def __init__(self, csv_path: str = None, db_path: str = "./chroma_db"):
+        # Get the directory where this script is located
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        
+        # Set default CSV path relative to script location
+        if csv_path is None:
+            self.csv_path = os.path.join(script_dir, "ecocrop.csv")
+        else:
+            self.csv_path = csv_path
+            
         self.db_path = db_path
         self.df = None
         self.client = None

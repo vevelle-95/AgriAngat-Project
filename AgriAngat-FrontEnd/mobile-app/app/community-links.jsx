@@ -6,16 +6,21 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
+  Alert,
+  Platform,
 } from "react-native";
 import { Checkbox } from 'expo-checkbox';
 import * as Font from "expo-font";
 import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import * as ImagePicker from 'expo-image-picker';
+import * as DocumentPicker from 'expo-document-picker';
 // @ts-ignore
 import agriangatLogo from "../assets/images/agriangat-nobg-logo.png";
 
 export default function CommunityLinks() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
+  const [uploadedImage, setUploadedImage] = useState(null);
   
   // Community Links checkboxes
   const [palengke, setPalengke] = useState(false);
@@ -44,6 +49,87 @@ export default function CommunityLinks() {
     }
     loadFonts();
   }, []);
+
+  const handleImageUpload = () => {
+    Alert.alert(
+      "Upload ID Photo",
+      "Choose an option",
+      [
+        {
+          text: "Take Photo",
+          onPress: () => takePhoto(),
+        },
+        {
+          text: "Choose from Gallery",
+          onPress: () => pickImage(),
+        },
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+      ]
+    );
+  };
+
+  const takePhoto = async () => {
+    try {
+      const { status } = await ImagePicker.requestCameraPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert('Permission needed', 'Camera permission is required to take photos.');
+        return;
+      }
+
+      const result = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 0.8,
+      });
+
+      if (!result.canceled && result.assets && result.assets.length > 0) {
+        const fileSize = result.assets[0].fileSize || 0;
+        if (fileSize > 10 * 1024 * 1024) { // 10MB limit
+          Alert.alert('File too large', 'Please choose an image smaller than 10MB.');
+          return;
+        }
+        setUploadedImage(result.assets[0]);
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Failed to take photo. Please try again.');
+    }
+  };
+
+  const pickImage = async () => {
+    try {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert('Permission needed', 'Photo library permission is required to select images.');
+        return;
+      }
+
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 0.8,
+      });
+
+      if (!result.canceled && result.assets && result.assets.length > 0) {
+        const fileSize = result.assets[0].fileSize || 0;
+        if (fileSize > 10 * 1024 * 1024) { // 10MB limit
+          Alert.alert('File too large', 'Please choose an image smaller than 10MB.');
+          return;
+        }
+        setUploadedImage(result.assets[0]);
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Failed to pick image. Please try again.');
+    }
+  };
+
+  const removeImage = () => {
+    setUploadedImage(null);
+  };
 
   if (!fontsLoaded) return null;
 
@@ -166,13 +252,34 @@ export default function CommunityLinks() {
             <Text style={styles.verificationSubtitle}>Please upload a clear photo of your valid ID (Philhealth, Driver's License, etc.)</Text>
             
             <View style={styles.uploadContainer}>
-              <View style={styles.uploadIcon}>
-                <Text style={styles.uploadIconText}>👤</Text>
-              </View>
-              <TouchableOpacity style={styles.uploadButton}>
-                <Text style={styles.uploadButtonText}>Upload Image</Text>
-              </TouchableOpacity>
-              <Text style={styles.uploadNote}>Accepts .jpg, .png files; Max file size: 10MB</Text>
+              {uploadedImage ? (
+                <View style={styles.uploadedImageContainer}>
+                  <Image 
+                    source={{ uri: uploadedImage.uri }} 
+                    style={styles.uploadedImage}
+                    resizeMode="cover"
+                  />
+                  <TouchableOpacity 
+                    style={styles.removeImageButton}
+                    onPress={removeImage}
+                  >
+                    <Text style={styles.removeImageText}>✕</Text>
+                  </TouchableOpacity>
+                  <Text style={styles.uploadedImageName}>
+                    {uploadedImage.fileName || 'ID Photo'}
+                  </Text>
+                </View>
+              ) : (
+                <>
+                  <View style={styles.uploadIcon}>
+                    <Text style={styles.uploadIconText}>👤</Text>
+                  </View>
+                  <TouchableOpacity style={styles.uploadButton} onPress={handleImageUpload}>
+                    <Text style={styles.uploadButtonText}>Upload Image</Text>
+                  </TouchableOpacity>
+                  <Text style={styles.uploadNote}>Accepts .jpg, .png files; Max file size: 10MB</Text>
+                </>
+              )}
             </View>
 
             <Text style={[styles.disclaimerText, { marginTop: 40 }]}>
@@ -271,7 +378,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     paddingHorizontal: 20,
-    paddingBottom: 100,
+    paddingBottom: 80,
   },
   section: {
     marginBottom: 40,
@@ -315,7 +422,7 @@ const styles = StyleSheet.create({
   checkboxLabel: {
     fontSize: 14,
     fontFamily: "Poppins-Regular",
-    color: "#333",
+    color: "#000",
     flex: 1,
     lineHeight: 20,
   },
@@ -374,6 +481,38 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: "Poppins-Regular",
     color: "#666",
+  },
+  uploadedImageContainer: {
+    alignItems: "center",
+    position: "relative",
+  },
+  uploadedImage: {
+    width: 150,
+    height: 150,
+    borderRadius: 12,
+    marginBottom: 10,
+  },
+  removeImageButton: {
+    position: "absolute",
+    top: 5,
+    right: 75,
+    backgroundColor: "#ff4444",
+    borderRadius: 12,
+    width: 24,
+    height: 24,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  removeImageText: {
+    color: "#fff",
+    fontSize: 12,
+    fontFamily: "Poppins-Bold",
+  },
+  uploadedImageName: {
+    fontSize: 12,
+    fontFamily: "Poppins-Regular",
+    color: "#666",
+    textAlign: "center",
   },
   disclaimerText: {
     fontSize: 14,

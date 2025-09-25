@@ -50,6 +50,7 @@ const screenConfigs = [
   { name: "increase-success", options: { headerShown: false } },
   { name: "community-links", options: { headerShown: false } },
   { name: "data-privacy-consent", options: { headerShown: false } },
+  {name: "angatscore-report", options: { headerShown: false } },
 ];
 
 export default function RootLayout() {

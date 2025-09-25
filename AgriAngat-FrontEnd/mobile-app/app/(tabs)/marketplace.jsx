@@ -940,6 +940,7 @@ const styles = StyleSheet.create({
   },
   dotActive: {
     backgroundColor: "#0f6d00",
+    paddingHorizontal: 15,
   },
 
   // Categories
@@ -1093,7 +1094,7 @@ const styles = StyleSheet.create({
 
   sellButton: {
     backgroundColor: "#0f6d00",
-    borderRadius: 12,
+    borderRadius: 9999,
     paddingVertical: 16,
     alignItems: "center",
     marginBottom: 20,
@@ -1133,7 +1134,7 @@ const styles = StyleSheet.create({
   },
   statButton: {
     backgroundColor: "#f0f8ff",
-    borderRadius: 8,
+    borderRadius: 9999,
     paddingVertical: 8,
     paddingHorizontal: 12,
     borderWidth: 1,
@@ -1141,7 +1142,7 @@ const styles = StyleSheet.create({
   },
   statButtonText: {
     fontFamily: "Poppins-SemiBold",
-    fontSize: 10,
+    fontSize: 14,
     color: "#007AFF",
     textAlign: "center",
   },

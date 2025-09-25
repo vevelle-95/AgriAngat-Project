@@ -44,13 +44,22 @@ export default function IncreaseSuccess() {
           Kinakalkula na namin ang iyong bagong AngatScore. Bumalik lamang sa ilang sandali para makita ang pagtaas ng iyong AngatScore at ang mga pre-approved loan offer mo!
         </Text>
 
-        {/* Exit Button */}
-        <TouchableOpacity 
-          style={styles.exitButton}
-          onPress={() => router.replace("/(tabs)/home")}
-        >
-          <Text style={styles.exitButtonText}>Exit</Text>
-        </TouchableOpacity>
+        {/* Action Buttons */}
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity 
+            style={styles.viewReportButton}
+            onPress={() => router.push("/angatscore-report")}
+          >
+            <Text style={styles.viewReportButtonText}>View AngatScore Report</Text>
+          </TouchableOpacity>
+          
+          <TouchableOpacity 
+            style={styles.exitButton}
+            onPress={() => router.replace("/(tabs)/home")}
+          >
+            <Text style={styles.exitButtonText}>Back to Home</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     </View>
   );
@@ -97,8 +106,26 @@ const styles = StyleSheet.create({
     color: "#666",
     textAlign: "center",
     lineHeight: 22,
-    marginBottom: 80,
+    marginBottom: 40,
     paddingHorizontal: 10,
+  },
+  buttonContainer: {
+    width: "100%",
+    alignItems: "center",
+  },
+  viewReportButton: {
+    backgroundColor: "#4CAF50",
+    borderRadius: 25,
+    paddingVertical: 15,
+    paddingHorizontal: 40,
+    marginBottom: 15,
+    width: "80%",
+  },
+  viewReportButtonText: {
+    fontSize: 16,
+    fontFamily: "Poppins-Bold",
+    color: "#fff",
+    textAlign: "center",
   },
   exitButton: {
     borderWidth: 2,
@@ -107,6 +134,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 40,
     backgroundColor: "transparent",
+    width: "80%",
   },
   exitButtonText: {
     fontSize: 16,

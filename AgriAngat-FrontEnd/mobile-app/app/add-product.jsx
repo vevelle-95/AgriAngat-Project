@@ -8,9 +8,11 @@ import {
   TextInput,
   Alert,
   Animated,
+  Image,
 } from "react-native";
 import * as Font from "expo-font";
 import { useRouter } from "expo-router";
+import * as ImagePicker from 'expo-image-picker';
 
 // Custom hook for form state management
 const useProductForm = () => {
@@ -58,6 +60,7 @@ const useProductForm = () => {
 export default function AddProductScreen() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
   const [isUnitDropdownOpen, setIsUnitDropdownOpen] = useState(false);
+  const [productImages, setProductImages] = useState([]);
   const router = useRouter();
   
   const {
@@ -79,6 +82,88 @@ export default function AddProductScreen() {
     }
     loadFonts();
   }, []);
+
+  const handleProductImageUpload = () => {
+    Alert.alert(
+      "Add Product Photo",
+      "Choose an option",
+      [
+        {
+          text: "Take Photo",
+          onPress: () => takeProductPhoto(),
+        },
+        {
+          text: "Choose from Gallery",
+          onPress: () => pickProductImage(),
+        },
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+      ]
+    );
+  };
+
+  const takeProductPhoto = async () => {
+    try {
+      const { status } = await ImagePicker.requestCameraPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert('Permission needed', 'Camera permission is required to take photos.');
+        return;
+      }
+
+      const result = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 0.8,
+      });
+
+      if (!result.canceled && result.assets && result.assets.length > 0) {
+        const fileSize = result.assets[0].fileSize || 0;
+        if (fileSize > 10 * 1024 * 1024) { // 10MB limit
+          Alert.alert('File too large', 'Please choose an image smaller than 10MB.');
+          return;
+        }
+        setProductImages([...productImages, result.assets[0]]);
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Failed to take photo. Please try again.');
+    }
+  };
+
+  const pickProductImage = async () => {
+    try {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert('Permission needed', 'Photo library permission is required to select images.');
+        return;
+      }
+
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 0.8,
+      });
+
+      if (!result.canceled && result.assets && result.assets.length > 0) {
+        const fileSize = result.assets[0].fileSize || 0;
+        if (fileSize > 10 * 1024 * 1024) { // 10MB limit
+          Alert.alert('File too large', 'Please choose an image smaller than 10MB.');
+          return;
+        }
+        setProductImages([...productImages, result.assets[0]]);
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Failed to pick image. Please try again.');
+    }
+  };
+
+  const removeProductImage = (index) => {
+    const updatedImages = productImages.filter((_, i) => i !== index);
+    setProductImages(updatedImages);
+  };
 
   // Validation helper functions
   const validateProductName = (name) => {
@@ -279,13 +364,42 @@ export default function AddProductScreen() {
       {/* Product Image Upload */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Product Photos</Text>
-        <TouchableOpacity style={styles.imageUpload}>
-          <View style={styles.uploadPlaceholder}>
-            <Text style={styles.uploadIcon}>📷</Text>
-            <Text style={styles.uploadText}>Add Photos</Text>
-            <Text style={styles.uploadSubtext}>Tap to upload product images</Text>
+        {productImages.length > 0 ? (
+          <View>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.imageScroll}>
+              {productImages.map((image, index) => (
+                <View key={index} style={styles.uploadedImageContainer}>
+                  <Image 
+                    source={{ uri: image.uri }} 
+                    style={styles.uploadedProductImage}
+                    resizeMode="cover"
+                  />
+                  <TouchableOpacity 
+                    style={styles.removeImageButton}
+                    onPress={() => removeProductImage(index)}
+                  >
+                    <Text style={styles.removeImageText}>✕</Text>
+                  </TouchableOpacity>
+                </View>
+              ))}
+              {productImages.length < 5 && (
+                <TouchableOpacity style={styles.addMoreButton} onPress={handleProductImageUpload}>
+                  <Text style={styles.addMoreIcon}>+</Text>
+                  <Text style={styles.addMoreText}>Add More</Text>
+                </TouchableOpacity>
+              )}
+            </ScrollView>
+            <Text style={styles.imageCountText}>{productImages.length}/5 images</Text>
           </View>
-        </TouchableOpacity>
+        ) : (
+          <TouchableOpacity style={styles.imageUpload} onPress={handleProductImageUpload}>
+            <View style={styles.uploadPlaceholder}>
+              <Text style={styles.uploadIcon}>📷</Text>
+              <Text style={styles.uploadText}>Add Photos</Text>
+              <Text style={styles.uploadSubtext}>Tap to upload product images</Text>
+            </View>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );
@@ -499,7 +613,15 @@ export default function AddProductScreen() {
         <Text style={styles.sectionTitle}>Preview</Text>
         <View style={styles.previewCard}>
           <View style={styles.previewImagePlaceholder}>
-            <Text style={styles.previewImageText}>📷</Text>
+            {productImages.length > 0 ? (
+              <Image 
+                source={{ uri: productImages[0].uri }} 
+                style={styles.previewProductImage}
+                resizeMode="cover"
+              />
+            ) : (
+              <Text style={styles.previewImageText}>📷</Text>
+            )}
           </View>
           <View style={styles.previewContent}>
             <Text style={styles.previewName}>
@@ -610,6 +732,61 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: "Poppins-Regular",
     color: "#999",
+  },
+  imageScroll: {
+    marginBottom: 10,
+  },
+  uploadedImageContainer: {
+    marginRight: 10,
+    position: "relative",
+  },
+  uploadedProductImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 8,
+  },
+  removeImageButton: {
+    position: "absolute",
+    top: -5,
+    right: -5,
+    backgroundColor: "#ff4444",
+    borderRadius: 12,
+    width: 24,
+    height: 24,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  removeImageText: {
+    color: "#fff",
+    fontSize: 12,
+    fontFamily: "Poppins-Bold",
+  },
+  addMoreButton: {
+    width: 100,
+    height: 100,
+    borderWidth: 2,
+    borderColor: "#ddd",
+    borderStyle: "dashed",
+    borderRadius: 8,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#f9f9f9",
+  },
+  addMoreIcon: {
+    fontSize: 24,
+    color: "#666",
+    marginBottom: 4,
+  },
+  addMoreText: {
+    fontSize: 10,
+    fontFamily: "Poppins-Regular",
+    color: "#666",
+  },
+  imageCountText: {
+    fontSize: 12,
+    fontFamily: "Poppins-Regular",
+    color: "#666",
+    textAlign: "center",
   },
   inputGroup: {
     marginBottom: 15,
@@ -785,6 +962,11 @@ const styles = StyleSheet.create({
   },
   previewImageText: {
     fontSize: 24,
+  },
+  previewProductImage: {
+    width: "100%",
+    height: "100%",
+    borderRadius: 8,
   },
   previewContent: {
     flex: 1,

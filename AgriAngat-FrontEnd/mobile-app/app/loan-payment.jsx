@@ -455,7 +455,7 @@ const styles = StyleSheet.create({
   },
   payButton: {
     backgroundColor: "#1E40AF",
-    borderRadius: 25,
+    borderRadius: 9999,
     padding: 18,
     alignItems: "center",
     marginTop: 10,

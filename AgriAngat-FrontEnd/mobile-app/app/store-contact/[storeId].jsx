@@ -7,80 +7,16 @@ import {
   ScrollView,
   Linking,
   Image,
+  Platform,
+  Alert,
 } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import * as Font from "expo-font";
+import { NEARBY_STORES } from "../../data/mockData";
 
-// This would come from your API/database in a real app
+// Get store details from mock data
 const getStoreDetails = (id) => {
-  const stores = {
-    "1": {
-      id: 1,
-      name: "Aling Myrna Sari-sari store",
-      distance: "2.5 km",
-      needs: "100 kg Rice, 20 kg Tomatoes",
-      image: "🏪",
-      address: "123 Main Street, Cabanatuan City",
-      phone: "+63 912 345 6789",
-      email: "alingmyrna@gmail.com",
-      ownerName: "Myrna Santos",
-      businessHours: "7:00 AM - 9:00 PM",
-      landmarks: "Near Central School"
-    },
-    "2": {
-      id: 2,
-      name: "Kimilovie Store",
-      distance: "1 km",
-      needs: "50 kg Corn, 20 kg Onions",
-      image: "🏪",
-      address: "456 Maharlika Highway, Cabanatuan City",
-      phone: "+63 917 123 4567",
-      email: "kimiloviestore@gmail.com",
-      ownerName: "Kim Santos",
-      businessHours: "6:00 AM - 8:00 PM",
-      landmarks: "Beside Mercury Drug"
-    },
-    "3": {
-      id: 3,
-      name: "Neyni Store",
-      distance: "1 km",
-      needs: "50 cabbages, 10 kg Carrots",
-      image: "🏪",
-      address: "789 Liberty Street, Cabanatuan City",
-      phone: "+63 918 765 4321",
-      email: "neynistore@gmail.com",
-      ownerName: "Neil Garcia",
-      businessHours: "8:00 AM - 7:00 PM",
-      landmarks: "Near Public Market"
-    },
-    "4": {
-      id: 4,
-      name: "Cris Talipapa",
-      distance: "0.5 km",
-      needs: "10 boxes Eggs, 20 kg Onions, 10 kg Carrots",
-      image: "🏪",
-      address: "321 Freedom Road, Cabanatuan City",
-      phone: "+63 919 999 8888",
-      email: "cristalipapa@gmail.com",
-      ownerName: "Cristina Reyes",
-      businessHours: "5:00 AM - 6:00 PM",
-      landmarks: "Corner of Freedom and Liberty"
-    },
-    "5": {
-      id: 5,
-      name: "K Mini Mart",
-      distance: "0.5 km",
-      needs: "100 kg Rice, 100 kg Banana, 50 kg Carrots",
-      image: "🏪",
-      address: "567 Progress Street, Cabanatuan City",
-      phone: "+63 915 777 6666",
-      email: "kminimart@gmail.com",
-      ownerName: "Karen Cruz",
-      businessHours: "7:00 AM - 10:00 PM",
-      landmarks: "Across from the Church"
-    }
-  };
-  return stores[id];
+  return NEARBY_STORES.find(store => store.id === parseInt(id));
 };
 
 export default function StoreContactPage() {
@@ -104,12 +40,49 @@ export default function StoreContactPage() {
   if (!fontsLoaded || !store) return null;
 
   const handleCall = () => {
-    Linking.openURL(`tel:${store.phone}`);
+    if (store.phone) {
+      Linking.openURL(`tel:${store.phone}`);
+    } else {
+      Alert.alert("Contact Info", "Phone number not available");
+    }
+  };
+
+  const handleSMS = () => {
+    if (store.phone) {
+      const message = `Hi ${store.ownerName}, I saw your store "${store.name}" on AgriAngat. I'm interested in your current needs: ${store.needs}. Can we discuss this further?`;
+      const smsUrl = Platform.OS === 'ios' 
+        ? `sms:${store.phone}&body=${encodeURIComponent(message)}`
+        : `sms:${store.phone}?body=${encodeURIComponent(message)}`;
+      Linking.openURL(smsUrl);
+    } else {
+      Alert.alert("Contact Info", "Phone number not available");
+    }
   };
 
   const handleGetDirections = () => {
-    // In a real app, this would open maps with the store's coordinates
-    console.log("Opening directions to:", store.address);
+    if (store.coordinates) {
+      const { latitude, longitude } = store.coordinates;
+      const label = encodeURIComponent(store.name);
+      
+      const mapUrls = {
+        ios: `maps:0,0?q=${latitude},${longitude}(${label})`,
+        android: `geo:0,0?q=${latitude},${longitude}(${label})`,
+        web: `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`
+      };
+      
+      const url = Platform.OS === 'ios' ? mapUrls.ios : 
+                  Platform.OS === 'android' ? mapUrls.android : mapUrls.web;
+      
+      Linking.openURL(url).catch(() => {
+        // Fallback to Google Maps web
+        Linking.openURL(mapUrls.web);
+      });
+    } else {
+      // Fallback using address
+      const address = encodeURIComponent(store.address);
+      const url = `https://www.google.com/maps/search/?api=1&query=${address}`;
+      Linking.openURL(url);
+    }
   };
 
   return (
@@ -126,7 +99,7 @@ export default function StoreContactPage() {
       <View style={styles.storeHeader}>
         <View style={styles.storeImageContainer}>
           <Image 
-            source={require('../../assets/images/baskets.png')} 
+            source={store.image} 
             style={styles.storeImage} 
             resizeMode="cover"
           />
@@ -150,7 +123,11 @@ export default function StoreContactPage() {
       {/* Contact Actions */}
       <View style={styles.actionButtons}>
         <TouchableOpacity style={styles.primaryButton} onPress={handleCall}>
-          <Text style={styles.primaryButtonText}>Contact Store</Text>
+          <Text style={styles.primaryButtonText}>📞 Call Store</Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity style={styles.secondaryButton} onPress={handleSMS}>
+          <Text style={styles.secondaryButtonText}>💬 Send Message</Text>
         </TouchableOpacity>
       </View>
 
@@ -283,6 +260,7 @@ const styles = StyleSheet.create({
   actionButtons: {
     paddingHorizontal: 16,
     marginBottom: 24,
+    gap: 12,
   },
   primaryButton: {
     backgroundColor: "#000",
@@ -291,6 +269,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   primaryButtonText: {
+    color: "#fff",
+    fontFamily: "Poppins-Bold",
+    fontSize: 14,
+  },
+  secondaryButton: {
+    backgroundColor: "#007AFF",
+    paddingVertical: 14,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  secondaryButtonText: {
     color: "#fff",
     fontFamily: "Poppins-Bold",
     fontSize: 14,

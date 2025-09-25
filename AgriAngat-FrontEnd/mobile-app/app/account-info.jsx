@@ -1,15 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
   StyleSheet,
-  ScrollView,
   TouchableOpacity,
+  ScrollView,
   TextInput,
   Modal,
+  Alert,
+  Image,
+  Dimensions,
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import * as Font from "expo-font";
 import { useRouter } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import Svg, { Circle } from "react-native-svg";
+// @ts-ignore
+import agriangatLogo from "../assets/images/agriangat-nobg-logo.png";
+
+const { width: screenWidth } = Dimensions.get('window');
 
 export default function AccountInfoScreen() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
@@ -24,6 +34,10 @@ export default function AccountInfoScreen() {
     farmSize: "2.5 hectares",
     cropType: "Rice, Corn",
     joinDate: "January 2023",
+    farmerLevel: "Intermediate",
+    totalHarvests: "12",
+    angatScore: "88",
+    successRate: "94%"
   });
   const router = useRouter();
 
@@ -44,11 +58,11 @@ export default function AccountInfoScreen() {
 
   const handleSave = () => {
     setIsEditing(false);
-    // Save user info logic here
+    setShowSuccessModal(true);
   };
 
   const handleInputChange = (field, value) => {
-    setUserInfo(prev => ({ ...prev, [field]: value }));
+    setUserInfo({ ...userInfo, [field]: value });
   };
 
   const handleDeleteAccount = () => {
@@ -57,293 +71,406 @@ export default function AccountInfoScreen() {
 
   const confirmDeleteAccount = () => {
     setShowDeleteModal(false);
-    // Simulate account deletion process
-    setTimeout(() => {
-      setShowSuccessModal(true);
-    }, 500);
+    Alert.alert("Account Deleted", "Your account has been successfully deleted.");
+    router.push("/login");
   };
 
   const handleSuccessClose = () => {
     setShowSuccessModal(false);
-    // Navigate back to login or home screen
-    router.replace("/");
+    router.back();
+  };
+
+  const getInitials = (name) => {
+    return name.split(' ').map(word => word[0]).join('').toUpperCase();
+  };
+
+  const renderCircularProgress = (score, size = 80) => {
+    const strokeWidth = 8;
+    const radius = (size - strokeWidth) / 2;
+    const circumference = 2 * Math.PI * radius;
+    const progress = Math.max(0, Math.min(100, score)) / 100;
+    const dashOffset = circumference * (1 - progress);
+    
+    return (
+      <View style={[styles.circularProgress, { width: size, height: size }]}>
+        <Svg width={size} height={size}>
+          <Circle
+            cx={size / 2}
+            cy={size / 2}
+            r={radius}
+            stroke="#E5E5E5"
+            strokeWidth={strokeWidth}
+            fill="none"
+          />
+          <Circle
+            cx={size / 2}
+            cy={size / 2}
+            r={radius}
+            stroke="#4CAF50"
+            strokeWidth={strokeWidth}
+            strokeLinecap="round"
+            strokeDasharray={`${circumference} ${circumference}`}
+            strokeDashoffset={dashOffset}
+            fill="none"
+            transform={`rotate(-90 ${size / 2} ${size / 2})`}
+          />
+        </Svg>
+        <View style={styles.circularProgressText}>
+          <Text style={styles.scoreNumber}>{score}</Text>
+        </View>
+      </View>
+    );
   };
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}>
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-          <Text style={styles.backIcon}>←</Text>
-          <Text style={styles.backText}>Back</Text>
-        </TouchableOpacity>
-      </View>
+    <View style={styles.container}>
+      <StatusBar style="light" />
+      
+      {/* Fixed Header with Gradient */}
+      <LinearGradient
+        colors={['#4CAF50', '#66BB6A']}
+        style={styles.headerGradient}
+      >
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
+            <Text style={styles.backButtonText}>←</Text>
+            <Text style={styles.backText}>Back</Text>
+          </TouchableOpacity>
+          
+          <Text style={styles.headerTitle}>Profile</Text>
+          
+          <TouchableOpacity 
+            onPress={() => setIsEditing(!isEditing)} 
+            style={styles.editHeaderButton}
+          >
+            <Text style={styles.editHeaderButtonText}>
+              {isEditing ? "Cancel" : "Edit"}
+            </Text>
+          </TouchableOpacity>
+        </View>
 
-      {/* Profile Section */}
-      <View style={styles.profileSection}>
-        <View style={styles.avatarContainer}>
-          <View style={styles.avatar}>
-            <Text style={styles.avatarText}>JD</Text>
+        {/* Profile Card within Header */}
+        <View style={styles.profileCard}>
+          <View style={styles.avatarSection}>
+            <View style={styles.avatarContainer}>
+              <Text style={styles.avatarText}>{getInitials(userInfo.name)}</Text>
+            </View>
+            <View style={styles.profileInfo}>
+              <Text style={styles.userName}>{userInfo.name}</Text>
+              <Text style={styles.memberSince}>Member since {userInfo.joinDate}</Text>
+              <View style={styles.levelBadge}>
+                <Text style={styles.levelText}>{userInfo.farmerLevel} Farmer</Text>
+              </View>
+            </View>
           </View>
         </View>
-        <Text style={styles.userName}>{userInfo.name}</Text>
-        <Text style={styles.memberSince}>Member since {userInfo.joinDate}</Text>
-      </View>
+      </LinearGradient>
 
-      {/* Personal Information */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Personal Information</Text>
-
-        <View style={styles.infoItem}>
-          <Text style={styles.infoLabel}>Full Name</Text>
-          {isEditing ? (
-            <TextInput
-              style={styles.infoInput}
-              value={userInfo.name}
-              onChangeText={(value) => handleInputChange("name", value)}
-            />
-          ) : (
-            <Text style={styles.infoValue}>{userInfo.name}</Text>
-          )}
+      {/* Scrollable Content that goes "into the tunnel" */}
+      <ScrollView style={styles.scrollContent} showsVerticalScrollIndicator={false}>
+        {/* Statistics Cards */}
+        <View style={styles.statsContainer}>
+          <View style={styles.statCard}>
+            {renderCircularProgress(parseInt(userInfo.angatScore), 60)}
+            <Text style={styles.angatStatLabel}>AngatScore</Text>
+          </View>
+          
+          <View style={styles.statCard}>
+            <Text style={styles.statValue}>{userInfo.totalHarvests}</Text>
+            <Text style={styles.statLabel}>Total Harvests</Text>
+            <Text style={styles.statIcon}>🌾</Text>
+          </View>
+          
+          <View style={styles.statCard}>
+            <Text style={styles.statValue}>{userInfo.successRate}</Text>
+            <Text style={styles.statLabel}>Success Rate</Text>
+            <Text style={styles.statIcon}>📈</Text>
+          </View>
         </View>
 
-        <View style={styles.infoItem}>
-          <Text style={styles.infoLabel}>Email Address</Text>
-          {isEditing ? (
-            <TextInput
-              style={styles.infoInput}
-              value={userInfo.email}
-              onChangeText={(value) => handleInputChange("email", value)}
-              keyboardType="email-address"
-            />
-          ) : (
-            <Text style={styles.infoValue}>{userInfo.email}</Text>
-          )}
+        {/* Personal Information Section */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Personal Information</Text>
+          
+          <View style={styles.infoCard}>
+            <View style={styles.infoItem}>
+              <Text style={styles.infoLabel}>Full Name</Text>
+              {isEditing ? (
+                <TextInput
+                  style={styles.infoInput}
+                  value={userInfo.name}
+                  onChangeText={(value) => handleInputChange("name", value)}
+                  placeholder="Enter your full name"
+                />
+              ) : (
+                <Text style={styles.infoValue}>{userInfo.name}</Text>
+              )}
+            </View>
+            
+            <View style={styles.infoItem}>
+              <Text style={styles.infoLabel}>Email Address</Text>
+              {isEditing ? (
+                <TextInput
+                  style={styles.infoInput}
+                  value={userInfo.email}
+                  onChangeText={(value) => handleInputChange("email", value)}
+                  placeholder="Enter your email"
+                  keyboardType="email-address"
+                />
+              ) : (
+                <Text style={styles.infoValue}>{userInfo.email}</Text>
+              )}
+            </View>
+            
+            <View style={styles.infoItem}>
+              <Text style={styles.infoLabel}>Phone Number</Text>
+              {isEditing ? (
+                <TextInput
+                  style={styles.infoInput}
+                  value={userInfo.phone}
+                  onChangeText={(value) => handleInputChange("phone", value)}
+                  placeholder="Enter your phone number"
+                  keyboardType="phone-pad"
+                />
+              ) : (
+                <Text style={styles.infoValue}>{userInfo.phone}</Text>
+              )}
+            </View>
+            
+            <View style={styles.infoItem}>
+              <Text style={styles.infoLabel}>Address</Text>
+              {isEditing ? (
+                <TextInput
+                  style={[styles.infoInput, styles.multilineInput]}
+                  value={userInfo.address}
+                  onChangeText={(value) => handleInputChange("address", value)}
+                  placeholder="Enter your address"
+                  multiline
+                />
+              ) : (
+                <Text style={styles.infoValue}>{userInfo.address}</Text>
+              )}
+            </View>
+          </View>
         </View>
 
-        <View style={styles.infoItem}>
-          <Text style={styles.infoLabel}>Phone Number</Text>
-          {isEditing ? (
-            <TextInput
-              style={styles.infoInput}
-              value={userInfo.phone}
-              onChangeText={(value) => handleInputChange("phone", value)}
-              keyboardType="phone-pad"
-            />
-          ) : (
-            <Text style={styles.infoValue}>{userInfo.phone}</Text>
-          )}
+        {/* Farm Information Section */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Farm Information</Text>
+          
+          <View style={styles.infoCard}>
+            <View style={styles.infoItem}>
+              <Text style={styles.infoLabel}>Farm Size</Text>
+              {isEditing ? (
+                <TextInput
+                  style={styles.infoInput}
+                  value={userInfo.farmSize}
+                  onChangeText={(value) => handleInputChange("farmSize", value)}
+                  placeholder="Enter farm size"
+                />
+              ) : (
+                <Text style={styles.infoValue}>{userInfo.farmSize}</Text>
+              )}
+            </View>
+            
+            <View style={styles.infoItem}>
+              <Text style={styles.infoLabel}>Primary Crops</Text>
+              {isEditing ? (
+                <TextInput
+                  style={styles.infoInput}
+                  value={userInfo.cropType}
+                  onChangeText={(value) => handleInputChange("cropType", value)}
+                  placeholder="Enter your main crops"
+                />
+              ) : (
+                <Text style={styles.infoValue}>{userInfo.cropType}</Text>
+              )}
+            </View>
+          </View>
         </View>
 
-        <View style={styles.infoItem}>
-          <Text style={styles.infoLabel}>Address</Text>
-          {isEditing ? (
-            <TextInput
-              style={[styles.infoInput, styles.multilineInput]}
-              value={userInfo.address}
-              onChangeText={(value) => handleInputChange("address", value)}
-              multiline
-              numberOfLines={3}
-            />
-          ) : (
-            <Text style={styles.infoValue}>{userInfo.address}</Text>
-          )}
-        </View>
-      </View>
-
-      {/* Farm Information */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Farm Information</Text>
-
-        <View style={styles.infoItem}>
-          <Text style={styles.infoLabel}>Farm Size</Text>
-          {isEditing ? (
-            <TextInput
-              style={styles.infoInput}
-              value={userInfo.farmSize}
-              onChangeText={(value) => handleInputChange("farmSize", value)}
-            />
-          ) : (
-            <Text style={styles.infoValue}>{userInfo.farmSize}</Text>
-          )}
+        {/* Quick Actions */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Quick Actions</Text>
+          
+          <View style={styles.actionCard}>
+            <TouchableOpacity 
+              style={styles.actionButton}
+              onPress={() => router.push("/angatscore-report")}
+            >
+              <Text style={styles.actionIcon}>📊</Text>
+              <Text style={styles.actionText}>View AngatScore Report</Text>
+              <Text style={styles.actionArrow}>→</Text>
+            </TouchableOpacity>
+          </View>
         </View>
 
-        <View style={styles.infoItem}>
-          <Text style={styles.infoLabel}>Primary Crops</Text>
-          {isEditing ? (
-            <TextInput
-              style={styles.infoInput}
-              value={userInfo.cropType}
-              onChangeText={(value) => handleInputChange("cropType", value)}
-            />
-          ) : (
-            <Text style={styles.infoValue}>{userInfo.cropType}</Text>
-          )}
-        </View>
-      </View>
+        {/* Action Buttons */}
+        {isEditing && (
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
+              <Text style={styles.saveButtonText}>Save Changes</Text>
+            </TouchableOpacity>
+          </View>
+        )}
 
-      {/* Bottom Buttons */}
-      <View style={styles.bottomButtons}>
-        <TouchableOpacity
-          onPress={() => isEditing ? handleSave() : setIsEditing(true)}
-          style={styles.editButton}
-        >
-          <Text style={styles.editButtonText}>
-            {isEditing ? "Save" : "Edit"}
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.DeleteButton} onPress={handleDeleteAccount}>
-          <Text style={styles.DeleteButtonText}>Delete Account</Text>
-        </TouchableOpacity>
-      </View>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.deleteButton} onPress={handleDeleteAccount}>
+            <Text style={styles.deleteButtonText}>Delete Account</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
 
       {/* Delete Confirmation Modal */}
-      <Modal
-        visible={showDeleteModal}
-        transparent={true}
-        animationType="fade"
-        onRequestClose={() => setShowDeleteModal(false)}
-      >
+      <Modal visible={showDeleteModal} transparent animationType="fade">
         <View style={styles.modalOverlay}>
           <View style={styles.modalContainer}>
-            <TouchableOpacity 
-              style={styles.backButtonModal}
-              onPress={() => setShowDeleteModal(false)}
-            >
-              <Text style={styles.backIconModal}>←</Text>
-              <Text style={styles.backTextModal}>Back</Text>
-            </TouchableOpacity>
-            
             <View style={styles.modalContent}>
               <View style={styles.warningIconContainer}>
                 <View style={styles.warningIcon}>
-                  <Text style={styles.warningIconText}>👤</Text>
+                  <Text style={styles.warningIconText}>⚠️</Text>
                 </View>
               </View>
               
-              <Text style={styles.modalTitle}>Are you sure you want</Text>
-              <Text style={styles.modalTitle}>to DELETE your account?</Text>
+              <Text style={styles.modalTitle}>Delete Account</Text>
+              <Text style={styles.modalMessage}>
+                Are you sure you want to delete your account? This action cannot be undone.
+              </Text>
               
-              <TouchableOpacity 
-                style={styles.deleteConfirmButton}
-                onPress={confirmDeleteAccount}
-              >
-                <Text style={styles.deleteConfirmButtonText}>Delete Account</Text>
-              </TouchableOpacity>
+              <View style={styles.modalButtons}>
+                <TouchableOpacity 
+                  style={styles.cancelButton}
+                  onPress={() => setShowDeleteModal(false)}
+                >
+                  <Text style={styles.cancelButtonText}>Cancel</Text>
+                </TouchableOpacity>
+                
+                <TouchableOpacity 
+                  style={styles.confirmButton}
+                  onPress={confirmDeleteAccount}
+                >
+                  <Text style={styles.confirmButtonText}>Delete</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </View>
       </Modal>
 
       {/* Success Modal */}
-      <Modal
-        visible={showSuccessModal}
-        transparent={true}
-        animationType="fade"
-        onRequestClose={handleSuccessClose}
-      >
+      <Modal visible={showSuccessModal} transparent animationType="fade">
         <View style={styles.modalOverlay}>
           <View style={styles.modalContainer}>
-            <View style={styles.successContent}>
+            <View style={styles.modalContent}>
               <View style={styles.successIconContainer}>
-                <Text style={styles.successIcon}>✓</Text>
+                <Text style={styles.successIcon}>✅</Text>
               </View>
               
-              <Text style={styles.successTitle}>Thank You!</Text>
-              <Text style={styles.successMessage}>Your account has been deleted</Text>
+              <Text style={styles.modalTitle}>Profile Updated</Text>
+              <Text style={styles.modalMessage}>
+                Your profile information has been successfully updated.
+              </Text>
               
               <TouchableOpacity 
-                style={styles.exitButton}
+                style={styles.okButton}
                 onPress={handleSuccessClose}
               >
-                <Text style={styles.exitButtonText}>Exit</Text>
+                <Text style={styles.okButtonText}>OK</Text>
               </TouchableOpacity>
             </View>
           </View>
         </View>
       </Modal>
-    </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#f8f9fa",
   },
-  scrollContent: {
-    paddingBottom: 40,
+  headerGradient: {
+    paddingTop: 50,
+    paddingBottom: 30,
   },
   header: {
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
-    paddingHorizontal: 16,
-    paddingTop: 60,
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
     paddingBottom: 20,
   },
   backButton: {
     flexDirection: "row",
-        alignItems: "center",
-        backgroundColor: "#f2f2f2",
-        borderRadius: 20,
-        paddingHorizontal: 15,
-        paddingVertical: 8,
-        alignSelf: "flex-start",
+    alignItems: "center",
+    backgroundColor: "rgba(255,255,255,0.2)",
+    borderRadius: 20,
+    paddingHorizontal: 15,
+    paddingVertical: 8,
   },
-  backIcon: {
+  backButtonText: {
     fontSize: 20,
+    color: "#fff",
+    fontFamily: "Poppins-SemiBold",
     marginRight: 8,
-    color: "#333",
   },
   backText: {
     fontSize: 16,
-    color: "#333",
+    color: "#fff",
     fontFamily: "Poppins-SemiBold",
   },
-  bottomButtons: {
-    flexDirection: "row",
-    paddingHorizontal: 20,
-    marginTop: 20,
-    gap: 15,
-  },
-  editButton: {
-    flex: 1,
-    paddingVertical: 15,
-    backgroundColor: "#0f6d00",
-    borderRadius: 9999,
-    alignItems: "center",
-  },
-  editButtonText: {
-    fontSize: 16,
+  headerTitle: {
+    fontSize: 20,
     fontFamily: "Poppins-Bold",
     color: "#fff",
   },
-  profileSection: {
+  editHeaderButton: {
+    backgroundColor: "rgba(255,255,255,0.2)",
+    borderRadius: 20,
+    paddingHorizontal: 15,
+    paddingVertical: 8,
+  },
+  editHeaderButtonText: {
+    fontSize: 16,
+    color: "#fff",
+    fontFamily: "Poppins-SemiBold",
+  },
+  profileCard: {
+    marginHorizontal: 20,
+    backgroundColor: "rgba(255,255,255,0.95)",
+    borderRadius: 16,
+    padding: 20,
+    elevation: 8,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+  },
+  avatarSection: {
+    flexDirection: "row",
     alignItems: "center",
-    paddingVertical: 20,
-    marginBottom: 20,
   },
   avatarContainer: {
-    marginBottom: 15,
-    marginTop: -15
-  },
-  avatar: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: "#0f6d00",
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    backgroundColor: "#4CAF50",
     alignItems: "center",
     justifyContent: "center",
+    marginRight: 15,
   },
   avatarText: {
-    fontSize: 28,
+    fontSize: 24,
     fontFamily: "Poppins-Bold",
     color: "#fff",
   },
+  profileInfo: {
+    flex: 1,
+  },
   userName: {
-    fontSize: 24,
-    fontFamily: "Poppins-ExtraBold",
+    fontSize: 20,
+    fontFamily: "Poppins-Bold",
     color: "#111",
     marginBottom: 4,
   },
@@ -351,35 +478,136 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: "Poppins-Regular",
     color: "#666",
+    marginBottom: 8,
+  },
+  levelBadge: {
+    backgroundColor: "#E8F5E8",
+    paddingHorizontal: 12,
+    paddingVertical: 4,
+    borderRadius: 12,
+    alignSelf: "flex-start",
+  },
+  levelText: {
+    fontSize: 12,
+    fontFamily: "Poppins-SemiBold",
+    color: "#4CAF50",
+  },
+
+  scrollContent: {
+    flex: 1,
+    backgroundColor: "#f8f9fa",
+    marginTop: -20,
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+    paddingTop: 25,
+  },
+  statsContainer: {
+    flexDirection: "row",
+    paddingHorizontal: 20,
+    paddingTop: 20,
+    paddingBottom: 20,
+    gap: 12,
+  },
+  statCard: {
+    flex: 1,
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    padding: 16,
+    alignItems: "center",
+    elevation: 2,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+  },
+  viewReportButton: {
+    backgroundColor: "#4CAF50",
+    borderRadius: 15,
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    marginTop: 8,
+  },
+  viewReportButtonText: {
+    fontSize: 10,
+    fontFamily: "Poppins-Bold",
+    color: "#fff",
+    textAlign: "center",
+  },
+  statValue: {
+    fontSize: 18,
+    fontFamily: "Poppins-Bold",
+    color: "#4CAF50",
+    marginBottom: 4,
+  },
+  statLabel: {
+    fontSize: 12,
+    fontFamily: "Poppins-Regular",
+    color: "#666",
+    textAlign: "center",
+    marginBottom: 8,
+  },
+  angatStatLabel: {
+    fontSize: 12,
+    fontFamily: "Poppins-Regular",
+    color: "#666",
+    textAlign: "center",
+    marginTop: 15,
+  },
+  statIcon: {
+    fontSize: 20,
+  },
+  circularProgress: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  circularProgressText: {
+    position: "absolute",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  scoreNumber: {
+    fontSize: 14,
+    fontFamily: "Poppins-Bold",
+    color: "#4CAF50",
   },
   section: {
-    paddingHorizontal: 20,
-    marginBottom: 25,
+    marginHorizontal: 20,
+    marginBottom: 20,
   },
   sectionTitle: {
     fontSize: 18,
     fontFamily: "Poppins-Bold",
     color: "#111",
-    marginBottom: 15,
+    marginBottom: 12,
+  },
+  infoCard: {
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    padding: 16,
+    elevation: 2,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
   },
   infoItem: {
-    marginBottom: 20,
+    marginBottom: 16,
   },
   infoLabel: {
     fontSize: 14,
-    fontFamily: "Poppins-Bold",
+    fontFamily: "Poppins-SemiBold",
     color: "#333",
     marginBottom: 6,
   },
   infoValue: {
     fontSize: 16,
     fontFamily: "Poppins-Regular",
-    color: "#666",
+    color: "#111",
   },
   infoInput: {
     fontSize: 16,
     fontFamily: "Poppins-Regular",
-    color: "#333",
+    color: "#111",
     borderWidth: 1,
     borderColor: "#ddd",
     borderRadius: 8,
@@ -391,47 +619,64 @@ const styles = StyleSheet.create({
     height: 80,
     textAlignVertical: "top",
   },
-  settingItem: {
+  actionCard: {
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    overflow: "hidden",
+    elevation: 2,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+  },
+  actionButton: {
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
-    paddingVertical: 15,
+    padding: 16,
     borderBottomWidth: 1,
     borderBottomColor: "#f0f0f0",
   },
-  settingLabel: {
+  actionIcon: {
+    fontSize: 20,
+    marginRight: 12,
+  },
+  actionText: {
+    flex: 1,
     fontSize: 16,
     fontFamily: "Poppins-Regular",
-    color: "#333",
+    color: "#111",
   },
-  settingRight: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  settingValue: {
-    fontSize: 14,
-    fontFamily: "Poppins-Regular",
+  actionArrow: {
+    fontSize: 16,
     color: "#666",
-    marginRight: 8,
   },
-  settingArrow: {
-    fontSize: 18,
-    color: "#999",
+  buttonContainer: {
+    paddingHorizontal: 20,
+    paddingBottom: 20,
   },
-  DeleteButton: {
-    flex: 1,
-    paddingVertical: 15,
-    backgroundColor: "#ff3b30",
-    borderRadius: 9999,
+  saveButton: {
+    backgroundColor: "#4CAF50",
+    borderRadius: 25,
+    paddingVertical: 16,
     alignItems: "center",
+    marginBottom: 12,
   },
-  DeleteButtonText: {
+  saveButtonText: {
     fontSize: 16,
     fontFamily: "Poppins-Bold",
     color: "#fff",
   },
-  
-  // Modal Styles
+  deleteButton: {
+    backgroundColor: "#ff3b30",
+    borderRadius: 25,
+    paddingVertical: 16,
+    alignItems: "center",
+  },
+  deleteButtonText: {
+    fontSize: 16,
+    fontFamily: "Poppins-Bold",
+    color: "#fff",
+  },
   modalOverlay: {
     flex: 1,
     backgroundColor: "rgba(0, 0, 0, 0.5)",
@@ -440,106 +685,88 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     backgroundColor: "#fff",
-    borderRadius: 12,
-    width: "85%",
+    borderRadius: 16,
+    margin: 20,
     maxWidth: 400,
-    paddingVertical: 20,
-    paddingHorizontal: 20,
-  },
-  backButtonModal: {
-    flexDirection: "row",
-        alignItems: "center",
-        backgroundColor: "#f2f2f2",
-        borderRadius: 20,
-        paddingHorizontal: 15,
-        paddingVertical: 8,
-        alignSelf: "flex-start",
-  },
-  backIconModal: {
-    fontSize: 18,
-    marginRight: 8,
-    color: "#333",
-  },
-  backTextModal: {
-    fontSize: 14,
-    color: "#333",
-    fontFamily: "Poppins-Regular",
+    width: "90%",
   },
   modalContent: {
+    padding: 20,
     alignItems: "center",
-    paddingVertical: 20,
   },
   warningIconContainer: {
-    marginBottom: 30,
+    marginBottom: 20,
   },
   warningIcon: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: "#333",
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: "#fff3cd",
     alignItems: "center",
     justifyContent: "center",
   },
   warningIconText: {
-    fontSize: 40,
-    color: "#fff",
-  },
-  modalTitle: {
-    fontSize: 18,
-    fontFamily: "Poppins-Bold",
-    color: "#333",
-    textAlign: "center",
-    marginBottom: 5,
-  },
-  deleteConfirmButton: {
-    backgroundColor: "#ff3b30",
-    borderRadius: 25,
-    paddingVertical: 12,
-    paddingHorizontal: 40,
-    marginTop: 30,
-  },
-  deleteConfirmButtonText: {
-    fontSize: 16,
-    fontFamily: "Poppins-Bold",
-    color: "#fff",
-  },
-  
-  // Success Modal Styles
-  successContent: {
-    alignItems: "center",
-    paddingVertical: 40,
+    fontSize: 30,
   },
   successIconContainer: {
-    marginBottom: 30,
+    marginBottom: 20,
   },
   successIcon: {
-    fontSize: 60,
-    color: "#4CAF50",
-    fontFamily: "Poppins-Bold",
+    fontSize: 50,
   },
-  successTitle: {
-    fontSize: 24,
+  modalTitle: {
+    fontSize: 20,
     fontFamily: "Poppins-Bold",
-    color: "#333",
+    color: "#111",
     marginBottom: 10,
+    textAlign: "center",
   },
-  successMessage: {
+  modalMessage: {
     fontSize: 16,
     fontFamily: "Poppins-Regular",
     color: "#666",
     textAlign: "center",
-    marginBottom: 30,
+    marginBottom: 20,
+    lineHeight: 24,
   },
-  exitButton: {
-    borderWidth: 2,
-    borderColor: "#333",
+  modalButtons: {
+    flexDirection: "row",
+    gap: 12,
+  },
+  cancelButton: {
+    flex: 1,
+    backgroundColor: "#f0f0f0",
     borderRadius: 25,
     paddingVertical: 12,
-    paddingHorizontal: 40,
+    alignItems: "center",
   },
-  exitButtonText: {
+  cancelButtonText: {
     fontSize: 16,
-    fontFamily: "Poppins-Bold",
-    color: "#333",
+    fontFamily: "Poppins-SemiBold",
+    color: "#111",
+  },
+  confirmButton: {
+    flex: 1,
+    backgroundColor: "#ff3b30",
+    borderRadius: 25,
+    paddingVertical: 12,
+    alignItems: "center",
+  },
+  confirmButtonText: {
+    fontSize: 16,
+    fontFamily: "Poppins-SemiBold",
+    color: "#fff",
+  },
+  okButton: {
+    backgroundColor: "#4CAF50",
+    borderRadius: 25,
+    paddingVertical: 12,
+    paddingHorizontal: 30,
+    alignItems: "center",
+  },
+  okButtonText: {
+    fontSize: 16,
+    fontFamily: "Poppins-SemiBold",
+    color: "#fff",
   },
 });

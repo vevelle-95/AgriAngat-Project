@@ -13,7 +13,6 @@ import * as Font from "expo-font";
 import { BlurView } from "expo-blur";
 import { useRouter } from "expo-router";
 import Svg, { Circle } from "react-native-svg";
-import { useTheme } from "../../context/ThemeContext";
 // @ts-ignore
 import agriangatLogo from "../../assets/images/agriangat-nobg-logo.png";
 // @ts-ignore
@@ -41,7 +40,6 @@ const checkForHeavyWeather = () => {
 
 
 export default function HomeScreen() {
-  const { colors } = useTheme();
   const [fontsLoaded, setFontsLoaded] = useState(false);
   const router = useRouter();
   const [currentReminder, setCurrentReminder] = useState(0);
@@ -97,12 +95,12 @@ export default function HomeScreen() {
   return (
     <ScrollView
       style={styles.container}
-      contentContainerStyle={{ paddingBottom: 120 }}
+      contentContainerStyle={{ paddingBottom: 130 }}
     >
       {/* Header with tappable logo and greeting */}
       <View style={styles.headerRow}>
         <Image source={agriangatLogo} style={styles.brandIcon} />
-        <Text style={[styles.greetingText, { color: colors.text }]}>Mabuhay!</Text>
+        <Text style={styles.greetingText}>Mabuhay!</Text>
       </View>
 
       {/* Hero card */}
@@ -176,6 +174,13 @@ export default function HomeScreen() {
               })()}
             </View>
           </View>
+          {/* View Report Button - positioned below the entire AngatScore ring */}
+          <TouchableOpacity
+            style={styles.viewReportButton}
+            onPress={() => router.push("/angatscore-report")}
+          >
+            <Text style={styles.viewReportButtonText}>View Report</Text>
+          </TouchableOpacity>
         </ImageBackground>
       </View>
 
@@ -395,24 +400,23 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     paddingHorizontal: 16,
-    paddingTop: 120,
+    paddingTop: 20,
   },
   headerRow: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     marginBottom: 12,
-    marginTop: -10,
+    marginTop: 30,
+    paddingTop: 0,
   },
-  brandIcon: { width: 50, height: 50, borderRadius: 6, top: -60 },
+  brandIcon: { width: 50, height: 50, borderRadius: 6 },
   greetingText: {
     fontFamily: "Poppins-ExtraBold",
     fontSize: 22,
     color: "#111",
-    top: -60,
-    marginRight: 5
   },
-  heroCard: { borderRadius: 14, overflow: "hidden", backgroundColor: "#eee", top: -65 },
+  heroCard: { borderRadius: 14, overflow: "hidden", backgroundColor: "#eee" },
   heroImage: { width: "100%", height: 210 },
   heroContent: {
     position: "absolute",
@@ -452,7 +456,7 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins-Bold",
     fontSize: 18,
   },
-  heroName: { color: "#fff", fontFamily: "Poppins-Bold", fontSize: 21, top: 70 },
+  heroName: { color: "#fff", fontFamily: "Poppins-Bold", fontSize: 21, top: 40 },
   scoreRingContainer: { width: 170, height: 170 },
   scoreValueWrapper: {
     position: "absolute",
@@ -506,7 +510,30 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: "center",
   },
-  statRow: { flexDirection: "row", gap: 12, marginTop: -50, marginBottom: 35 },
+  viewReportButton: {
+    position: "absolute",
+    top: 165, // Position it below the score ring (which is about 170px + some margin)
+    right:240, // Center it below the score ring
+    paddingVertical: 5,
+    paddingHorizontal: 8,
+    backgroundColor: "rgba(255, 255, 255, 0.25)",
+    borderRadius: 9999,
+    borderWidth: 2,
+    borderColor: "rgba(255, 255, 255, 0.15)",
+    overflow: "hidden",
+    shadowColor: "#0f6d00",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  viewReportButtonText: {
+    color: "#fff",
+    fontFamily: "Poppins-Bold",
+    fontSize: 14,
+    textAlign: "center",
+  },
+  statRow: { flexDirection: "row", gap: 12, marginTop: 20, marginBottom: 35 },
   statCard: {
     flex: 1,
     backgroundColor: "#f6f6f6",

@@ -214,7 +214,7 @@ const OnboardingScreen = () => {
                         styles.scoreIndicator,
                         {
                           backgroundColor: dotIndex === (index - 1) ? '#fff' : 'rgba(255,255,255,0.3)',
-                          paddingHorizontal: 4,
+                          paddingHorizontal: dotIndex === (index - 1) ? 14 : 8,
                         }
                       ]}
                     />
@@ -255,6 +255,7 @@ const OnboardingScreen = () => {
                         styles.chatIndicator,
                         {
                           backgroundColor: dotIndex === (index - 1) ? '#fff' : 'rgba(255,255,255,0.3)',
+                          paddingHorizontal: dotIndex === (index - 1) ? 14 : 8,
                         }
                       ]}
                     />
@@ -299,6 +300,7 @@ const OnboardingScreen = () => {
                         styles.marketplaceIndicator,
                         {
                           backgroundColor: dotIndex === (index - 1) ? '#fff' : 'rgba(255,255,255,0.3)',
+                          paddingHorizontal: dotIndex === (index - 1) ? 14 : 8,
                         }
                       ]}
                     />

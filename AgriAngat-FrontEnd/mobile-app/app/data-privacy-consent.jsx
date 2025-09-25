@@ -40,14 +40,6 @@ export default function DataPrivacyConsentScreen() {
     }));
   };
 
-  const handleAcceptAll = () => {
-    setConsents({
-      dataProcessing: true,
-      privacyPolicy: true,
-      analytics: true,
-    });
-  };
-
   // Check if user can proceed (required consents agreed)
   const canProceed = consents.dataProcessing && consents.privacyPolicy;
 
@@ -106,8 +98,8 @@ export default function DataPrivacyConsentScreen() {
           </TouchableOpacity>
           <View style={styles.consentTextContainer}>
             <Text style={styles.consentText}>
-              <Text style={styles.requiredText}>*Required:</Text> I agree to the 
-              <Text style={styles.linkText} onPress={() => router.push("+not-found")}>Privacy Policy</Text> and 
+              <Text style={styles.requiredText}>*Required:</Text> I agree to the{" "}
+              <Text style={styles.linkText} onPress={() => router.push("+not-found")}>Privacy Policy</Text>{" "}and{" "}
               <Text style={styles.linkText} onPress={() => router.push("+not-found")}>Terms of Use</Text>.
             </Text>
           </View>
@@ -140,29 +132,21 @@ export default function DataPrivacyConsentScreen() {
         </View>
       </View>
 
-      {/* Accept All Button */}
-      <TouchableOpacity 
-        style={styles.acceptAllButton}
-        onPress={handleAcceptAll}
-      >
-        <Text style={styles.acceptAllText}>Accept all</Text>
-      </TouchableOpacity>
-
       {/* Login/Sign Up Section - Only enabled when required consents are agreed */}
       {canProceed ? (
         <View style={styles.authButtonsContainer}>
-          <TouchableOpacity
-            style={styles.loginButton}
-            onPress={() => router.push("login")}
-          >
-            <Text style={styles.loginButtonText}>Login</Text>
-          </TouchableOpacity>
-          
           <TouchableOpacity
             style={styles.signupButton}
             onPress={() => router.push("login?mode=register")}
           >
             <Text style={styles.signupButtonText}>Sign Up</Text>
+          </TouchableOpacity>
+          
+          <TouchableOpacity
+            style={styles.loginButton}
+            onPress={() => router.push("login")}
+          >
+            <Text style={styles.loginButtonText}>Login</Text>
           </TouchableOpacity>
         </View>
       ) : (
@@ -331,21 +315,6 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins-Regular",
     color: "#2E7D32",
     lineHeight: 20,
-  },
-  acceptAllButton: {
-    backgroundColor: "transparent",
-    borderWidth: 2,
-    borderColor: "#4CAF50",
-    borderRadius: 30,
-    paddingVertical: 14,
-    paddingHorizontal: 28,
-    alignSelf: "center",
-    marginBottom: 20,
-  },
-  acceptAllText: {
-    fontSize: 16,
-    fontFamily: "Poppins-SemiBold",
-    color: "#4CAF50",
   },
   authButtonsContainer: {
     flexDirection: "row",
