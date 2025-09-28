@@ -29,7 +29,7 @@ export default function WeatherAnalysisScreen() {
               const API_URLS = __DEV__ ? [
                 ...(overrideBase ? [overrideBase.endsWith('/api') ? overrideBase : `${overrideBase.replace(/\/$/, '')}/api`] : []),
                 Platform.OS === 'android' ? 'http://10.0.2.2:5000/api' : 'http://localhost:5000/api', // Emulator/Simulator
-                'http://192.168.254.204:5000/api',  // Windows machine IP on local network (updated)
+                'http://192.168.254.205:5000/api',  // Windows machine IP on local network (updated)
                 'http://127.0.0.1:5000/api'         // Local loopback
               ] : [overrideBase ? (overrideBase.endsWith('/api') ? overrideBase : `${overrideBase.replace(/\/$/, '')}/api`) : 'http://localhost:5000/api'];
               let response;
@@ -95,7 +95,7 @@ export default function WeatherAnalysisScreen() {
         // Try to get cities from Flask API
         const API_URLS = __DEV__ ? [
           Platform.OS === 'android' ? 'http://10.0.2.2:5000' : 'http://localhost:5000',
-          'http://192.168.254.206:5000',  // Updated to match Flask server IP
+          'http://192.168.254.205:5000',  // Updated to match Flask server IP
           'http://127.0.0.1:5000'
         ] : ['http://localhost:5000'];
 
@@ -157,7 +157,7 @@ export default function WeatherAnalysisScreen() {
       // Try multiple API endpoints
       const API_URLS = __DEV__ ? [
         Platform.OS === 'android' ? 'http://10.0.2.2:5000' : 'http://localhost:5000',
-        'http://192.168.254.206:5000',  // Updated to match Flask server IP
+        'http://192.168.254.205:5000',  // Updated to match Flask server IP
         'http://127.0.0.1:5000'
       ] : ['http://localhost:5000'];
 
@@ -245,7 +245,7 @@ export default function WeatherAnalysisScreen() {
       // Try multiple API endpoints
       const API_URLS = __DEV__ ? [
         Platform.OS === 'android' ? 'http://10.0.2.2:5000' : 'http://localhost:5000',
-        'http://192.168.254.206:5000',  // Updated to match Flask server IP
+        'http://192.168.254.205:5000',  // Updated to match Flask server IP
         'http://127.0.0.1:5000'
       ] : ['http://localhost:5000'];
 
@@ -324,7 +324,7 @@ export default function WeatherAnalysisScreen() {
       const API_URLS = __DEV__ ? [
         ...(overrideBase ? [overrideBase.endsWith('/api') ? overrideBase : `${overrideBase.replace(/\/$/, '')}/api`] : []),
         Platform.OS === 'android' ? 'http://10.0.2.2:5000/api' : 'http://localhost:5000/api', // Emulator/Simulator
-        'http://192.168.254.204:5000/api',  // Windows machine IP on local network (updated)
+        'http://192.168.254.205:5000/api',  // Windows machine IP on local network (updated)
         'http://127.0.0.1:5000/api',        // Local loopback
         'http://localhost:5000/api'         // Alternative localhost
       ] : [overrideBase ? (overrideBase.endsWith('/api') ? overrideBase : `${overrideBase.replace(/\/$/, '')}/api`) : 'http://localhost:5000/api'];
@@ -478,9 +478,9 @@ export default function WeatherAnalysisScreen() {
       const troubleshootingSteps = [
         "1. Make sure Flask server is running (python flask_weather_server.py)",
         "2. Check that both devices are on the same WiFi network",
-        "3. Verify computer IP is 192.168.254.204 (run 'ipconfig' on Windows)",
+        "3. Verify computer IP is 192.168.254.205 (run 'ipconfig' on Windows)",
         "4. Allow Python through Windows Firewall",
-        "5. Try accessing http://192.168.254.204:5000/health from device browser",
+        "5. Try accessing http://192.168.254.205:5000/health from device browser",
         "6. If using emulator, try http://10.0.2.2:5000/health instead"
       ];
       
@@ -506,7 +506,7 @@ export default function WeatherAnalysisScreen() {
       const API_URLS = __DEV__ ? [
         ...(overrideBase ? [overrideBase.endsWith('/api') ? overrideBase : `${overrideBase.replace(/\/$/, '')}/api`] : []),
         Platform.OS === 'android' ? 'http://10.0.2.2:5000/api' : 'http://localhost:5000/api', // Emulator/Simulator
-        'http://192.168.254.204:5000/api',  // Windows machine IP on local network (updated)
+        'http://192.168.254.205:5000/api',  // Windows machine IP on local network (updated)
         'http://127.0.0.1:5000/api',        // Local loopback
         'http://localhost:5000/api'         // Alternative localhost
       ] : [overrideBase ? (overrideBase.endsWith('/api') ? overrideBase : `${overrideBase.replace(/\/$/, '')}/api`) : 'http://localhost:5000/api'];
