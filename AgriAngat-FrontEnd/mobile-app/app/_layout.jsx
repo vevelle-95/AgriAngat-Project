@@ -63,22 +63,48 @@ export default function RootLayout() {
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
 
-  // Request notification permissions when app loads
+  // Configure notification handler (can be called unconditionally)
   useEffect(() => {
-    async function requestPermissions() {
-      const { status } = await Notifications.requestPermissionsAsync();
-      if (status !== 'granted') {
-        console.log('Notification permission not granted');
-      }
-    }
-    requestPermissions();
+    Notifications.setNotificationHandler({
+      handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: true,
+        shouldSetBadge: false,
+      }),
+    });
   }, []);
 
-  // Initialize KaAgri API on app startup
+  // Combined initialization effect - runs only when fonts are loaded
   useEffect(() => {
-    const initializeKaAgriAPI = async () => {
+    if (!loaded) return;
+
+    async function initialize() {
+      // Request notification permissions
       try {
-        const API_URL = __DEV__ ? 'http://192.168.50.114:5000/health' : 'http://localhost:5000/health';
+        const { status } = await Notifications.requestPermissionsAsync();
+        if (status !== 'granted') {
+          console.log('❌ Notification permission not granted');
+        } else {
+          console.log('✅ Notification permission granted');
+          
+          // Schedule test notification
+          await Notifications.scheduleNotificationAsync({
+            content: {
+              title: "🌱 KaAgri Weather Alert 🌱",
+              body: "🌩️ Stormy weather (11 mm/1hr) - We suggest delaying planting and checking crop covers. Stay safe!",
+            },
+            trigger: { seconds: 5 },
+          });
+        }
+      } catch (error) {
+        console.log('⚠️ Notification setup error:', error);
+      }
+
+      // Initialize KaAgri API
+      try {
+        const API_URL = __DEV__ 
+          ? 'http://192.168.50.114:5000/health' 
+          : 'http://localhost:5000/health';
         console.log('🌱 Initializing KaAgri API connection...');
         
         const response = await fetch(API_URL, {
@@ -99,48 +125,14 @@ export default function RootLayout() {
         console.log('⚠️ KaAgri API not available at startup:', error.message);
         console.log('💡 Make sure to run: python api_server.py in KaagriBot folder');
       }
-    };
-
-    if (loaded) {
-      initializeKaAgriAPI();
     }
+
+    initialize();
   }, [loaded]);
 
   if (!loaded) {
     return null;
   }
-
-// Configure how notifications behave
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: false,
-  }),
-});
-
-useEffect(() => {
-  // Ask for permissions
-  async function requestPermissions() {
-    const { status } = await Notifications.requestPermissionsAsync();
-    if (status !== "granted") {
-      console.log("❌ Notification permission not granted");
-      return;
-    }
-    console.log("✅ Notification permission granted");
-
-    // Schedule a local notification for testing
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: "🌱 KaAgri Weather Alert 🌱",
-        body: "🌩️ Stormy weather (11 mm/1hr) - We suggest delaying planting and checking crop covers. Stay safe!",
-      },
-      trigger: { seconds: 5 }, // shows after 5 seconds
-    });
-  }
-
-  requestPermissions();
-}, []);
 
   return (
     <CustomThemeProvider>

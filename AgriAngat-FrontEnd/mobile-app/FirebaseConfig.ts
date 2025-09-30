@@ -8,13 +8,13 @@ import { initializeApp } from "firebase/app";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyBqCd1fjt45ASY9QR161tycxD4_RChvmsA",
-  authDomain: "agriangat-ai.firebaseapp.com",
-  projectId: "agriangat-ai",
-  storageBucket: "agriangat-ai.firebasestorage.app",
-  messagingSenderId: "426991657435",
-  appId: "1:426991657435:web:f9b57129a516de20f347fe",
-  measurementId: "G-0BSTTEVHSN"
+  apiKey: "",
+  authDomain: "",
+  projectId: "",
+  storageBucket: "",
+  messagingSenderId: "",
+  appId: "",
+  measurementId: ""
 };
 
 // Initialize Firebase

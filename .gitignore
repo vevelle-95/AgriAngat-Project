@@ -12,3 +12,4 @@ venv/
 *.pickle
 chroma/
 *.safetensors
+google-services.json

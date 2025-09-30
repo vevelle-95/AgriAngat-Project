@@ -1,15 +1,15 @@
 [
   {
     "prompt": "Soil pH: 6.1, Rainfall: 0.51mm/3h, Temp: 25°C, NDVI: 0.80\nUser: Ano ang pwede kong itanim dito?",
-    "response": "Suriin natin ang kondisyon:\n\n✓ pH 6.1 - Sakto, bahagyang acidic na bagay sa maraming pananim\n✓ Rainfall 0.51mm/3h - Sapat para sa palay (rice), saging (banana), at kape (coffee)\n✓ Temp 25°C - Ideal para sa tropical crops\n✓ NDVI 0.80 - Malusog ang lupa, mataas ang fertility\n\nPwede kang magtanim ng **palay** dahil consistent ang tubig at mataas ang ulan. Pwede rin ang **kape (Arabica o Robusta)** depende sa microclimate, at **saging** dahil gusto nito ang init at ulan.\n\nTips:\n1. Para sa palay, maglagay ng tamang irrigation channels.\n2. Para sa kape, Robusta kung mas mainit, Arabica kung mas malamig.\n3. Para sa saging, siguraduhin may sapat na espasyo at fertilization.\n\nKung gusto mong i-diversify, pwede ring cacao dahil compatible din ang conditions."
+    "response": "Suriin natin ang kondisyon:\n\n✓ pH 6.1 - Sakto, bahagyang acidic na bagay sa maraming pananim\n✓ Rainfall 0.51mm/3h - Sapat para sa palay (rice), saging (banana), at kape (coffee)\n✓ Temp 25°C - Ideal para sa tropical crops\n✓ NDVI 0.80 - Malusog ang lupa, mataas ang fertility\n\nPwede kang magtanim ng palay dahil consistent ang tubig at mataas ang ulan. Pwede rin ang kape (Arabica o Robusta) depende sa microclimate, at saging dahil gusto nito ang init at ulan.\n\nTips:\n1. Para sa palay, maglagay ng tamang irrigation channels.\n2. Para sa kape, Robusta kung mas mainit, Arabica kung mas malamig.\n3. Para sa saging, siguraduhin may sapat na espasyo at fertilization.\n\nKung gusto mong i-diversify, pwede ring cacao dahil compatible din ang conditions."
   },
   {
     "prompt": "Soil pH: 5.8, Rainfall: 0.31mm/3h, Temp: 26°C, NDVI: 0.65\nUser: Gusto ko magtanim ng coffee pero mababa ang ulan dito. Possible pa ba?",
-    "response": "Tingnan natin ang datos:\n\n✓ pH 5.8 - Pasok para sa kape (5.5–6.5 optimal)\n✓ Temp 26°C - Swak (18–28°C gusto ng kape)\n⚠ Rainfall 0.31mm/3h - Medyo kulang (0.41–0.68mm/3h ang ideal)\n✓ NDVI 0.65 - Katamtaman, may potensyal pa sa lupa\n\nPwede pa rin magtanim ng kape pero kailangan ng dagdag effort:\n1. **Maglagay ng patubig (irrigation system)** lalo na tuwing tag-init\n2. **Pumili ng Robusta** kaysa Arabica dahil mas kaya nito ang mababang ulan\n3. **Mulching** para i-retain ang moisture ng lupa\n\nAlternatibo: **Tobacco** o **Cashew** dahil mas akma sila sa 0.21–0.41mm/3h na ulan."
+    "response": "Tingnan natin ang datos:\n\n✓ pH 5.8 - Pasok para sa kape (5.5–6.5 optimal)\n✓ Temp 26°C - Swak (18–28°C gusto ng kape)\n⚠ Rainfall 0.31mm/3h - Medyo kulang (0.41–0.68mm/3h ang ideal)\n✓ NDVI 0.65 - Katamtaman, may potensyal pa sa lupa\n\nPwede pa rin magtanim ng kape pero kailangan ng dagdag effort:\n1. Maglagay ng patubig (irrigation system) lalo na tuwing tag-init\n2. Pumili ng Robusta kaysa Arabica dahil mas kaya nito ang mababang ulan\n3. Mulching para i-retain ang moisture ng lupa\n\nAlternatibo: Tobacco o Cashew dahil mas akma sila sa 0.21–0.41mm/3h na ulan."
   },
   {
     "prompt": "Soil pH: 7.2, Rainfall: 0.41mm/3h, Temp: 28°C, NDVI: 0.70\nUser: Gusto ko magtanim ng palay, okay ba?",
-    "response": "Suriin natin:\n\n⚠ pH 7.2 - Medyo alkaline, hindi ideal para sa palay (gusto ng 5.5–6.5)\n✓ Rainfall 0.41mm/3h - Sapat para sa palay\n✓ Temp 28°C - Katanggap-tanggap, nasa upper range\n✓ NDVI 0.70 - Katamtaman, okay ang vegetation\n\nPwede ang palay pero mas maganda kung i-adjust ang lupa:\n1. Gumamit ng **organic matter** o sulfur-based fertilizer para pababain ang pH\n2. Panatilihin ang field na may tubig (flooded) para bumaba ang epekto ng alkalinity\n\nAlternatibo: **Mais (corn)** at **cassava** ay mas tolerant sa medyo alkaline na lupa."
+    "response": "Suriin natin:\n\n⚠ pH 7.2 - Medyo alkaline, hindi ideal para sa palay (gusto ng 5.5–6.5)\n✓ Rainfall 0.41mm/3h - Sapat para sa palay\n✓ Temp 28°C - Katanggap-tanggap, nasa upper range\n✓ NDVI 0.70 - Katamtaman, okay ang vegetation\n\nPwede ang palay pero mas maganda kung i-adjust ang lupa:\n1. Gumamit ng organic matter o sulfur-based fertilizer para pababain ang pH\n2. Panatilihin ang field na may tubig (flooded) para bumaba ang epekto ng alkalinity\n\nAlternatibo: Mais (corn) at cassava ay mas tolerant sa medyo alkaline na lupa."
   },
   {
     "prompt": "Soil pH: 5.3, Rainfall: 0.86mm/3h, Temp: 24°C, NDVI: 0.82\nUser: May cacao ako, bagay ba talaga ito sa lupa ko?",
@@ -17,43 +17,43 @@
   },
   {
     "prompt": "Soil pH: 6.5, Rainfall: 0.27mm/3h, Temp: 30°C, NDVI: 0.60\nUser: Ano pinakamagandang pananim sa lupa ko?",
-    "response": "Tingnan natin:\n\n✓ pH 6.5 - Neutral, bagay sa karamihan ng pananim\n⚠ Rainfall 0.27mm/3h - Medyo mababa, kulang para sa palay o kape\n✓ Temp 30°C - Medyo mainit pero kaya ng ilang crops\n⚠ NDVI 0.60 - Katamtaman lang ang fertility\n\nDahil kulang ang ulan, mas bagay ang **tobacco**, **mais**, o **cashew** na hindi masyadong water-demanding.\n\nTips:\n1. Gumamit ng **mulching** para hindi agad matuyo ang lupa\n2. Mag-ipon ng tubig ulan (rainwater harvesting)\n\nAlternatibo: **kamote (sweet potato)** na matibay kahit sa kulang na ulan."
+    "response": "Tingnan natin:\n\n✓ pH 6.5 - Neutral, bagay sa karamihan ng pananim\n⚠ Rainfall 0.27mm/3h - Medyo mababa, kulang para sa palay o kape\n✓ Temp 30°C - Medyo mainit pero kaya ng ilang crops\n⚠ NDVI 0.60 - Katamtaman lang ang fertility\n\nDahil kulang ang ulan, mas bagay ang tobacco, mais, o cashew na hindi masyadong water-demanding.\n\nTips:\n1. Gumamit ng mulching para hindi agad matuyo ang lupa\n2. Mag-ipon ng tubig ulan (rainwater harvesting)\n\nAlternatibo: kamote (sweet potato) na matibay kahit sa kulang na ulan."
   },
   {
     "prompt": "Soil pH: 5.0, Rainfall: 1.03mm/3h, Temp: 22°C, NDVI: 0.75\nUser: Pwede ba ang Arabica coffee dito?",
-    "response": "Suriin natin:\n\n⚠ pH 5.0 - Medyo acidic, borderline para sa Arabica (5.5–6.5 optimal)\n✓ Rainfall 1.03mm/3h - Sobra pero kaya ng Arabica basta may drainage\n✓ Temp 22°C - Perfect para sa Arabica\n✓ NDVI 0.75 - Fertile, healthy soil\n\nPwede ang Arabica pero kailangan ng soil adjustment:\n1. Magdagdag ng **lime** para itaas ng konti ang pH\n2. Siguraduhin ang maayos na drainage para hindi malunod ang ugat\n\nKung hindi ma-manage ang acidity, pwede rin ang **Liberica** o **Cacao** na mas kaya ang acidic soil."
+    "response": "Suriin natin:\n\n⚠ pH 5.0 - Medyo acidic, borderline para sa Arabica (5.5–6.5 optimal)\n✓ Rainfall 1.03mm/3h - Sobra pero kaya ng Arabica basta may drainage\n✓ Temp 22°C - Perfect para sa Arabica\n✓ NDVI 0.75 - Fertile, healthy soil\n\nPwede ang Arabica pero kailangan ng soil adjustment:\n1. Magdagdag ng lime para itaas ng konti ang pH\n2. Siguraduhin ang maayos na drainage para hindi malunod ang ugat\n\nKung hindi ma-manage ang acidity, pwede rin ang Liberica o Cacao na mas kaya ang acidic soil."
   },
   {
     "prompt": "Soil pH: 6.8, Rainfall: 0.38mm/3h, Temp: 31°C, NDVI: 0.58\nUser: Gusto ko magtanim ng mais, bagay ba?",
-    "response": "Suriin natin:\n\n✓ pH 6.8 - Sakto para sa mais\n✓ Rainfall 0.38mm/3h - Sakto rin (0.21–0.41mm/3h optimal)\n⚠ Temp 31°C - Medyo mainit pero kaya pa rin ng mais\n⚠ NDVI 0.58 - Indikasyon na moderate lang ang soil health\n\nBagay ang mais, pero para mas tumaas ang ani:\n1. Gumamit ng organic fertilizer o compost\n2. Mag-irrigate sa peak ng init para hindi matuyuan\n\nPwede ring **tobacco** kung gusto ng cash crop alternative."
+    "response": "Suriin natin:\n\n✓ pH 6.8 - Sakto para sa mais\n✓ Rainfall 0.38mm/3h - Sakto rin (0.21–0.41mm/3h optimal)\n⚠ Temp 31°C - Medyo mainit pero kaya pa rin ng mais\n⚠ NDVI 0.58 - Indikasyon na moderate lang ang soil health\n\nBagay ang mais, pero para mas tumaas ang ani:\n1. Gumamit ng organic fertilizer o compost\n2. Mag-irrigate sa peak ng init para hindi matuyuan\n\nPwede ring tobacco kung gusto ng cash crop alternative."
   },
   {
     "prompt": "Soil pH: 7.5, Rainfall: 0.68mm/3h, Temp: 27°C, NDVI: 0.72\nUser: Bakit hindi lumalaki ng maayos ang palay ko?",
-    "response": "Suriin natin:\n\n✗ pH 7.5 - Mas mataas kaysa gusto ng palay (5.5–6.5). Ang alkaline soil ay nagpapabagal ng nutrient uptake\n✓ Rainfall 0.68mm/3h - Sapat\n✓ Temp 27°C - Ideal\n✓ NDVI 0.72 - Okay ang vegetation pero hindi optimal\n\nProblema: Dahil mataas ang pH, hirap sumipsip ng nutrients ang palay.\n\nSolusyon:\n1. Gumamit ng **ammonium sulfate** o sulfur fertilizer para pababain ang pH\n2. Magdagdag ng **organic matter** tulad ng compost\n3. Regular na mag-check ng leaf yellowing para makita kung may nutrient deficiency\n\nKaya’t hindi sa tubig o init ang problema kundi sa pH ng lupa."
+    "response": "Suriin natin:\n\n✗ pH 7.5 - Mas mataas kaysa gusto ng palay (5.5–6.5). Ang alkaline soil ay nagpapabagal ng nutrient uptake\n✓ Rainfall 0.68mm/3h - Sapat\n✓ Temp 27°C - Ideal\n✓ NDVI 0.72 - Okay ang vegetation pero hindi optimal\n\nProblema: Dahil mataas ang pH, hirap sumipsip ng nutrients ang palay.\n\nSolusyon:\n1. Gumamit ng ammonium sulfate o sulfur fertilizer para pababain ang pH\n2. Magdagdag ng organic matter tulad ng compost\n3. Regular na mag-check ng leaf yellowing para makita kung may nutrient deficiency\n\nKaya’t hindi sa tubig o init ang problema kundi sa pH ng lupa."
   },
   {
     "prompt": "Soil pH: 6.2, Rainfall: 0.21mm/3h, Temp: 32°C, NDVI: 0.55\nUser: Anong magandang pananim kung kulang ang ulan dito?",
-    "response": "Tingnan natin:\n\n✓ pH 6.2 - Maganda, sakto para sa karamihan ng crops\n⚠ Rainfall 0.21mm/3h - Kulang para sa high-water crops (palay, saging, kape)\n⚠ Temp 32°C - Mainit, hindi bagay sa delicate crops\n⚠ NDVI 0.55 - Medyo mababa, nangangailangan ng soil improvement\n\nPinaka-bagay: **Tobacco**, **Corn**, **Cashew**, o **Sweet potato** dahil mas drought-tolerant sila.\n\nTips:\n1. Gumamit ng drought-resistant varieties\n2. Rainwater harvesting o drip irrigation kung kaya\n3. Mulching para protektado ang lupa\n\nIwasan ang palay at kape dito dahil kulang talaga sa tubig."
+    "response": "Tingnan natin:\n\n✓ pH 6.2 - Maganda, sakto para sa karamihan ng crops\n⚠ Rainfall 0.21mm/3h - Kulang para sa high-water crops (palay, saging, kape)\n⚠ Temp 32°C - Mainit, hindi bagay sa delicate crops\n⚠ NDVI 0.55 - Medyo mababa, nangangailangan ng soil improvement\n\nPinaka-bagay: Tobacco, Corn, Cashew, o Sweet potato dahil mas drought-tolerant sila.\n\nTips:\n1. Gumamit ng drought-resistant varieties\n2. Rainwater harvesting o drip irrigation kung kaya\n3. Mulching para protektado ang lupa\n\nIwasan ang palay at kape dito dahil kulang talaga sa tubig."
   },
   {
     "prompt": "Soil pH: 5.6, Rainfall: 0.62mm/3h, Temp: 27°C, NDVI: 0.83\nUser: Paano ko aalagaan ang cacao ko?",
-    "response": "Suriin muna ang kondisyon:\n\n✓ pH 5.6 - Ideal para sa cacao\n✓ Rainfall 0.62mm/3h - Sakto, gusto ng cacao ang consistent na ulan\n✓ Temp 27°C - Pasok sa range\n✓ NDVI 0.83 - Fertile at healthy soil\n\nTips sa pag-aalaga:\n1. Gumamit ng **shade trees** para protektado laban sa sobrang init\n2. Regular na maglagay ng organic fertilizer (compost o manure)\n3. Panatilihin ang maayos na drainage para iwas waterlogging\n4. Mag-prune para pumasok ang hangin at liwanag\n\nMaganda ang kondisyon, kailangan lang ng tuloy-tuloy na maintenance."
+    "response": "Suriin muna ang kondisyon:\n\n✓ pH 5.6 - Ideal para sa cacao\n✓ Rainfall 0.62mm/3h - Sakto, gusto ng cacao ang consistent na ulan\n✓ Temp 27°C - Pasok sa range\n✓ NDVI 0.83 - Fertile at healthy soil\n\nTips sa pag-aalaga:\n1. Gumamit ng shade trees para protektado laban sa sobrang init\n2. Regular na maglagay ng organic fertilizer (compost o manure)\n3. Panatilihin ang maayos na drainage para iwas waterlogging\n4. Mag-prune para pumasok ang hangin at liwanag\n\nMaganda ang kondisyon, kailangan lang ng tuloy-tuloy na maintenance."
   },
   {
     "prompt": "Soil pH: 6.0, Rainfall: 0.75mm/3h, Temp: 23°C, NDVI: 0.77\nUser: Pwede ba ang Liberica coffee dito?",
-    "response": "Suriin natin:\n\n✓ pH 6.0 - Okay para sa Liberica\n✓ Rainfall 0.75mm/3h - Sakto (Liberica gusto ng mataas na ulan)\n✓ Temp 23°C - Pasok, gusto rin nito ang medyo malamig\n✓ NDVI 0.77 - Fertile soil\n\nMaganda ang kondisyon para sa **Liberica coffee**. Tips:\n1. Siguraduhin na may bahagyang shade para hindi ma-expose sa sobrang init\n2. Regular na mag-apply ng organic fertilizer\n3. Magtanim ng windbreaks para proteksyon sa hangin\n\nPwede rin itong ihalo sa intercropping kasama ang saging o kakaw para mas kumita."
+    "response": "Suriin natin:\n\n✓ pH 6.0 - Okay para sa Liberica\n✓ Rainfall 0.75mm/3h - Sakto (Liberica gusto ng mataas na ulan)\n✓ Temp 23°C - Pasok, gusto rin nito ang medyo malamig\n✓ NDVI 0.77 - Fertile soil\n\nMaganda ang kondisyon para sa Liberica coffee. Tips:\n1. Siguraduhin na may bahagyang shade para hindi ma-expose sa sobrang init\n2. Regular na mag-apply ng organic fertilizer\n3. Magtanim ng windbreaks para proteksyon sa hangin\n\nPwede rin itong ihalo sa intercropping kasama ang saging o kakaw para mas kumita."
   },
   {
     "prompt": "Soil pH: 5.4, Rainfall: 0.48mm/3h, Temp: 29°C, NDVI: 0.68\nUser: Paano ko palalakasin ang tubo ko (sugarcane)?",
-    "response": "Suriin:\n\n✓ pH 5.4 - Sakto para sa tubo (5.0–6.5 ok)\n✓ Rainfall 0.48mm/3h - Medyo sapat pero borderline (0.51–0.86mm/3h mas ideal)\n✓ Temp 29°C - Perfect para sa tubo\n⚠ NDVI 0.68 - Katamtaman, nangangailangan ng dagdag na fertility\n\nPara mas lumakas ang tubo:\n1. Gumamit ng nitrogen-rich fertilizer tuwing early growth\n2. Mag-mulching para mag-retain ng moisture\n3. Kung kaya, mag-irrigate lalo na sa dry months\n\nAlternatibo: Kung kulang talaga ang ulan, pwede ring magtanim ng **mais**."
+    "response": "Suriin:\n\n✓ pH 5.4 - Sakto para sa tubo (5.0–6.5 ok)\n✓ Rainfall 0.48mm/3h - Medyo sapat pero borderline (0.51–0.86mm/3h mas ideal)\n✓ Temp 29°C - Perfect para sa tubo\n⚠ NDVI 0.68 - Katamtaman, nangangailangan ng dagdag na fertility\n\nPara mas lumakas ang tubo:\n1. Gumamit ng nitrogen-rich fertilizer tuwing early growth\n2. Mag-mulching para mag-retain ng moisture\n3. Kung kaya, mag-irrigate lalo na sa dry months\n\nAlternatibo: Kung kulang talaga ang ulan, pwede ring magtanim ng mais."
   },
   {
     "prompt": "Soil pH: 6.9, Rainfall: 0.92mm/3h, Temp: 20°C, NDVI: 0.85\nUser: Ano magandang crop ngayong tag-ulan?",
-    "response": "Suriin:\n\n✓ pH 6.9 - Slightly alkaline pero kaya ng ilang crops\n✓ Rainfall 0.92mm/3h - Mataas, tag-ulan nga\n✓ Temp 20°C - Medyo malamig, bagay sa highland crops\n✓ NDVI 0.85 - Fertile, healthy soil\n\nPinaka-bagay ngayong tag-ulan:\n- **Palay (lowland rice)** dahil mataas ang tubig\n- **Vegetables** tulad ng repolyo at pechay sa malamig na klima\n- **Arabica coffee** sa highland areas\n\nTips:\n1. Magtanim ng palay kaagad para ma-maximize ang tubig ulan\n2. Siguraduhin ang drainage para iwas baha sa gulay\n3. Mag-intercrop ng legumes para dagdag fertility"
+    "response": "Suriin:\n\n✓ pH 6.9 - Slightly alkaline pero kaya ng ilang crops\n✓ Rainfall 0.92mm/3h - Mataas, tag-ulan nga\n✓ Temp 20°C - Medyo malamig, bagay sa highland crops\n✓ NDVI 0.85 - Fertile, healthy soil\n\nPinaka-bagay ngayong tag-ulan:\n- Palay (lowland rice) dahil mataas ang tubig\n- Vegetables tulad ng repolyo at pechay sa malamig na klima\n- Arabica coffee sa highland areas\n\nTips:\n1. Magtanim ng palay kaagad para ma-maximize ang tubig ulan\n2. Siguraduhin ang drainage para iwas baha sa gulay\n3. Mag-intercrop ng legumes para dagdag fertility"
   },
   {
     "prompt": "Soil pH: 5.7, Rainfall: 0.34mm/3h, Temp: 33°C, NDVI: 0.50\nUser: Bakit parang naninilaw ang dahon ng mais ko?",
-    "response": "Suriin:\n\n✓ pH 5.7 - Sakto para sa mais\n⚠ Rainfall 0.34mm/3h - Katamtaman pero kulang kung sobrang init\n✗ Temp 33°C - Sobra ang init, stress sa mais\n✗ NDVI 0.50 - Mababa, indikasyon ng stress o nutrient deficiency\n\nPosibleng dahilan:\n1. **Heat stress** dahil mataas ang temperatura\n2. **Nitrogen deficiency** (kaya naninilaw ang dahon)\n3. **Kakulangan sa tubig**\n\nSolusyon:\n1. Magdagdag ng nitrogen fertilizer (urea)\n2. Magpatubig lalo na sa mainit na panahon\n3. Maglagay ng mulch para bawas moisture loss"
+    "response": "Suriin:\n\n✓ pH 5.7 - Sakto para sa mais\n⚠ Rainfall 0.34mm/3h - Katamtaman pero kulang kung sobrang init\n✗ Temp 33°C - Sobra ang init, stress sa mais\n✗ NDVI 0.50 - Mababa, indikasyon ng stress o nutrient deficiency\n\nPosibleng dahilan:\n1. Heat stress dahil mataas ang temperatura\n2. Nitrogen deficiency (kaya naninilaw ang dahon)\n3. Kakulangan sa tubig\n\nSolusyon:\n1. Magdagdag ng nitrogen fertilizer (urea)\n2. Magpatubig lalo na sa mainit na panahon\n3. Maglagay ng mulch para bawas moisture loss"
   },
   {
     "prompt": "Soil pH: 6.4, Rainfall: 0.65mm/3h, Temp: 26°C, NDVI: 0.79\nUser: Gusto ko subukan ang abaca, okay ba?",
@@ -61,7 +61,7 @@
   },
   {
     "prompt": "Soil pH: 5.2, Rainfall: 0.17mm/3h, Temp: 34°C, NDVI: 0.47\nUser: May problema sa lupa ko, paano ko aayusin?",
-    "response": "Suriin:\n\n✓ pH 5.2 - Acidic pero kaya pa rin ng ilang crops\n✗ Rainfall 0.17mm/3h - Sobrang kulang para sa karamihan ng pananim\n✗ Temp 34°C - Mainit, nagdadagdag ng stress\n✗ NDVI 0.47 - Mababa, indikasyon ng degraded soil\n\nProblema: Mababa ang ulan, mataas ang init, at mababa ang soil fertility.\n\nMga hakbang:\n1. Gumamit ng drought-tolerant crops tulad ng **kamote** o **cassava**\n2. Maglagay ng organic matter para buhayin ang lupa\n3. Mag-ipon ng tubig ulan (rainwater harvesting)\n4. Mag-mulching para mapanatiling basa ang lupa\n\nLong-term: Mag-invest sa irrigation kung gusto ng mas demanding crops."
+    "response": "Suriin:\n\n✓ pH 5.2 - Acidic pero kaya pa rin ng ilang crops\n✗ Rainfall 0.17mm/3h - Sobrang kulang para sa karamihan ng pananim\n✗ Temp 34°C - Mainit, nagdadagdag ng stress\n✗ NDVI 0.47 - Mababa, indikasyon ng degraded soil\n\nProblema: Mababa ang ulan, mataas ang init, at mababa ang soil fertility.\n\nMga hakbang:\n1. Gumamit ng drought-tolerant crops tulad ng kamote o cassava\n2. Maglagay ng organic matter para buhayin ang lupa\n3. Mag-ipon ng tubig ulan (rainwater harvesting)\n4. Mag-mulching para mapanatiling basa ang lupa\n\nLong-term: Mag-invest sa irrigation kung gusto ng mas demanding crops."
   },
   {
     "prompt": "Soil pH: 6.0, Rainfall: 0.79mm/3h, Temp: 24°C, NDVI: 0.81\nUser: Paano ang tamang alaga sa palay ngayong tag-ulan?",
@@ -69,15 +69,15 @@
   },
   {
     "prompt": "Soil pH: 7.0, Rainfall: 0.51mm/3h, Temp: 27°C, NDVI: 0.74\nUser: Gusto ko magtanim ng gulay tulad ng kamatis, okay ba?",
-    "response": "Suriin:\n\n⚠ pH 7.0 - Medyo alkaline, gusto ng kamatis 5.5–6.8\n✓ Rainfall 0.51mm/3h - Sakto para sa gulay\n✓ Temp 27°C - Bagay\n✓ NDVI 0.74 - Katamtamang fertility\n\nPwede ang kamatis pero kailangan ng konting adjustment:\n1. Gumamit ng sulfur-based fertilizer para bahagyang pababain ang pH\n2. Gumamit ng raised beds para sa magandang drainage\n3. Regular na magpataba (organic o inorganic)\n\nAlternatibo: **okra** at **talong** mas kaya ang medyo alkaline soil."
+    "response": "Suriin:\n\n⚠ pH 7.0 - Medyo alkaline, gusto ng kamatis 5.5–6.8\n✓ Rainfall 0.51mm/3h - Sakto para sa gulay\n✓ Temp 27°C - Bagay\n✓ NDVI 0.74 - Katamtamang fertility\n\nPwede ang kamatis pero kailangan ng konting adjustment:\n1. Gumamit ng sulfur-based fertilizer para bahagyang pababain ang pH\n2. Gumamit ng raised beds para sa magandang drainage\n3. Regular na magpataba (organic o inorganic)\n\nAlternatibo: okra at talong mas kaya ang medyo alkaline soil."
   },
   {
     "prompt": "Soil pH: 5.9, Rainfall: 0.89mm/3h, Temp: 21°C, NDVI: 0.84\nUser: Kailan pinakamagandang magtanim ng Arabica coffee?",
-    "response": "Suriin:\n\n✓ pH 5.9 - Sakto para sa Arabica\n✓ Rainfall 0.89mm/3h - Mataas, kaya ng Arabica basta may drainage\n✓ Temp 21°C - Ideal, gusto ng Arabica ang malamig\n✓ NDVI 0.84 - Fertile\n\nPinakamagandang magtanim ng Arabica ay sa **simula ng tag-ulan (June–July)** para natural ang irrigation at stable ang pagtubo. Iwasan ang sobrang tag-init dahil sensitive ito.\n\nTips:\n1. Magtanim sa shaded areas\n2. Gumamit ng compost sa planting hole\n3. Regular na mag-prune para sa maayos na airflow"
+    "response": "Suriin:\n\n✓ pH 5.9 - Sakto para sa Arabica\n✓ Rainfall 0.89mm/3h - Mataas, kaya ng Arabica basta may drainage\n✓ Temp 21°C - Ideal, gusto ng Arabica ang malamig\n✓ NDVI 0.84 - Fertile\n\nPinakamagandang magtanim ng Arabica ay sa simula ng tag-ulan (June–July) para natural ang irrigation at stable ang pagtubo. Iwasan ang sobrang tag-init dahil sensitive ito.\n\nTips:\n1. Magtanim sa shaded areas\n2. Gumamit ng compost sa planting hole\n3. Regular na mag-prune para sa maayos na airflow"
   },
   {
     "prompt": "Soil pH: 6.3, Rainfall: 0.45mm/3h, Temp: 30°C, NDVI: 0.61\nUser: Ilang beses ako dapat magdilig kung gulay ang itatanim ko?",
-    "response": "Suriin:\n\n✓ pH 6.3 - Swak para sa karamihan ng gulay\n⚠ Rainfall 0.45mm/3h - Katamtaman, hindi sapat buong taon\n⚠ Temp 30°C - Mainit, madaling matuyo ang lupa\n⚠ NDVI 0.61 - Moderate fertility\n\nKung gulay ang itatanim:\n- **2–3 beses kada linggo** kung tag-init\n- **1–2 beses kada linggo** kung maulan naman\n\nTips:\n1. Gumamit ng drip irrigation para tipid sa tubig\n2. Mag-mulching para hindi agad matuyo ang lupa\n3. Bantayan ang wilting bilang senyales ng kakulangan sa tubig"
+    "response": "Suriin:\n\n✓ pH 6.3 - Swak para sa karamihan ng gulay\n⚠ Rainfall 0.45mm/3h - Katamtaman, hindi sapat buong taon\n⚠ Temp 30°C - Mainit, madaling matuyo ang lupa\n⚠ NDVI 0.61 - Moderate fertility\n\nKung gulay ang itatanim:\n- 2–3 beses kada linggo kung tag-init\n- 1–2 beses kada linggo kung maulan naman\n\nTips:\n1. Gumamit ng drip irrigation para tipid sa tubig\n2. Mag-mulching para hindi agad matuyo ang lupa\n3. Bantayan ang wilting bilang senyales ng kakulangan sa tubig"
   },
   {
     "prompt": "Soil pH: 5.5, Rainfall: 0.72mm/3h, Temp: 28°C, NDVI: 0.80\nUser: Pwede ba ang coconut dito?",
@@ -89,11 +89,11 @@
   },
   {
     "prompt": "Soil pH: 6.2, Rainfall: 0.55mm/3h, Temp: 25°C, NDVI: 0.78\nUser: May plano akong magtanim ng tobacco, okay ba?",
-    "response": "Suriin:\n\n✓ pH 6.2 - Sakto para sa tobacco (5.5–7.0)\n✓ Rainfall 0.55mm/3h - Medyo mataas, tobacco mas gusto 0.21–0.41mm/3h\n✓ Temp 25°C - Swak\n✓ NDVI 0.78 - Fertile\n\nPwede pero hindi ideal dahil sobra ang ulan. Tobacco mas gusto ang moderate rainfall.\n\nKung itutuloy:\n1. Siguraduhin ang drainage\n2. Gumamit ng raised beds\n3. Bantayan ang fungal diseases dahil sa basa\n\nAlternatibo: **Palay** o **Cacao** mas bagay sa ganitong ulan."
+    "response": "Suriin:\n\n✓ pH 6.2 - Sakto para sa tobacco (5.5–7.0)\n✓ Rainfall 0.55mm/3h - Medyo mataas, tobacco mas gusto 0.21–0.41mm/3h\n✓ Temp 25°C - Swak\n✓ NDVI 0.78 - Fertile\n\nPwede pero hindi ideal dahil sobra ang ulan. Tobacco mas gusto ang moderate rainfall.\n\nKung itutuloy:\n1. Siguraduhin ang drainage\n2. Gumamit ng raised beds\n3. Bantayan ang fungal diseases dahil sa basa\n\nAlternatibo: Palay o Cacao mas bagay sa ganitong ulan."
   },
   {
     "prompt": "Soil pH: 5.9, Rainfall: 0.58mm/3h, Temp: 27°C, NDVI: 0.82\nUser: Anong magandang itanim kung gusto ko ng stable na kita?",
-    "response": "Suriin:\n\n✓ pH 5.9 - Sakto para sa karamihan ng crops\n✓ Rainfall 0.58mm/3h - Ideal para sa rice, cacao, banana\n✓ Temp 27°C - Perfect\n✓ NDVI 0.82 - Fertile soil\n\nMagandang crops:\n- **Rice** para sa staple at siguradong market\n- **Cacao** para sa export market\n- **Banana** para sa local at export demand\n\nPwede kang mag-diversify:\n1. Magtanim ng palay bilang base crop\n2. Mag-intercrop ng cacao at banana para dagdag kita\n\nIto ang paraan para hindi nakadepende sa isang produkto lang."
+    "response": "Suriin:\n\n✓ pH 5.9 - Sakto para sa karamihan ng crops\n✓ Rainfall 0.58mm/3h - Ideal para sa rice, cacao, banana\n✓ Temp 27°C - Perfect\n✓ NDVI 0.82 - Fertile soil\n\nMagandang crops:\n- Rice para sa staple at siguradong market\n- Cacao para sa export market\n- Banana para sa local at export demand\n\nPwede kang mag-diversify:\n1. Magtanim ng palay bilang base crop\n2. Mag-intercrop ng cacao at banana para dagdag kita\n\nIto ang paraan para hindi nakadepende sa isang produkto lang."
   },
   {
     "prompt": "Soil pH: 6.6, Rainfall: 0.34mm/3h, Temp: 29°C, NDVI: 0.59\nUser: Ngayong dry season, ano dapat gawin?",
@@ -101,11 +101,11 @@
   },
   {
     "prompt": "Soil pH: 6.1, Rainfall: 0.75mm/3h, Temp: 27°C, NDVI: 0.82\nUser: Ano ang magandang itanim dito sa mababang lugar ng Bicol?",
-    "response": "Suriin:\n\n✓ pH 6.1 - Sakto para sa karamihan ng crops\n✓ Rainfall 0.75mm/3h - Malakas, bagay sa water-loving crops\n✓ Temp 27°C - Mainit pero normal sa tropiko\n✓ NDVI 0.82 - Mataas, malusog ang lupa\n\nMaganda para sa **palay (lowland rice)** at **coconut** dahil parehong gusto nila ng mataas na tubig. Pwede ring cacao at gabi.\n\nTips:\n1. Gumamit ng drainage para hindi mag-overflood ang palay\n2. Magtanim ng coconut sa gilid bilang long-term crop\n3. Pwede ring intercrop ng cacao sa ilalim ng niyog"
+    "response": "Suriin:\n\n✓ pH 6.1 - Sakto para sa karamihan ng crops\n✓ Rainfall 0.75mm/3h - Malakas, bagay sa water-loving crops\n✓ Temp 27°C - Mainit pero normal sa tropiko\n✓ NDVI 0.82 - Mataas, malusog ang lupa\n\nMaganda para sa palay (lowland rice) at coconut dahil parehong gusto nila ng mataas na tubig. Pwede ring cacao at gabi.\n\nTips:\n1. Gumamit ng drainage para hindi mag-overflood ang palay\n2. Magtanim ng coconut sa gilid bilang long-term crop\n3. Pwede ring intercrop ng cacao sa ilalim ng niyog"
   },
   {
     "prompt": "Soil pH: 5.2, Rainfall: 0.48mm/3h, Temp: 23°C, NDVI: 0.77\nUser: Balak ko sana mag-coffee, okay ba sa kondisyon na ito?",
-    "response": "Suriin:\n\n✓ pH 5.2 - Medyo acidic pero okay pa para sa coffee (5.0–6.5)\n✓ Rainfall 0.48mm/3h - Pasok, sapat para sa coffee\n✓ Temp 23°C - Ideal, gusto ng coffee ang mas malamig\n✓ NDVI 0.77 - Maganda ang fertility\n\nPwede ang **Arabica coffee** dahil malamig at acidic ang lupa. Mas babagay sa upland areas.\n\nTips:\n1. Maglagay ng shade trees para protektado ang kape\n2. Gumamit ng organic fertilizer para mapanatili ang acidity\n3. Bantayan ang fungal diseases sa maulan na buwan"
+    "response": "Suriin:\n\n✓ pH 5.2 - Medyo acidic pero okay pa para sa coffee (5.0–6.5)\n✓ Rainfall 0.48mm/3h - Pasok, sapat para sa coffee\n✓ Temp 23°C - Ideal, gusto ng coffee ang mas malamig\n✓ NDVI 0.77 - Maganda ang fertility\n\nPwede ang Arabica coffee dahil malamig at acidic ang lupa. Mas babagay sa upland areas.\n\nTips:\n1. Maglagay ng shade trees para protektado ang kape\n2. Gumamit ng organic fertilizer para mapanatili ang acidity\n3. Bantayan ang fungal diseases sa maulan na buwan"
   },
   {
     "prompt": "Soil pH: 7.5, Rainfall: 0.38mm/3h, Temp: 29°C, NDVI: 0.62\nUser: Pwede ba akong magtanim ng tobacco dito?",
@@ -133,7 +133,7 @@
   },
   {
     "prompt": "Soil pH: 6.7, Rainfall: 0.51mm/3h, Temp: 22°C, NDVI: 0.79\nUser: Kailan magandang magtanim ng repolyo dito sa Benguet?",
-    "response": "Suriin:\n\n✓ pH 6.7 - Bagay para sa gulay\n✓ Rainfall 0.51mm/3h - Sakto para sa gulay\n✓ Temp 22°C - Malamig, ideal sa repolyo\n✓ NDVI 0.79 - Maganda ang fertility\n\nPwede ka magtanim ng repolyo halos buong taon, pero mas maganda sa **taglamig na buwan (Nov–Feb)** kung saan mas malamig.\n\nTips:\n1. Gumamit ng raised beds para maiwasan ang waterlogging\n2. Regular na mag-fertilize ng nitrogen\n3. Bantayan ang cabbage worms"
+    "response": "Suriin:\n\n✓ pH 6.7 - Bagay para sa gulay\n✓ Rainfall 0.51mm/3h - Sakto para sa gulay\n✓ Temp 22°C - Malamig, ideal sa repolyo\n✓ NDVI 0.79 - Maganda ang fertility\n\nPwede ka magtanim ng repolyo halos buong taon, pero mas maganda sa taglamig na buwan (Nov–Feb) kung saan mas malamig.\n\nTips:\n1. Gumamit ng raised beds para maiwasan ang waterlogging\n2. Regular na mag-fertilize ng nitrogen\n3. Bantayan ang cabbage worms"
   },
   {
     "prompt": "Soil pH: 5.9, Rainfall: 0.68mm/3h, Temp: 26°C, NDVI: 0.81\nUser: Pwede bang sabayan ang coconut at cacao planting?",
@@ -173,7 +173,7 @@
   },
   {
     "prompt": "Soil pH: 6.6, Rainfall: 0.62mm/3h, Temp: 27°C, NDVI: 0.80\nUser: Pwede bang sabayan ang palay at isda?",
-    "response": "Suriin:\n\n✓ pH 6.6 - Sakto para sa palay\n✓ Rainfall 0.62mm/3h - Sapat\n✓ Temp 27°C - Ideal\n✓ NDVI 0.80 - Fertile\n\nOo, magandang **rice-fish farming** system ito.\n\nTips:\n1. Gumawa ng kanal para sa isda\n2. Gumamit ng organic fertilizer para safe sa isda\n3. Piliin ang palay variety na compatible"
+    "response": "Suriin:\n\n✓ pH 6.6 - Sakto para sa palay\n✓ Rainfall 0.62mm/3h - Sapat\n✓ Temp 27°C - Ideal\n✓ NDVI 0.80 - Fertile\n\nOo, magandang rice-fish farming system ito.\n\nTips:\n1. Gumawa ng kanal para sa isda\n2. Gumamit ng organic fertilizer para safe sa isda\n3. Piliin ang palay variety na compatible"
   },
   {
     "prompt": "Soil pH: 5.1, Rainfall: 0.96mm/3h, Temp: 24°C, NDVI: 0.74\nUser: Pwede bang coconut sa amin na malapit sa dagat?",
@@ -513,151 +513,151 @@
   },
   {
     "prompt": "Soil pH: 5.8, Rainfall: 0.51mm/3h, Temp: 30°C, NDVI: 0.65\nUser: Ano ang pinakamagandang pananim sa lupa ko sa ganitong init at ulan?",
-    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.8 – Medyo mababa\n⚠ Rainfall 0.51mm/3h – Katamtaman, maaaring kailanganin ng dagdag na tubig\n⚠ Temp 30°C – Medyo mainit\n⚠ NDVI 0.65 – Katamtamang fertility\n\nMga rekomendasyon:\n1. **Malunggay** – Resilient sa mainit at medyo mababang pH\n2. **kamote tops** – Kailangan ng dagdag na watering\n\nTips:\n- Maglagay ng compost para tumaas ang fertility\n- Mulching para ma-retain ang moisture"
+    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.8 – Medyo mababa\n⚠ Rainfall 0.51mm/3h – Katamtaman, maaaring kailanganin ng dagdag na tubig\n⚠ Temp 30°C – Medyo mainit\n⚠ NDVI 0.65 – Katamtamang fertility\n\nMga rekomendasyon:\n1. Malunggay – Resilient sa mainit at medyo mababang pH\n2. kamote tops – Kailangan ng dagdag na watering\n\nTips:\n- Maglagay ng compost para tumaas ang fertility\n- Mulching para ma-retain ang moisture"
   },
   {
     "prompt": "Soil pH: 6.1, Rainfall: 0.62mm/3h, Temp: 28°C, NDVI: 0.72\nUser: Paano ko aalagaan ang pananim sa ganitong kondisyon?",
-    "response": "Suriin ang kondisyon:\n\n✓ pH 6.1 – Sakto\n✓ Rainfall 0.62mm/3h – Sapat\n✓ Temp 28°C – Ideal\n✓ NDVI 0.72 – Fertile\n\nMaaaring itanim:\n- **Rambutan, Lanzones, Guyabano** – Lahat ay kaya ang fertility at rainfall\n\nTips sa pag-aalaga:\n1. Regular watering sa dry season\n2. Fertilizer application tuwing planting season\n3. Mulching para sa moisture retention\n4. Protektahan sa peste at sakit"
+    "response": "Suriin ang kondisyon:\n\n✓ pH 6.1 – Sakto\n✓ Rainfall 0.62mm/3h – Sapat\n✓ Temp 28°C – Ideal\n✓ NDVI 0.72 – Fertile\n\nMaaaring itanim:\n- Rambutan, Lanzones, Guyabano – Lahat ay kaya ang fertility at rainfall\n\nTips sa pag-aalaga:\n1. Regular watering sa dry season\n2. Fertilizer application tuwing planting season\n3. Mulching para sa moisture retention\n4. Protektahan sa peste at sakit"
   },
   {
     "prompt": "Soil pH: 5.9, Rainfall: 0.55mm/3h, Temp: 29°C, NDVI: 0.68\nUser: Ano ang puwede kong itanim at paano aalagaan sa mainit na klima?",
-    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.9 – Medyo mababa\n✓ Rainfall 0.55mm/3h – Sapat\n✓ Temp 29°C – Mainit pero kaya ng maraming tropical crops\n⚠ NDVI 0.68 – Katamtamang fertility\n\nMaaaring itanim:\n- **Malunggay, kamote tops, Atis** – Resilient sa mainit at medyo mababang pH\n\nPag-aalaga:\n1. Soil amendment para sa pH\n2. Mulching para retain moisture\n3. Regular watering"
+    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.9 – Medyo mababa\n✓ Rainfall 0.55mm/3h – Sapat\n✓ Temp 29°C – Mainit pero kaya ng maraming tropical crops\n⚠ NDVI 0.68 – Katamtamang fertility\n\nMaaaring itanim:\n- Malunggay, kamote tops, Atis – Resilient sa mainit at medyo mababang pH\n\nPag-aalaga:\n1. Soil amendment para sa pH\n2. Mulching para retain moisture\n3. Regular watering"
   },
   {
     "prompt": "Soil pH: 6.0, Rainfall: 0.68mm/3h, Temp: 27°C, NDVI: 0.75\nUser: Ano ang pinakamagandang gawin sa ganitong fertile at basang lupa?",
-    "response": "Suriin ang kondisyon:\n\n✓ pH 6.0 – Sakto\n✓ Rainfall 0.68mm/3h – Sapat, mataas\n✓ Temp 27°C – Ideal\n✓ NDVI 0.75 – Fertile\n\nMaaaring itanim:\n- **Durian, Mangosteen, Atis** – Mahusay sa fertile at high-water soil\n\nPag-aalaga:\n1. Mulching at compost application\n2. Regular pruning para healthy growth\n3. Proteksyon sa peste"
+    "response": "Suriin ang kondisyon:\n\n✓ pH 6.0 – Sakto\n✓ Rainfall 0.68mm/3h – Sapat, mataas\n✓ Temp 27°C – Ideal\n✓ NDVI 0.75 – Fertile\n\nMaaaring itanim:\n- Durian, Mangosteen, Atis – Mahusay sa fertile at high-water soil\n\nPag-aalaga:\n1. Mulching at compost application\n2. Regular pruning para healthy growth\n3. Proteksyon sa peste"
   },
   {
     "prompt": "Soil pH: 6.2, Rainfall: 0.58mm/3h, Temp: 28°C, NDVI: 0.70\nUser: Ano ang pinakamainam na pananim at paano aalagaan ang lupa sa ganitong klima?",
-    "response": "Suriin ang kondisyon:\n\n✓ pH 6.2 – Sakto\n✓ Rainfall 0.58mm/3h – Sapat\n✓ Temp 28°C – Ideal\n✓ NDVI 0.70 – Fertile\n\nMaaaring itanim:\n- **Rambutan, Guyabano, Pili nut** – Sakto ang soil at rainfall\n\nPag-aalaga:\n1. Fertilizer application sa planting season\n2. Mulching para sa moisture\n3. Regular watering at pest control"
+    "response": "Suriin ang kondisyon:\n\n✓ pH 6.2 – Sakto\n✓ Rainfall 0.58mm/3h – Sapat\n✓ Temp 28°C – Ideal\n✓ NDVI 0.70 – Fertile\n\nMaaaring itanim:\n- Rambutan, Guyabano, Pili nut – Sakto ang soil at rainfall\n\nPag-aalaga:\n1. Fertilizer application sa planting season\n2. Mulching para sa moisture\n3. Regular watering at pest control"
   },
   {
     "prompt": "Soil pH: 5.8, Rainfall: 0.53mm/3h, Temp: 29°C, NDVI: 0.67\nUser: Ano ang puwede kong itanim at paano aalagaan sa medyo mainit na lugar?",
-    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.8 – Medyo mababa\n⚠ Rainfall 0.53mm/3h – Katamtaman\n✓ Temp 29°C – Mainit pero kaya ng tropical crops\n⚠ NDVI 0.67 – Katamtamang fertility\n\nMaaaring itanim:\n- **Malunggay, kamote tops** – Resilient sa mainit at medyo mababang pH\n\nPag-aalaga:\n1. Soil amendment para sa pH\n2. Mulching at regular watering"
+    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.8 – Medyo mababa\n⚠ Rainfall 0.53mm/3h – Katamtaman\n✓ Temp 29°C – Mainit pero kaya ng tropical crops\n⚠ NDVI 0.67 – Katamtamang fertility\n\nMaaaring itanim:\n- Malunggay, kamote tops – Resilient sa mainit at medyo mababang pH\n\nPag-aalaga:\n1. Soil amendment para sa pH\n2. Mulching at regular watering"
   },
   {
     "prompt": "Soil pH: 6.0, Rainfall: 0.55mm/3h, Temp: 28°C, NDVI: 0.72\nUser: Ano ang pinakamagandang pananim sa fertile soil at katamtamang ulan?",
-    "response": "Suriin ang kondisyon:\n\n✓ pH 6.0 – Sakto\n✓ Rainfall 0.55mm/3h – Katamtaman\n✓ Temp 28°C – Ideal\n✓ NDVI 0.72 – Fertile\n\nMaaaring itanim:\n- **Atis, Lanzones, Guyabano** – Mahusay sa fertile soil\n\nPag-aalaga:\n1. Fertilizer application\n2. Mulching para sa moisture\n3. Proteksyon sa peste"
+    "response": "Suriin ang kondisyon:\n\n✓ pH 6.0 – Sakto\n✓ Rainfall 0.55mm/3h – Katamtaman\n✓ Temp 28°C – Ideal\n✓ NDVI 0.72 – Fertile\n\nMaaaring itanim:\n- Atis, Lanzones, Guyabano – Mahusay sa fertile soil\n\nPag-aalaga:\n1. Fertilizer application\n2. Mulching para sa moisture\n3. Proteksyon sa peste"
   },
   {
     "prompt": "Soil pH: 5.9, Rainfall: 0.51mm/3h, Temp: 27°C, NDVI: 0.65\nUser: Paano ko mapapalaki ang mga pananim sa ganitong medyo mababa ang pH at katamtamang fertility?",
-    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.9 – Medyo mababa\n⚠ Rainfall 0.51mm/3h – Katamtaman\n✓ Temp 27°C – Ideal\n⚠ NDVI 0.65 – Katamtamang fertility\n\nMaaaring itanim:\n- **Malunggay, kamote tops** – Kaya ang soil at temp\n\nPag-aalaga:\n1. Soil amendment para sa pH\n2. Mulching at compost\n3. Regular watering"
+    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.9 – Medyo mababa\n⚠ Rainfall 0.51mm/3h – Katamtaman\n✓ Temp 27°C – Ideal\n⚠ NDVI 0.65 – Katamtamang fertility\n\nMaaaring itanim:\n- Malunggay, kamote tops – Kaya ang soil at temp\n\nPag-aalaga:\n1. Soil amendment para sa pH\n2. Mulching at compost\n3. Regular watering"
   },
   {
     "prompt": "Soil pH: 6.1, Rainfall: 0.62mm/3h, Temp: 28°C, NDVI: 0.74\nUser: Ano ang pinakamagandang pananim at paano aalagaan sa fertile at sapat ang ulan?",
-    "response": "Suriin ang kondisyon:\n\n✓ pH 6.1 – Sakto\n✓ Rainfall 0.62mm/3h – Sapat\n✓ Temp 28°C – Ideal\n✓ NDVI 0.74 – Fertile\n\nMaaaring itanim:\n- **Durian, Mangosteen, Rambutan** – Lahat ay bagay sa fertile soil at sapat na ulan\n\nPag-aalaga:\n1. Fertilizer application\n2. Mulching para sa moisture\n3. Proteksyon sa peste\n4. Regular watering sa dry season"
+    "response": "Suriin ang kondisyon:\n\n✓ pH 6.1 – Sakto\n✓ Rainfall 0.62mm/3h – Sapat\n✓ Temp 28°C – Ideal\n✓ NDVI 0.74 – Fertile\n\nMaaaring itanim:\n- Durian, Mangosteen, Rambutan – Lahat ay bagay sa fertile soil at sapat na ulan\n\nPag-aalaga:\n1. Fertilizer application\n2. Mulching para sa moisture\n3. Proteksyon sa peste\n4. Regular watering sa dry season"
   },
   {
     "prompt": "Soil pH: 6.0, Rainfall: 0.60mm/3h, Temp: 29°C, NDVI: 0.71\nUser: Ano ang puwede kong itanim sa ganitong mainit at katamtamang ulan?",
-    "response": "Suriin ang kondisyon:\n\n✓ pH 6.0 – Sakto\n✓ Rainfall 0.60mm/3h – Katamtaman, maaaring dagdagan sa dry periods\n✓ Temp 29°C – Mainit, pero kaya ng tropical crops\n✓ NDVI 0.71 – Fertile\n\nMaaaring itanim:\n- **Saging, Malunggay, Atis** – Resilient sa mainit at katamtamang ulan\n\nPag-aalaga:\n1. Regular watering sa dry spells\n2. Mulching para sa moisture retention\n3. Fertilization tuwing planting season"
+    "response": "Suriin ang kondisyon:\n\n✓ pH 6.0 – Sakto\n✓ Rainfall 0.60mm/3h – Katamtaman, maaaring dagdagan sa dry periods\n✓ Temp 29°C – Mainit, pero kaya ng tropical crops\n✓ NDVI 0.71 – Fertile\n\nMaaaring itanim:\n- Saging, Malunggay, Atis – Resilient sa mainit at katamtamang ulan\n\nPag-aalaga:\n1. Regular watering sa dry spells\n2. Mulching para sa moisture retention\n3. Fertilization tuwing planting season"
   },
   {
     "prompt": "Soil pH: 5.7, Rainfall: 0.55mm/3h, Temp: 30°C, NDVI: 0.68\nUser: Ano ang pinakamagandang pananim at paano aalagaan sa mainit na klima?",
-    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.7 – Medyo mababa\n✓ Rainfall 0.55mm/3h – Katamtaman\n✓ Temp 30°C – Mainit pero kayang suportahan ng tropical crops\n⚠ NDVI 0.68 – Katamtamang fertility\n\nMaaaring itanim:\n- **kamote tops, Malunggay, Gabi** – Kaya ang init at medyo mababang pH\n\nPag-aalaga:\n1. Soil amendment para sa pH\n2. Regular watering\n3. Mulching para sa moisture"
+    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.7 – Medyo mababa\n✓ Rainfall 0.55mm/3h – Katamtaman\n✓ Temp 30°C – Mainit pero kayang suportahan ng tropical crops\n⚠ NDVI 0.68 – Katamtamang fertility\n\nMaaaring itanim:\n- kamote tops, Malunggay, Gabi – Kaya ang init at medyo mababang pH\n\nPag-aalaga:\n1. Soil amendment para sa pH\n2. Regular watering\n3. Mulching para sa moisture"
   },
   {
     "prompt": "Soil pH: 6.2, Rainfall: 0.65mm/3h, Temp: 28°C, NDVI: 0.76\nUser: Ano ang puwede kong itanim sa fertile soil at sapat ang ulan?",
-    "response": "Suriin ang kondisyon:\n\n✓ pH 6.2 – Sakto\n✓ Rainfall 0.65mm/3h – Sapat\n✓ Temp 28°C – Ideal\n✓ NDVI 0.76 – Malusog at fertile\n\nMaaaring itanim:\n- **Durian, Mangosteen, Rambutan** – Lahat ay bagay sa fertile soil at sapat na ulan\n\nPag-aalaga:\n1. Mulching at compost\n2. Fertilization sa planting season\n3. Proteksyon sa peste"
+    "response": "Suriin ang kondisyon:\n\n✓ pH 6.2 – Sakto\n✓ Rainfall 0.65mm/3h – Sapat\n✓ Temp 28°C – Ideal\n✓ NDVI 0.76 – Malusog at fertile\n\nMaaaring itanim:\n- Durian, Mangosteen, Rambutan – Lahat ay bagay sa fertile soil at sapat na ulan\n\nPag-aalaga:\n1. Mulching at compost\n2. Fertilization sa planting season\n3. Proteksyon sa peste"
   },
   {
     "prompt": "Soil pH: 5.9, Rainfall: 0.50mm/3h, Temp: 29°C, NDVI: 0.66\nUser: Paano ko aalagaan ang lupa at pananim sa mainit at medyo mababang fertility?",
-    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.9 – Medyo mababa\n⚠ Rainfall 0.50mm/3h – Katamtaman\n✓ Temp 29°C – Mainit, kaya ng tropical crops\n⚠ NDVI 0.66 – Katamtamang fertility\n\nMaaaring itanim:\n- **Malunggay, kamote tops** – Kaya ang init at soil conditions\n\nPag-aalaga:\n1. Soil amendment para sa pH\n2. Regular watering at mulching\n3. Fertilization para sa fertility boost"
+    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.9 – Medyo mababa\n⚠ Rainfall 0.50mm/3h – Katamtaman\n✓ Temp 29°C – Mainit, kaya ng tropical crops\n⚠ NDVI 0.66 – Katamtamang fertility\n\nMaaaring itanim:\n- Malunggay, kamote tops – Kaya ang init at soil conditions\n\nPag-aalaga:\n1. Soil amendment para sa pH\n2. Regular watering at mulching\n3. Fertilization para sa fertility boost"
   },
   {
     "prompt": "Soil pH: 6.1, Rainfall: 0.58mm/3h, Temp: 27°C, NDVI: 0.73\nUser: Ano ang pinakamainam na pananim sa ganitong fertile at katamtamang ulan?",
-    "response": "Suriin ang kondisyon:\n\n✓ pH 6.1 – Sakto\n✓ Rainfall 0.58mm/3h – Katamtaman, maaaring dagdagan sa dry period\n✓ Temp 27°C – Ideal\n✓ NDVI 0.73 – Fertile\n\nMaaaring itanim:\n- **Rambutan, Guyabano, Atis** – Angkop sa fertility at rainfall\n\nPag-aalaga:\n1. Mulching para sa moisture retention\n2. Fertilizer application tuwing planting season\n3. Proteksyon sa peste at sakit"
+    "response": "Suriin ang kondisyon:\n\n✓ pH 6.1 – Sakto\n✓ Rainfall 0.58mm/3h – Katamtaman, maaaring dagdagan sa dry period\n✓ Temp 27°C – Ideal\n✓ NDVI 0.73 – Fertile\n\nMaaaring itanim:\n- Rambutan, Guyabano, Atis – Angkop sa fertility at rainfall\n\nPag-aalaga:\n1. Mulching para sa moisture retention\n2. Fertilizer application tuwing planting season\n3. Proteksyon sa peste at sakit"
   },
   {
     "prompt": "Soil pH: 6.0, Rainfall: 0.52mm/3h, Temp: 28°C, NDVI: 0.70\nUser: Ano ang puwede kong itanim at paano aalagaan sa medyo mababa ang ulan?",
-    "response": "Suriin ang kondisyon:\n\n✓ pH 6.0 – Sakto\n⚠ Rainfall 0.52mm/3h – Medyo mababa, dagdagan ang watering\n✓ Temp 28°C – Ideal\n✓ NDVI 0.70 – Fertile\n\nMaaaring itanim:\n- **kamote tops, Malunggay** – Kaya ang soil at temperature\n\nPag-aalaga:\n1. Regular watering\n2. Mulching para retain moisture\n3. Soil amendment kung kinakailangan"
+    "response": "Suriin ang kondisyon:\n\n✓ pH 6.0 – Sakto\n⚠ Rainfall 0.52mm/3h – Medyo mababa, dagdagan ang watering\n✓ Temp 28°C – Ideal\n✓ NDVI 0.70 – Fertile\n\nMaaaring itanim:\n- kamote tops, Malunggay – Kaya ang soil at temperature\n\nPag-aalaga:\n1. Regular watering\n2. Mulching para retain moisture\n3. Soil amendment kung kinakailangan"
   },
   {
     "prompt": "Soil pH: 5.8, Rainfall: 0.57mm/3h, Temp: 30°C, NDVI: 0.69\nUser: Ano ang pinakamainam na pananim sa mainit at katamtamang fertility?",
-    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.8 – Medyo mababa\n✓ Rainfall 0.57mm/3h – Katamtaman\n✓ Temp 30°C – Mainit\n⚠ NDVI 0.69 – Katamtamang fertility\n\nMaaaring itanim:\n- **Malunggay, kamote tops, Atis** – Kaya ang init at soil conditions\n\nPag-aalaga:\n1. Soil amendment para sa pH\n2. Regular watering at mulching\n3. Fertilization tuwing planting season"
+    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.8 – Medyo mababa\n✓ Rainfall 0.57mm/3h – Katamtaman\n✓ Temp 30°C – Mainit\n⚠ NDVI 0.69 – Katamtamang fertility\n\nMaaaring itanim:\n- Malunggay, kamote tops, Atis – Kaya ang init at soil conditions\n\nPag-aalaga:\n1. Soil amendment para sa pH\n2. Regular watering at mulching\n3. Fertilization tuwing planting season"
   },
   {
     "prompt": "Soil pH: 6.2, Rainfall: 0.61mm/3h, Temp: 27°C, NDVI: 0.75\nUser: Ano ang pinakamagandang pananim sa fertile soil at sapat ang ulan?",
-    "response": "Suriin ang kondisyon:\n\n✓ pH 6.2 – Sakto\n✓ Rainfall 0.61mm/3h – Sapat\n✓ Temp 27°C – Ideal\n✓ NDVI 0.75 – Fertile\n\nMaaaring itanim:\n- **Durian, Mangosteen, Rambutan** – Lahat ay bagay sa fertile soil at sapat na ulan\n\nPag-aalaga:\n1. Mulching at compost\n2. Fertilizer application sa planting season\n3. Proteksyon sa peste"
+    "response": "Suriin ang kondisyon:\n\n✓ pH 6.2 – Sakto\n✓ Rainfall 0.61mm/3h – Sapat\n✓ Temp 27°C – Ideal\n✓ NDVI 0.75 – Fertile\n\nMaaaring itanim:\n- Durian, Mangosteen, Rambutan – Lahat ay bagay sa fertile soil at sapat na ulan\n\nPag-aalaga:\n1. Mulching at compost\n2. Fertilizer application sa planting season\n3. Proteksyon sa peste"
   },
   {
     "prompt": "Soil pH: 5.9, Rainfall: 0.54mm/3h, Temp: 29°C, NDVI: 0.68\nUser: Paano ko aalagaan ang mga pananim sa mainit at medyo mababang pH?",
-    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.9 – Medyo mababa\n⚠ Rainfall 0.54mm/3h – Katamtaman\n✓ Temp 29°C – Mainit\n⚠ NDVI 0.68 – Katamtamang fertility\n\nMaaaring itanim:\n- **Malunggay, kamote tops** – Kaya ang soil at temp\n\nPag-aalaga:\n1. Soil amendment para sa pH\n2. Mulching at regular watering\n3. Fertilization para sa fertility boost"
+    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.9 – Medyo mababa\n⚠ Rainfall 0.54mm/3h – Katamtaman\n✓ Temp 29°C – Mainit\n⚠ NDVI 0.68 – Katamtamang fertility\n\nMaaaring itanim:\n- Malunggay, kamote tops – Kaya ang soil at temp\n\nPag-aalaga:\n1. Soil amendment para sa pH\n2. Mulching at regular watering\n3. Fertilization para sa fertility boost"
   },
   {
     "prompt": "Soil pH: 6.2, Rainfall: 0.65mm/3h, Temp: 28°C, NDVI: 0.76\nUser: Ano ang puwede kong itanim sa fertile soil at sapat ang ulan?",
-    "response": "Suriin ang kondisyon:\n\n✓ pH 6.2 – Sakto\n✓ Rainfall 0.65mm/3h – Sapat\n✓ Temp 28°C – Ideal\n✓ NDVI 0.76 – Malusog at fertile\n\nMaaaring itanim:\n- **Durian, Mangosteen, Rambutan** – Lahat ay bagay sa fertile soil at sapat na ulan\n\nPag-aalaga:\n1. Mulching at compost\n2. Fertilization sa planting season\n3. Proteksyon sa peste"
+    "response": "Suriin ang kondisyon:\n\n✓ pH 6.2 – Sakto\n✓ Rainfall 0.65mm/3h – Sapat\n✓ Temp 28°C – Ideal\n✓ NDVI 0.76 – Malusog at fertile\n\nMaaaring itanim:\n- Durian, Mangosteen, Rambutan – Lahat ay bagay sa fertile soil at sapat na ulan\n\nPag-aalaga:\n1. Mulching at compost\n2. Fertilization sa planting season\n3. Proteksyon sa peste"
   },
   {
     "prompt": "Soil pH: 5.9, Rainfall: 0.50mm/3h, Temp: 29°C, NDVI: 0.66\nUser: Paano ko aalagaan ang lupa at pananim sa mainit at medyo mababang fertility?",
-    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.9 – Medyo mababa\n⚠ Rainfall 0.50mm/3h – Katamtaman\n✓ Temp 29°C – Mainit, kaya ng tropical crops\n⚠ NDVI 0.66 – Katamtamang fertility\n\nMaaaring itanim:\n- **Malunggay, kamote tops** – Kaya ang init at soil conditions\n\nPag-aalaga:\n1. Soil amendment para sa pH\n2. Regular watering at mulching\n3. Fertilization para sa fertility boost"
+    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.9 – Medyo mababa\n⚠ Rainfall 0.50mm/3h – Katamtaman\n✓ Temp 29°C – Mainit, kaya ng tropical crops\n⚠ NDVI 0.66 – Katamtamang fertility\n\nMaaaring itanim:\n- Malunggay, kamote tops – Kaya ang init at soil conditions\n\nPag-aalaga:\n1. Soil amendment para sa pH\n2. Regular watering at mulching\n3. Fertilization para sa fertility boost"
   },
   {
     "prompt": "Soil pH: 6.1, Rainfall: 0.58mm/3h, Temp: 27°C, NDVI: 0.73\nUser: Ano ang pinakamainam na pananim sa ganitong fertile at katamtamang ulan?",
-    "response": "Suriin ang kondisyon:\n\n✓ pH 6.1 – Sakto\n✓ Rainfall 0.58mm/3h – Katamtaman, maaaring dagdagan sa dry period\n✓ Temp 27°C – Ideal\n✓ NDVI 0.73 – Fertile\n\nMaaaring itanim:\n- **Rambutan, Guyabano, Atis** – Angkop sa fertility at rainfall\n\nPag-aalaga:\n1. Mulching para sa moisture retention\n2. Fertilizer application tuwing planting season\n3. Proteksyon sa peste at sakit"
+    "response": "Suriin ang kondisyon:\n\n✓ pH 6.1 – Sakto\n✓ Rainfall 0.58mm/3h – Katamtaman, maaaring dagdagan sa dry period\n✓ Temp 27°C – Ideal\n✓ NDVI 0.73 – Fertile\n\nMaaaring itanim:\n- Rambutan, Guyabano, Atis – Angkop sa fertility at rainfall\n\nPag-aalaga:\n1. Mulching para sa moisture retention\n2. Fertilizer application tuwing planting season\n3. Proteksyon sa peste at sakit"
   },
   {
     "prompt": "Soil pH: 6.0, Rainfall: 0.52mm/3h, Temp: 28°C, NDVI: 0.70\nUser: Ano ang puwede kong itanim at paano aalagaan sa medyo mababa ang ulan?",
-    "response": "Suriin ang kondisyon:\n\n✓ pH 6.0 – Sakto\n⚠ Rainfall 0.52mm/3h – Medyo mababa, dagdagan ang watering\n✓ Temp 28°C – Ideal\n✓ NDVI 0.70 – Fertile\n\nMaaaring itanim:\n- **kamote tops, Malunggay** – Kaya ang soil at temperature\n\nPag-aalaga:\n1. Regular watering\n2. Mulching para retain moisture\n3. Soil amendment kung kinakailangan"
+    "response": "Suriin ang kondisyon:\n\n✓ pH 6.0 – Sakto\n⚠ Rainfall 0.52mm/3h – Medyo mababa, dagdagan ang watering\n✓ Temp 28°C – Ideal\n✓ NDVI 0.70 – Fertile\n\nMaaaring itanim:\n- kamote tops, Malunggay – Kaya ang soil at temperature\n\nPag-aalaga:\n1. Regular watering\n2. Mulching para retain moisture\n3. Soil amendment kung kinakailangan"
   },
   {
     "prompt": "Soil pH: 5.8, Rainfall: 0.57mm/3h, Temp: 30°C, NDVI: 0.69\nUser: Ano ang pinakamainam na pananim sa mainit at katamtamang fertility?",
-    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.8 – Medyo mababa\n✓ Rainfall 0.57mm/3h – Katamtaman\n✓ Temp 30°C – Mainit\n⚠ NDVI 0.69 – Katamtamang fertility\n\nMaaaring itanim:\n- **Malunggay, kamote tops, Atis** – Kaya ang init at soil conditions\n\nPag-aalaga:\n1. Soil amendment para sa pH\n2. Regular watering at mulching\n3. Fertilization tuwing planting season"
+    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.8 – Medyo mababa\n✓ Rainfall 0.57mm/3h – Katamtaman\n✓ Temp 30°C – Mainit\n⚠ NDVI 0.69 – Katamtamang fertility\n\nMaaaring itanim:\n- Malunggay, kamote tops, Atis – Kaya ang init at soil conditions\n\nPag-aalaga:\n1. Soil amendment para sa pH\n2. Regular watering at mulching\n3. Fertilization tuwing planting season"
   },
   {
     "prompt": "Soil pH: 6.2, Rainfall: 0.61mm/3h, Temp: 27°C, NDVI: 0.75\nUser: Ano ang pinakamagandang pananim sa fertile soil at sapat ang ulan?",
-    "response": "Suriin ang kondisyon:\n\n✓ pH 6.2 – Sakto\n✓ Rainfall 0.61mm/3h – Sapat\n✓ Temp 27°C – Ideal\n✓ NDVI 0.75 – Fertile\n\nMaaaring itanim:\n- **Durian, Mangosteen, Rambutan** – Lahat ay bagay sa fertile soil at sapat na ulan\n\nPag-aalaga:\n1. Mulching at compost\n2. Fertilizer application sa planting season\n3. Proteksyon sa peste"
+    "response": "Suriin ang kondisyon:\n\n✓ pH 6.2 – Sakto\n✓ Rainfall 0.61mm/3h – Sapat\n✓ Temp 27°C – Ideal\n✓ NDVI 0.75 – Fertile\n\nMaaaring itanim:\n- Durian, Mangosteen, Rambutan – Lahat ay bagay sa fertile soil at sapat na ulan\n\nPag-aalaga:\n1. Mulching at compost\n2. Fertilizer application sa planting season\n3. Proteksyon sa peste"
   },
   {
     "prompt": "Soil pH: 5.9, Rainfall: 0.54mm/3h, Temp: 29°C, NDVI: 0.68\nUser: Paano ko aalagaan ang mga pananim sa mainit at medyo mababang pH?",
-    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.9 – Medyo mababa\n⚠ Rainfall 0.54mm/3h – Katamtaman\n✓ Temp 29°C – Mainit\n⚠ NDVI 0.68 – Katamtamang fertility\n\nMaaaring itanim:\n- **Malunggay, kamote tops** – Kaya ang soil at temp\n\nPag-aalaga:\n1. Soil amendment para sa pH\n2. Mulching at regular watering\n3. Fertilization para sa fertility boost"
+    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.9 – Medyo mababa\n⚠ Rainfall 0.54mm/3h – Katamtaman\n✓ Temp 29°C – Mainit\n⚠ NDVI 0.68 – Katamtamang fertility\n\nMaaaring itanim:\n- Malunggay, kamote tops – Kaya ang soil at temp\n\nPag-aalaga:\n1. Soil amendment para sa pH\n2. Mulching at regular watering\n3. Fertilization para sa fertility boost"
   },
   {
     "prompt": "Soil pH: 6.1, Rainfall: 0.63mm/3h, Temp: 28°C, NDVI: 0.72\nUser: Ano ang puwede kong itanim sa fertile soil at medyo mataas ang rainfall?",
-    "response": "Suriin ang kondisyon:\n\n✓ pH 6.1 – Sakto\n✓ Rainfall 0.63mm/3h – Medyo mataas\n✓ Temp 28°C – Ideal\n✓ NDVI 0.72 – Fertile\n\nMaaaring itanim:\n- **Rambutan, Durian, Guyabano** – Lahat ay bagay sa fertile soil at medyo mataas ang ulan\n\nPag-aalaga:\n1. Mulching at compost\n2. Fertilization tuwing planting season\n3. Proteksyon sa peste at sakit\n4. Regular watering sa dry periods"
+    "response": "Suriin ang kondisyon:\n\n✓ pH 6.1 – Sakto\n✓ Rainfall 0.63mm/3h – Medyo mataas\n✓ Temp 28°C – Ideal\n✓ NDVI 0.72 – Fertile\n\nMaaaring itanim:\n- Rambutan, Durian, Guyabano – Lahat ay bagay sa fertile soil at medyo mataas ang ulan\n\nPag-aalaga:\n1. Mulching at compost\n2. Fertilization tuwing planting season\n3. Proteksyon sa peste at sakit\n4. Regular watering sa dry periods"
   },
   {
     "prompt": "Soil pH: 6.0, Rainfall: 0.58mm/3h, Temp: 30°C, NDVI: 0.69\nUser: Anong pananim ang pinakaangkop sa mainit na lugar na medyo mababa ang fertility?",
-    "response": "Suriin ang kondisyon:\n\n✓ pH 6.0 – Sakto\n⚠ Rainfall 0.58mm/3h – Katamtaman, dagdagan kung kailangan\n✓ Temp 30°C – Mainit, kaya ng tropical crops\n⚠ NDVI 0.69 – Katamtamang fertility\n\nMaaaring itanim:\n- **Malunggay, kamote tops, Atis** – Resilient sa init at soil conditions\n\nPag-aalaga:\n1. Soil amendment para sa pH\n2. Mulching at regular watering\n3. Fertilization tuwing planting season"
+    "response": "Suriin ang kondisyon:\n\n✓ pH 6.0 – Sakto\n⚠ Rainfall 0.58mm/3h – Katamtaman, dagdagan kung kailangan\n✓ Temp 30°C – Mainit, kaya ng tropical crops\n⚠ NDVI 0.69 – Katamtamang fertility\n\nMaaaring itanim:\n- Malunggay, kamote tops, Atis – Resilient sa init at soil conditions\n\nPag-aalaga:\n1. Soil amendment para sa pH\n2. Mulching at regular watering\n3. Fertilization tuwing planting season"
   },
   {
     "prompt": "Soil pH: 5.9, Rainfall: 0.52mm/3h, Temp: 28°C, NDVI: 0.67\nUser: Gusto kong magtanim sa lupa na ito, anong crops ang kaya tumubo?",
-    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.9 – Medyo mababa\n⚠ Rainfall 0.52mm/3h – Katamtaman\n✓ Temp 28°C – Mainit at ideal para sa tropical crops\n⚠ NDVI 0.67 – Katamtamang fertility\n\nMaaaring itanim:\n- **Malunggay, kamote tops** – Kaya ang soil at temp\n\nPag-aalaga:\n1. Soil amendment para sa pH\n2. Regular watering at mulching\n3. Fertilization para sa fertility boost"
+    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.9 – Medyo mababa\n⚠ Rainfall 0.52mm/3h – Katamtaman\n✓ Temp 28°C – Mainit at ideal para sa tropical crops\n⚠ NDVI 0.67 – Katamtamang fertility\n\nMaaaring itanim:\n- Malunggay, kamote tops – Kaya ang soil at temp\n\nPag-aalaga:\n1. Soil amendment para sa pH\n2. Regular watering at mulching\n3. Fertilization para sa fertility boost"
   },
   {
     "prompt": "Soil pH: 6.2, Rainfall: 0.61mm/3h, Temp: 27°C, NDVI: 0.74\nUser: Paano ko mapapalaki ang yield ng pananim sa fertile soil na medyo basa?",
-    "response": "Suriin ang kondisyon:\n\n✓ pH 6.2 – Sakto\n✓ Rainfall 0.61mm/3h – Sapat\n✓ Temp 27°C – Ideal\n✓ NDVI 0.74 – Fertile\n\nMaaaring itanim:\n- **Durian, Mangosteen, Rambutan** – Angkop sa fertile at wet soil\n\nPag-aalaga:\n1. Mulching at compost\n2. Fertilizer application tuwing planting season\n3. Proteksyon sa peste at sakit\n4. Regular watering sa dry periods"
+    "response": "Suriin ang kondisyon:\n\n✓ pH 6.2 – Sakto\n✓ Rainfall 0.61mm/3h – Sapat\n✓ Temp 27°C – Ideal\n✓ NDVI 0.74 – Fertile\n\nMaaaring itanim:\n- Durian, Mangosteen, Rambutan – Angkop sa fertile at wet soil\n\nPag-aalaga:\n1. Mulching at compost\n2. Fertilizer application tuwing planting season\n3. Proteksyon sa peste at sakit\n4. Regular watering sa dry periods"
   },
   {
     "prompt": "Soil pH: 5.8, Rainfall: 0.55mm/3h, Temp: 29°C, NDVI: 0.68\nUser: Ano ang pinakamagandang pananim at paano aalagaan ang lupa sa ganitong init?",
-    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.8 – Medyo mababa\n✓ Rainfall 0.55mm/3h – Katamtaman\n✓ Temp 29°C – Mainit pero kaya ng tropical crops\n⚠ NDVI 0.68 – Katamtamang fertility\n\nMaaaring itanim:\n- **Malunggay, kamote tops, Atis** – Resilient sa mainit at medyo mababang pH\n\nPag-aalaga:\n1. Soil amendment para sa pH\n2. Mulching at regular watering\n3. Fertilization tuwing planting season"
+    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.8 – Medyo mababa\n✓ Rainfall 0.55mm/3h – Katamtaman\n✓ Temp 29°C – Mainit pero kaya ng tropical crops\n⚠ NDVI 0.68 – Katamtamang fertility\n\nMaaaring itanim:\n- Malunggay, kamote tops, Atis – Resilient sa mainit at medyo mababang pH\n\nPag-aalaga:\n1. Soil amendment para sa pH\n2. Mulching at regular watering\n3. Fertilization tuwing planting season"
   },
   {
     "prompt": "Soil pH: 6.1, Rainfall: 0.63mm/3h, Temp: 28°C, NDVI: 0.72\nUser: May sapat bang tubig para sa fruit trees dito at ano ang puwede itanim?",
-    "response": "Suriin ang kondisyon:\n\n✓ pH 6.1 – Sakto\n✓ Rainfall 0.63mm/3h – Medyo mataas\n✓ Temp 28°C – Ideal\n✓ NDVI 0.72 – Fertile\n\nMaaaring itanim:\n- **Rambutan, Durian, Guyabano** – Angkop sa fertile soil at medyo mataas ang ulan\n\nPag-aalaga:\n1. Mulching at compost\n2. Fertilization tuwing planting season\n3. Proteksyon sa peste at sakit\n4. Regular watering kung may dry spells"
+    "response": "Suriin ang kondisyon:\n\n✓ pH 6.1 – Sakto\n✓ Rainfall 0.63mm/3h – Medyo mataas\n✓ Temp 28°C – Ideal\n✓ NDVI 0.72 – Fertile\n\nMaaaring itanim:\n- Rambutan, Durian, Guyabano – Angkop sa fertile soil at medyo mataas ang ulan\n\nPag-aalaga:\n1. Mulching at compost\n2. Fertilization tuwing planting season\n3. Proteksyon sa peste at sakit\n4. Regular watering kung may dry spells"
   },
   {
     "prompt": "Soil pH: 6.0, Rainfall: 0.56mm/3h, Temp: 30°C, NDVI: 0.70\nUser: Ano ang crops na kaya sa mainit at katamtamang fertility na lupa?",
-    "response": "Suriin ang kondisyon:\n\n✓ pH 6.0 – Sakto\n✓ Rainfall 0.56mm/3h – Katamtaman\n✓ Temp 30°C – Mainit\n✓ NDVI 0.70 – Fertile\n\nMaaaring itanim:\n- **Malunggay, kamote tops, Atis** – Kaya ang soil at temp\n\nPag-aalaga:\n1. Regular watering at mulching\n2. Soil amendment kung kinakailangan\n3. Fertilization sa planting season"
+    "response": "Suriin ang kondisyon:\n\n✓ pH 6.0 – Sakto\n✓ Rainfall 0.56mm/3h – Katamtaman\n✓ Temp 30°C – Mainit\n✓ NDVI 0.70 – Fertile\n\nMaaaring itanim:\n- Malunggay, kamote tops, Atis – Kaya ang soil at temp\n\nPag-aalaga:\n1. Regular watering at mulching\n2. Soil amendment kung kinakailangan\n3. Fertilization sa planting season"
   },
   {
     "prompt": "Soil pH: 5.9, Rainfall: 0.53mm/3h, Temp: 29°C, NDVI: 0.66\nUser: Gusto kong alamin kung anong crops ang bagay sa medyo mababa ang pH at katamtamang ulan?",
-    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.9 – Medyo mababa\n⚠ Rainfall 0.53mm/3h – Katamtaman\n✓ Temp 29°C – Mainit at kaya ng tropical crops\n⚠ NDVI 0.66 – Katamtamang fertility\n\nMaaaring itanim:\n- **Malunggay, kamote tops** – Resilient sa soil at temp conditions\n\nPag-aalaga:\n1. Soil amendment para sa pH\n2. Regular watering at mulching\n3. Fertilization sa planting season"
+    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.9 – Medyo mababa\n⚠ Rainfall 0.53mm/3h – Katamtaman\n✓ Temp 29°C – Mainit at kaya ng tropical crops\n⚠ NDVI 0.66 – Katamtamang fertility\n\nMaaaring itanim:\n- Malunggay, kamote tops – Resilient sa soil at temp conditions\n\nPag-aalaga:\n1. Soil amendment para sa pH\n2. Regular watering at mulching\n3. Fertilization sa planting season"
   },
   {
     "prompt": "Soil pH: 6.2, Rainfall: 0.60mm/3h, Temp: 27°C, NDVI: 0.75\nUser: Anong pananim ang puwede sa fertile at medyo basa na lupa?",
-    "response": "Suriin ang kondisyon:\n\n✓ pH 6.2 – Sakto\n✓ Rainfall 0.60mm/3h – Sapat\n✓ Temp 27°C – Ideal\n✓ NDVI 0.75 – Fertile\n\nMaaaring itanim:\n- **Durian, Mangosteen, Rambutan** – Angkop sa fertile at wet soil\n\nPag-aalaga:\n1. Mulching at compost\n2. Fertilization sa planting season\n3. Proteksyon sa peste"
+    "response": "Suriin ang kondisyon:\n\n✓ pH 6.2 – Sakto\n✓ Rainfall 0.60mm/3h – Sapat\n✓ Temp 27°C – Ideal\n✓ NDVI 0.75 – Fertile\n\nMaaaring itanim:\n- Durian, Mangosteen, Rambutan – Angkop sa fertile at wet soil\n\nPag-aalaga:\n1. Mulching at compost\n2. Fertilization sa planting season\n3. Proteksyon sa peste"
   },
   {
     "prompt": "Soil pH: 5.8, Rainfall: 0.54mm/3h, Temp: 28°C, NDVI: 0.68\nUser: Paano ko mapapalaki ang yield sa medyo mababa ang pH at fertility?",
-    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.8 – Medyo mababa\n⚠ Rainfall 0.54mm/3h – Katamtaman\n✓ Temp 28°C – Mainit at ideal\n⚠ NDVI 0.68 – Katamtamang fertility\n\nMaaaring itanim:\n- **Malunggay, kamote tops** – Kaya ang soil at temperature\n\nPag-aalaga:\n1. Soil amendment para sa pH\n2. Mulching at regular watering\n3. Fertilization tuwing planting season"
+    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.8 – Medyo mababa\n⚠ Rainfall 0.54mm/3h – Katamtaman\n✓ Temp 28°C – Mainit at ideal\n⚠ NDVI 0.68 – Katamtamang fertility\n\nMaaaring itanim:\n- Malunggay, kamote tops – Kaya ang soil at temperature\n\nPag-aalaga:\n1. Soil amendment para sa pH\n2. Mulching at regular watering\n3. Fertilization tuwing planting season"
   },
   {
     "prompt": "Soil pH: 5.8, Rainfall: 0.54mm/3h, Temp: 28°C, NDVI: 0.68\nUser: Ano ang puwede kong itanim dito?",
-    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.8 – Medyo mababa, bagay sa acid-tolerant crops\n⚠ Rainfall 0.54mm/3h – Katamtaman, kailangan ng dagdag na watering kung tag-init\n✓ Temp 28°C – Mainit, ideal para sa tropical crops\n⚠ NDVI 0.68 – Katamtamang fertility, maaaring dagdagan ng compost\n\nMga pananim na puwede:\n1. **Malunggay** – Matibay sa init at medyo acidic na lupa\n2. **kamote tops** – Kaya ang moderate fertility at katamtamang rainfall\n3. **Atis** – Tumutubo sa mainit at medyo basang lupa"
+    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.8 – Medyo mababa, bagay sa acid-tolerant crops\n⚠ Rainfall 0.54mm/3h – Katamtaman, kailangan ng dagdag na watering kung tag-init\n✓ Temp 28°C – Mainit, ideal para sa tropical crops\n⚠ NDVI 0.68 – Katamtamang fertility, maaaring dagdagan ng compost\n\nMga pananim na puwede:\n1. Malunggay – Matibay sa init at medyo acidic na lupa\n2. kamote tops – Kaya ang moderate fertility at katamtamang rainfall\n3. Atis – Tumutubo sa mainit at medyo basang lupa"
   },
   {
     "prompt": "Soil pH: 5.8, Rainfall: 0.54mm/3h, Temp: 28°C, NDVI: 0.68\nUser: Paano ko malalaman ang pinakamainam na kondisyon para sa pananim sa lupa ko?",
-    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.8 – Medyo mababa\n⚠ Rainfall 0.54mm/3h – Katamtaman\n✓ Temp 28°C – Mainit at kaya ng tropical crops\n⚠ NDVI 0.68 – Katamtamang fertility\n\nPinakamainam na kondisyon para sa pananim:\n- **Malunggay:** full sun, well-drained soil\n- **kamote tops:** sandy to loamy soil, moderate watering\n- **Atis:** partial shade, well-drained soil, mulching para retain moisture"
+    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.8 – Medyo mababa\n⚠ Rainfall 0.54mm/3h – Katamtaman\n✓ Temp 28°C – Mainit at kaya ng tropical crops\n⚠ NDVI 0.68 – Katamtamang fertility\n\nPinakamainam na kondisyon para sa pananim:\n- Malunggay: full sun, well-drained soil\n- kamote tops: sandy to loamy soil, moderate watering\n- Atis: partial shade, well-drained soil, mulching para retain moisture"
   },
   {
     "prompt": "Soil pH: 5.8, Rainfall: 0.54mm/3h, Temp: 28°C, NDVI: 0.68\nUser: Paano ko aalagaan ang lupa at pananim ko para sa mas mataas na ani?",
@@ -665,19 +665,19 @@
   },
   {
     "prompt": "Soil pH: 5.8, Rainfall: 0.54mm/3h, Temp: 28°C, NDVI: 0.68\nUser: Ano ang puwede kong itanim dito?",
-    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.8 – Medyo mababa, bagay sa acid-tolerant crops\n⚠ Rainfall 0.54mm/3h – Katamtaman, dagdagan ang watering sa tag-init\n✓ Temp 28°C – Mainit, ideal para sa tropical crops\n⚠ NDVI 0.68 – Katamtamang fertility\n\nMga pananim na puwede:\n1. **Malunggay**\n2. **kamote tops**\n3. **Atis**"
+    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.8 – Medyo mababa, bagay sa acid-tolerant crops\n⚠ Rainfall 0.54mm/3h – Katamtaman, dagdagan ang watering sa tag-init\n✓ Temp 28°C – Mainit, ideal para sa tropical crops\n⚠ NDVI 0.68 – Katamtamang fertility\n\nMga pananim na puwede:\n1. Malunggay\n2. kamote tops\n3. Atis"
   },
   {
     "prompt": "Soil pH: 5.8, Rainfall: 0.54mm/3h, Temp: 28°C, NDVI: 0.68\nUser: Ano ang iba pang pananim na pwede sa ganitong lupa?",
-    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.8 – Medyo mababa\n⚠ Rainfall 0.54mm/3h – Katamtaman\n✓ Temp 28°C – Mainit\n⚠ NDVI 0.68 – Katamtamang fertility\n\nMga pananim na puwede:\n1. **Upo [Bottle gourd]**\n2. **Sitao [Stringbeans]**\n3. **Pechay**"
+    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.8 – Medyo mababa\n⚠ Rainfall 0.54mm/3h – Katamtaman\n✓ Temp 28°C – Mainit\n⚠ NDVI 0.68 – Katamtamang fertility\n\nMga pananim na puwede:\n1. Upo [Bottle gourd]\n2. Sitao [Stringbeans]\n3. Pechay"
   },
   {
     "prompt": "Soil pH: 5.8, Rainfall: 0.54mm/3h, Temp: 28°C, NDVI: 0.68\nUser: Wala pa akong tiyak na pananim, ano ang best choices?",
-    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.8 – Medyo mababa\n⚠ Rainfall 0.54mm/3h – Katamtaman\n✓ Temp 28°C – Mainit, tropical climate\n⚠ NDVI 0.68 – Katamtamang fertility\n\nMga pananim na puwede:\n1. **Malunggay**\n2. **kamote tops**\n3. **Atis**"
+    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.8 – Medyo mababa\n⚠ Rainfall 0.54mm/3h – Katamtaman\n✓ Temp 28°C – Mainit, tropical climate\n⚠ NDVI 0.68 – Katamtamang fertility\n\nMga pananim na puwede:\n1. Malunggay\n2. kamote tops\n3. Atis"
   },
   {
     "prompt": "Soil pH: 5.8, Rainfall: 0.54mm/3h, Temp: 28°C, NDVI: 0.68\nUser: Ano ang pinakamainam na kondisyon para sa pananim sa ganitong lupa?",
-    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.8 – Medyo mababa\n⚠ Rainfall 0.54mm/3h – Katamtaman\n✓ Temp 28°C – Mainit\n⚠ NDVI 0.68 – Katamtamang fertility\n\nPinakamainam na kondisyon:\n- **Malunggay:** full sun, well-drained soil\n- **kamote tops:** sandy-loamy soil, moderate watering\n- **Atis:** partial shade, mulching para retain moisture"
+    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.8 – Medyo mababa\n⚠ Rainfall 0.54mm/3h – Katamtaman\n✓ Temp 28°C – Mainit\n⚠ NDVI 0.68 – Katamtamang fertility\n\nPinakamainam na kondisyon:\n- Malunggay: full sun, well-drained soil\n- kamote tops: sandy-loamy soil, moderate watering\n- Atis: partial shade, mulching para retain moisture"
   },
   {
     "prompt": "Soil pH: 5.8, Rainfall: 0.54mm/3h, Temp: 28°C, NDVI: 0.68\nUser: Ano ang mga best environment conditions para tumubo nang maayos ang pananim ko?",
