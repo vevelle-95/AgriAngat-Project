@@ -1,0 +1,22 @@
+# Core dependencies with compatible versions
+numpy>=1.20.0
+pandas>=2.0.0
+torch>=2.0.0
+transformers>=4.35.0
+sentence-transformers>=2.2.0,<6.0.0
+
+# LLM and RAG dependencies
+llama-cpp-python[server]>=0.3.16
+chromadb>=1.0.0
+huggingface-hub>=0.20.0
+
+# Optional dependencies
+streamlit>=1.28.0
+python-dotenv>=1.0.0
+scikit-learn>=1.3.0
+matplotlib>=3.7.0
+plotly>=5.15.0
+
+# GPU support note:
+# llama-cpp-python is installed with GPU support if CUDA is available
+# For manual GPU installation: pip install llama-cpp-python --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cu124

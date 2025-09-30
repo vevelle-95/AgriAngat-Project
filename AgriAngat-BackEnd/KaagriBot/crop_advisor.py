@@ -1,662 +1,649 @@
 """
-RAG-based Crop Recommendation System
-Combines crop knowledge database with LLM reasoning for conversational crop suggestions
+Optimized Crop Recommendation Chatbot
+Streamlined for speed with minimal dependencies
 """
 
-import pandas as pd
-import numpy as np
-import json
-import chromadb
 from llama_cpp import Llama
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any
 import logging
 import os
+import re
+import requests
+from dotenv import load_dotenv
+from datetime import datetime
+from sentinelhub import (
+    SHConfig, MimeType, CRS, BBox, SentinelHubRequest, DataCollection, bbox_to_dimensions
+)
+import json
+import pandas as pd
+import chromadb
+from sentence_transformers import SentenceTransformer
 
-# Set environment variable to avoid transformers compatibility issues
-os.environ['SENTENCE_TRANSFORMERS_HOME'] = './models'
+# Load environment variables from AgriAngat-BackEnd directory
+load_dotenv(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '.env'))
 
-# Import with error handling for GPU compatibility
+# Check for CUDA availability
 try:
     import torch
-    print("PyTorch version:", torch.__version__)
-    print("CUDA available:", torch.cuda.is_available())
-    if torch.cuda.is_available():
-        print("GPU:", torch.cuda.get_device_name(0))
-        device = "cuda"
-    else:
-        device = "cpu"
-        print("Using CPU")
-except ImportError as e:
-    print(f"PyTorch import error: {e}")
-    device = "cpu"
+    CUDA_AVAILABLE = torch.cuda.is_available()
+    if CUDA_AVAILABLE:
+        GPU_NAME = torch.cuda.get_device_name(0)
+        logger_temp = logging.getLogger(__name__)
+        logger_temp.info(f"🚀 CUDA detected: {GPU_NAME}")
+except ImportError:
+    CUDA_AVAILABLE = False
 
-try:
-    from sentence_transformers import SentenceTransformer
-    TRANSFORMERS_AVAILABLE = True
-except ImportError as e:
-    print(f"SentenceTransformers import error: {e}")
-    print("Falling back to basic text matching...")
-    TRANSFORMERS_AVAILABLE = False
-
-# Set up logging
-logging.basicConfig(level=logging.INFO)
+# Simplified logging setup
+logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 logger = logging.getLogger(__name__)
 
-class CropKnowledgeBase:
-    """Manages crop data and vector database for RAG retrieval"""
+
+class CropRAGChatbot:
+    """Dual-mode chatbot: General assistant + Agriculture specialist with environmental data"""
     
-    def __init__(self, csv_path: str = None, db_path: str = "./chroma_db"):
-        # Get the directory where this script is located
+    def __init__(self, model_path: str = "kaagri-4B-q4_k_m.gguf"):
+        """Initialize chatbot with GPU-accelerated model, environmental data, and RAG"""
+        # Resolve path relative to script location
         script_dir = os.path.dirname(os.path.abspath(__file__))
+        self.model_path = os.path.join(script_dir, model_path) if not os.path.isabs(model_path) else model_path
+        self.conversation_history = []
+        self.llm = None
         
-        # Set default CSV path relative to script location
-        if csv_path is None:
-            self.csv_path = os.path.join(script_dir, "ecocrop.csv")
-        else:
-            self.csv_path = csv_path
-            
-        self.db_path = db_path
-        self.df = None
-        self.client = None
-        self.collection = None
+        # Initialize environmental data fetcher
+        self.env_fetcher = EnvironmentalDataFetcher()
+        self.env_data = {}
         
-        # ✅ Load model on GPU if available, with fallback
-        if TRANSFORMERS_AVAILABLE:
-            try:
-                self.encoder = SentenceTransformer('all-MiniLM-L6-v2', device=device)
-                logger.info(f"SentenceTransformer loaded on {device}")
-            except Exception as e:
-                logger.warning(f"Failed to load SentenceTransformer on {device}: {e}")
-                try:
-                    self.encoder = SentenceTransformer('all-MiniLM-L6-v2', device='cpu')
-                    logger.info("SentenceTransformer loaded on CPU as fallback")
-                except Exception as e2:
-                    logger.error(f"Failed to load SentenceTransformer on CPU: {e2}")
-                    self.encoder = None
-        else:
-            self.encoder = None
-        
-        # Column mappings from your existing code
-        self.cols = {
-            "name": "COMNAME",
-            "sci": "ScientificName", 
-            "ph_min": "PHMIN",
-            "ph_max": "PHMAX",
-            "ph_opt_min": "PHOPMN",
-            "ph_opt_max": "PHOPMX",
-            "rain_min": "RMIN",
-            "rain_max": "RMAX",
-            "rain_opt_min": "ROPMN",
-            "rain_opt_max": "ROPMX",
-            "t_opt_min": "TOPMN",
-            "t_opt_max": "TOPMX",
-            "temp_min": "TMIN",
-            "temp_max": "TMAX",
-            "cliz": "CLIZ",
-            "cat": "CAT",
-            "lifo": "LIFO",
-            "habi": "HABI"
-        }
-        
-    def load_data(self):
-        """Load crop data from CSV"""
+        # Initialize RAG system
         try:
-            # Try multiple encodings for Windows compatibility
-            encodings_to_try = ['utf-8', 'utf-8-sig', 'latin1', 'cp1252', 'iso-8859-1']
+            self.rag_system = AgriculturalRAG()
+            self.rag_system.load_and_embed_knowledge_base()
+        except Exception as e:
+            logger.warning(f"RAG system initialization failed: {e}")
+            self.rag_system = None
+        
+        # Initialize model on startup
+        if not self._initialize_model():
+            raise RuntimeError("Failed to load language model")
+        
+        # Fetch environmental data once on startup
+        self._fetch_environmental_data_on_startup()
+        
+    def _initialize_model(self) -> bool:
+        """Initialize the Kaagri model with GPU support"""
+        try:
+            # Check if model file exists
+            if not os.path.exists(self.model_path):
+                logger.error(f"❌ Model not found: {self.model_path}")
+                return False
             
-            for encoding in encodings_to_try:
-                try:
-                    logger.info(f"Trying encoding: {encoding}")
-                    self.df = pd.read_csv(self.csv_path, encoding=encoding)
-                    logger.info(f"Successfully loaded {len(self.df)} crop records with {encoding}")
-                    return True
-                except UnicodeDecodeError:
-                    continue
-                except Exception as e:
-                    logger.warning(f"Failed with {encoding}: {e}")
-                    continue
+            logger.info(f"Loading model: {self.model_path}")
             
-            # If all encodings fail, try chardet
-            try:
-                import chardet
-                with open(self.csv_path, "rb") as f:
-                    raw = f.read(100000)
-                result = chardet.detect(raw)
-                detected_encoding = result["encoding"]
-                
-                if detected_encoding:
-                    logger.info(f"Chardet detected encoding: {detected_encoding}")
-                    self.df = pd.read_csv(self.csv_path, encoding=detected_encoding)
-                    logger.info(f"Loaded {len(self.df)} crop records with detected encoding")
-                    return True
-            except Exception as e:
-                logger.warning(f"Chardet failed: {e}")
+            # Determine GPU layers based on CUDA availability
+            if CUDA_AVAILABLE:
+                n_gpu_layers = -1  # Use all layers on GPU
+                logger.info(f"🚀 Using CUDA GPU: {GPU_NAME}")
+            else:
+                n_gpu_layers = 0  # CPU only
+                logger.info("⚠️ CUDA not available, using CPU")
             
-            logger.error("Could not load CSV with any encoding")
-            return False
+            # Optimized GPU settings for Q4_K_M quantization
+            self.llm = Llama(
+                model_path=self.model_path,
+                n_gpu_layers=n_gpu_layers,  # Dynamic GPU layer allocation
+                n_ctx=4096,                 # Reduced context for faster inference
+                n_batch=512,                # Optimal batch size for Q4_K_M
+                verbose=False,
+                n_threads=4,
+                use_mlock=True,             # Keep model in RAM (faster repeated queries)
+                # Additional CUDA optimizations
+                f16_kv=True,                # Use float16 for key/value cache (faster on GPU)
+                logits_all=False,           # Only compute logits for last token
+                use_mmap=True               # Memory-map model file
+            )
+            
+            logger.info("✅ Model loaded with GPU acceleration")
+            return True
             
         except Exception as e:
-            logger.error(f"Error loading crop data: {e}")
+            logger.error(f"❌ Model loading failed: {e}")
             return False
     
-    def create_vector_db(self):
-        """Create ChromaDB vector database from crop data"""
-        if self.df is None:
-            logger.error("No data loaded. Call load_data() first.")
-            return False
-            
+    def _fetch_environmental_data_on_startup(self):
+        """Fetch environmental data once on server startup"""
         try:
-            # Initialize ChromaDB
-            self.client = chromadb.PersistentClient(path=self.db_path)
-            
-            # Create or get collection
-            collection_name = "crop_knowledge"
+            self.env_data = self.env_fetcher.fetch_all_environmental_data()
+        except Exception as e:
+            logger.error(f"❌ Failed to fetch environmental data: {e}")
+            # Set default values if API calls fail
+            self.env_data = {
+                'soil_ph': 6.0,
+                'rainfall': 0.5,
+                'temperature': 28.0,
+                'ndvi': 0.75,
+                'last_updated': datetime.now().isoformat()
+            }
+
+    def generate_response(self, user_input: str) -> str:
+        """Generate response in dual-mode: Agriculture vs General chatbot"""
+        try:
+            # Check if input is agriculture-related
+            if is_agriculture_related(user_input):
+                return self._generate_agriculture_response(user_input)
+            else:
+                return self._generate_general_response(user_input)
+                
+        except Exception as e:
+            logger.error(f"Response generation error: {e}")
+            return f"Sorry, I encountered an error. Please try again. ({str(e)})"
+    
+    def _generate_agriculture_response(self, user_input: str) -> str:
+        """Generate agriculture-focused response with environmental data and RAG"""
+        soil_ph = self.env_data.get('soil_ph', 6.0)
+        rainfall = self.env_data.get('rainfall', 0.5)
+        temp = self.env_data.get('temperature', 28.0)
+        ndvi = self.env_data.get('ndvi', 0.75)
+        
+        # Get relevant knowledge from RAG system
+        rag_context = ""
+        if self.rag_system:
             try:
-                # Try to get existing collection
-                self.collection = self.client.get_collection(collection_name)
-                logger.info("Using existing vector database")
+                rag_context = self.rag_system.retrieve_relevant_knowledge(user_input)
+            except Exception as e:
+                logger.warning(f"RAG retrieval failed: {e}")
+        
+        context_section = f"\n\n**Relevant Knowledge:**\n{rag_context}\n" if rag_context else ""
+        
+        prompt = f"""<|user|>You are Kaagri-bot, an expert agricultural advisor specializing in Philippine farming conditions. 
+You help Filipino farmers by analyzing their soil and environmental data to recommend optimal crops, give advice on how to improve conditions, or how to maintain crops.
+
+**Current Environmental Data:**
+- Soil pH: {soil_ph:.2f}
+- Rainfall: {rainfall:.2f}mm/3h
+- Temperature: {temp:.2f}°C
+- NDVI (Vegetation Health): {ndvi:.2f}
+
+**IMPORTANT FORMATTING RULES:**
+- USE line breaks and proper spacing for readability
+- STRUCTURE your response with clear sections
+- USE bullet points and numbered lists
+- KEEP sentences concise and clear
+- NO markdown formatting
+
+**Your Response Structure:**
+🌱 SURIIN NATIN ANG KONDISYON:
+- Assess each parameter with ✓/⚠/✗ and brief explanation
+- Use proper line breaks between each assessment
+- Example format:
+  ✓ pH 6.1 - Sakto, bahagyang acidic na bagay sa maraming pananim
+  ⚠ Rainfall 0.5mm - Kulang, kailangan ng irrigation
+
+🌾 MGA REKOMENDASYON:
+- List 1-3 specific crop recommendations with clear reasoning
+- Match crops to the actual data values (refer to these ranges):
+    * Rice: pH 5.5-6.5, rainfall 0.41-0.86mm/3h, temp 20-35°C
+    * Coffee: pH 5.0-6.5, rainfall 0.41-0.68mm/3h, temp 18-28°C
+    * Cacao: pH 5.5-7.0, rainfall 0.51-0.86mm/3h, temp 20-28°C
+    * Banana: pH 5.5-7.0, rainfall 0.51-0.86mm/3h, temp 20-35°C
+    * Corn: pH 5.5-7.5, rainfall 0.21-0.41mm/3h, temp 18-35°C
+    * Tobacco: pH 5.5-7.5, rainfall 0.21-0.41mm/3h, temp 20-30°C
+    * Cassava: pH 4.5-7.0, rainfall <0.41mm/3h, temp 25-35°C (drought-tolerant)
+    * Sweet potato: pH 5.0-6.5, rainfall 0.21-0.51mm/3h, temp 24-30°C
+
+🛠️ TIPS SA PAG-AALAGA:
+- Provide 2-4 practical, actionable tips
+- Use numbered list format (1. 2. 3.)
+- Address any problematic parameters
+- Include specific solutions
+
+Communication Style:
+- Use natural Taglish (mixing Tagalog and English technical terms)
+- Be conversational and supportive
+- Use proper formatting with line breaks
+- Keep NDVI values rounded to 2 decimal places for readability
+
+**User Question:** {user_input}{context_section}
+
+Respond in the same language as the user's question. Use proper formatting with clear sections and line breaks. Use the relevant knowledge to provide accurate information.<|end|>
+<|assistant|>"""
+
+        # Generate response
+        response = self.llm(
+            prompt,
+            max_tokens=600,
+            temperature=0.7,
+            top_p=0.9,
+            top_k=40,
+            repeat_penalty=1.1,
+            stop=["<|end|>", "<|user|>"],
+            echo=False
+        )
+        
+        response_text = response['choices'][0]['text'].strip()
+        
+        # Clean up HTML tags but preserve line breaks and formatting
+        response_text = re.sub(r'<[^>]+>', '', response_text)
+        
+        # Preserve intentional line breaks but clean up excessive whitespace
+        response_text = re.sub(r'\n\s*\n\s*\n+', '\n\n', response_text)  # Max 2 consecutive newlines
+        response_text = re.sub(r'[ \t]+', ' ', response_text)  # Clean up spaces/tabs but keep newlines
+        response_text = response_text.strip()
+        
+        # Ensure proper spacing around emojis and section headers
+        response_text = re.sub(r'([🌱🌾🛠️])\s*\*\*', r'\1 **', response_text)
+        response_text = re.sub(r'\*\*([^*]+)\*\*', r'**\1**', response_text)
+        
+        # Track conversation
+        self.conversation_history.append({
+            "user": user_input,
+            "assistant": response_text,
+            "mode": "agriculture",
+            "env_data": self.env_data.copy()
+        })
+        
+        return response_text
+    
+    def _generate_general_response(self, user_input: str) -> str:
+        """Generate general chatbot response for non-agriculture topics"""
+        prompt = f"""<|user|>You are KaAgri, a helpful and friendly AI assistant. You can help with various topics and questions, but you specialize in agricultural and farming-related advice for Filipino farmers.
+
+Since this question doesn't seem to be about agriculture, farming, or crops, I'll help you as a general assistant.
+
+**Guidelines:**
+- Be helpful, friendly, and informative
+- Provide accurate and useful information
+- If the user asks about agriculture later, I can provide specialized farming advice
+- Respond in the same language as the user (English, Filipino, or Bisaya)
+- Keep responses concise but comprehensive
+
+**User Question:** {user_input}
+
+Please provide a helpful response.<|end|>
+<|assistant|>"""
+
+        # Generate response
+        response = self.llm(
+            prompt,
+            max_tokens=400,
+            temperature=0.7,
+            top_p=0.9,
+            stop=["<|end|>", "<|user|>"],
+            echo=False
+        )
+        
+        response_text = response['choices'][0]['text'].strip()
+        response_text = re.sub(r'<[^>]+>', '', response_text)
+        response_text = re.sub(r'\s+', ' ', response_text)
+        response_text = response_text.strip()
+        
+        # Track conversation
+        self.conversation_history.append({
+            "user": user_input,
+            "assistant": response_text,
+            "mode": "general"
+        })
+        
+        return response_text
+    
+    def chat(self, user_input: str) -> str:
+        """Main chat interface"""
+        return self.generate_response(user_input)
+    
+    def clear_history(self):
+        """Clear conversation history to free memory"""
+        self.conversation_history.clear()
+
+AGRI_KEYWORDS = [
+    # English terms
+    "agriculture", "farming", "farmer", "crop", "plant", "soil",
+    "harvest", "irrigation", "fertilizer", "banana", "corn", "rice",
+    "cassava", "sweet potato", "coffee", "cacao", "tobacco", "ndvi",
+    
+    # Filipino / Tagalog terms
+    "agrikultura", "pagsasaka", "magsasaka", "pananim", "halaman", "lupa",
+    "ani", "patubig", "abono", "saging", "mais", "palay", "bigas",
+    "kamoteng kahoy", "kamote", "kape", "tsokolate", "tabako", "halaman",
+
+    # Some common Bisaya terms (optional, useful in PH context)
+    "uma", "tubig", "tanom", "abono", "saging", "mais", "humay"
+]
+
+def is_agriculture_related(user_input: str) -> bool:
+    """Check if user input contains agriculture-related keywords"""
+    user_input_lower = user_input.lower()
+    return any(keyword in user_input_lower for keyword in AGRI_KEYWORDS)
+
+class AgriculturalRAG:
+    """RAG system for agricultural knowledge using ChromaDB"""
+    
+    def __init__(self, csv_path: str = "agricultural_knowledge_base.csv", collection_name: str = "agricultural_knowledge"):
+        """Initialize RAG system with ChromaDB"""
+        self.csv_path = csv_path
+        self.collection_name = collection_name
+        
+        # Initialize ChromaDB client
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        db_path = os.path.join(script_dir, "chroma_db")
+        self.client = chromadb.PersistentClient(path=db_path)
+        
+        # Initialize embedding model (optimized for Filipino and English)
+        self.embedding_model = SentenceTransformer('all-MiniLM-L6-v2')
+        
+        # Get or create collection
+        self.collection = self.client.get_or_create_collection(
+            name=collection_name,
+            metadata={"description": "Agricultural knowledge base for RAG in Filipino"}
+        )
+        
+        logger.info(f"Initialized ChromaDB collection: {collection_name}")
+    
+    def load_and_embed_knowledge_base(self) -> bool:
+        """Load CSV data and create embeddings in ChromaDB"""
+        try:
+            # Check if collection already has data
+            if self.collection.count() > 0:
+                logger.info(f"Collection already contains {self.collection.count()} documents")
                 return True
-            except Exception:
-                # Collection doesn't exist, create new one
-                try:
-                    self.collection = self.client.create_collection(
-                        name=collection_name,
-                        metadata={"description": "Crop knowledge base for RAG"}
-                    )
-                    logger.info("Creating new vector database")
-                except Exception as e:
-                    # If create fails, try to delete and recreate
-                    logger.warning(f"Collection creation failed, trying to reset: {e}")
-                    try:
-                        self.client.delete_collection(collection_name)
-                    except:
-                        pass
-                    self.collection = self.client.create_collection(
-                        name=collection_name,
-                        metadata={"description": "Crop knowledge base for RAG"}
-                    )
-                    logger.info("Reset and created new vector database")
             
-            # Process each crop
+            # Load CSV data
+            csv_full_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), self.csv_path)
+            if not os.path.exists(csv_full_path):
+                logger.error(f"CSV file not found: {csv_full_path}")
+                return False
+            
+            df = pd.read_csv(csv_full_path)
+            logger.info(f"Loaded {len(df)} knowledge entries from CSV")
+            
+            # Prepare data for ChromaDB
             documents = []
             metadatas = []
             ids = []
             
-            for idx, row in self.df.iterrows():
-                crop_doc = self._create_crop_document(row)
-                if crop_doc:
-                    documents.append(crop_doc["text"])
-                    metadatas.append(crop_doc["metadata"])
-                    ids.append(f"crop_{idx}")
+            for _, row in df.iterrows():
+                # Use the text content for embedding
+                documents.append(row['text'])
+                
+                # Store metadata (category, source, etc.)
+                metadatas.append({
+                    'category': row['category'],
+                    'source': row['source'],
+                    'original_id': str(row['id'])
+                })
+                
+                # Use string IDs for ChromaDB
+                ids.append(f"doc_{row['id']}")
             
-            # Add to vector database in batches
-            batch_size = 100
+            # Add documents to collection in batches
+            batch_size = 50
             for i in range(0, len(documents), batch_size):
                 batch_docs = documents[i:i+batch_size]
-                batch_meta = metadatas[i:i+batch_size]
+                batch_metas = metadatas[i:i+batch_size]
                 batch_ids = ids[i:i+batch_size]
                 
                 self.collection.add(
                     documents=batch_docs,
-                    metadatas=batch_meta,
+                    metadatas=batch_metas,
                     ids=batch_ids
                 )
+                
+                logger.info(f"Added batch {i//batch_size + 1}/{(len(documents)-1)//batch_size + 1}")
             
-            logger.info(f"Added {len(documents)} crop documents to vector database")
+            logger.info(f"✅ Successfully embedded {len(documents)} documents")
             return True
             
         except Exception as e:
-            logger.error(f"Error creating vector database: {e}")
+            logger.error(f"❌ Error loading knowledge base: {e}")
             return False
     
-    def _create_crop_document(self, row: pd.Series) -> Optional[Dict]:
-        """Create searchable document from crop row"""
+    def retrieve_relevant_knowledge(self, query: str, n_results: int = 3) -> str:
+        """Retrieve most relevant knowledge for a query and format as context"""
         try:
-            # Get crop names
-            common_name = str(row.get(self.cols["name"], "")).strip()
-            sci_name = str(row.get(self.cols["sci"], "")).strip()
-            
-            if not common_name or common_name == "nan":
-                if not sci_name or sci_name == "nan":
-                    return None
-                crop_name = sci_name
-            else:
-                crop_name = common_name
-            
-            # Build descriptive text for vector search
-            text_parts = [f"Crop: {crop_name}"]
-            
-            if sci_name and sci_name != "nan" and sci_name != common_name:
-                text_parts.append(f"Scientific name: {sci_name}")
-            
-            # Add category information
-            category = str(row.get(self.cols["cat"], "")).strip()
-            if category and category != "nan":
-                text_parts.append(f"Category: {category}")
-            
-            life_form = str(row.get(self.cols["lifo"], "")).strip()
-            if life_form and life_form != "nan":
-                text_parts.append(f"Life form: {life_form}")
-            
-            habit = str(row.get(self.cols["habi"], "")).strip()
-            if habit and habit != "nan":
-                text_parts.append(f"Growth habit: {habit}")
-            
-            # Add environmental requirements
-            self._add_range_info(text_parts, row, "pH", "ph_opt_min", "ph_opt_max", "ph_min", "ph_max")
-            self._add_range_info(text_parts, row, "rainfall", "rain_opt_min", "rain_opt_max", "rain_min", "rain_max", "mm/year")
-            self._add_range_info(text_parts, row, "temperature", "t_opt_min", "t_opt_max", "temp_min", "temp_max", "°C")
-            
-            # Climate zones
-            climate = str(row.get(self.cols["cliz"], "")).strip()
-            if climate and climate != "nan":
-                text_parts.append(f"Climate zones: {climate}")
-            
-            document_text = ". ".join(text_parts)
-            
-            # Create metadata for filtering and retrieval
-            metadata = {
-                "crop_name": crop_name,
-                "scientific_name": sci_name if sci_name != "nan" else "",
-                "category": category if category != "nan" else "",
-                "life_form": life_form if life_form != "nan" else "",
-                "ph_opt_min": self._safe_float(row.get(self.cols["ph_opt_min"])),
-                "ph_opt_max": self._safe_float(row.get(self.cols["ph_opt_max"])),
-                "rain_opt_min": self._safe_float(row.get(self.cols["rain_opt_min"])),
-                "rain_opt_max": self._safe_float(row.get(self.cols["rain_opt_max"])),
-                "temp_opt_min": self._safe_float(row.get(self.cols["t_opt_min"])),
-                "temp_opt_max": self._safe_float(row.get(self.cols["t_opt_max"])),
-                "climate": climate if climate != "nan" else ""
-            }
-            
-            return {"text": document_text, "metadata": metadata}
-            
-        except Exception as e:
-            logger.warning(f"Error processing crop row: {e}")
-            return None
-    
-    def _add_range_info(self, text_parts: List[str], row: pd.Series, param_name: str, 
-                       opt_min_col: str, opt_max_col: str, abs_min_col: str, abs_max_col: str, unit: str = ""):
-        """Add parameter range information to text"""
-        opt_min = self._safe_float(row.get(self.cols[opt_min_col]))
-        opt_max = self._safe_float(row.get(self.cols[opt_max_col]))
-        abs_min = self._safe_float(row.get(self.cols[abs_min_col]))
-        abs_max = self._safe_float(row.get(self.cols[abs_max_col]))
-        
-        if opt_min is not None and opt_max is not None:
-            text_parts.append(f"Optimal {param_name}: {opt_min}-{opt_max} {unit}".strip())
-        elif abs_min is not None and abs_max is not None:
-            text_parts.append(f"{param_name.title()} range: {abs_min}-{abs_max} {unit}".strip())
-    
-    def _safe_float(self, value) -> Optional[float]:
-        """Safely convert value to float"""
-        try:
-            if pd.isna(value):
-                return None
-            return float(value)
-        except (ValueError, TypeError):
-            return None
-    
-    def search_crops(self, query: str, n_results: int = 10) -> List[Dict]:
-        """Search for relevant crops using vector similarity or text matching fallback"""
-        if not self.collection:
-            logger.error("Vector database not initialized")
-            return self._fallback_text_search(query, n_results)
-        
-        try:
+            # Query the collection
             results = self.collection.query(
                 query_texts=[query],
                 n_results=n_results
             )
             
-            crops = []
-            if results["documents"] and results["documents"][0]:
-                for i, doc in enumerate(results["documents"][0]):
-                    crop_info = {
-                        "document": doc,
-                        "metadata": results["metadatas"][0][i],
-                        "distance": results["distances"][0][i] if "distances" in results else None
-                    }
-                    crops.append(crop_info)
+            # Format results as context
+            if results['documents'] and len(results['documents'][0]) > 0:
+                context_parts = []
+                for i, doc in enumerate(results['documents'][0]):
+                    category = results['metadatas'][0][i]['category']
+                    # Format: [category] knowledge_text
+                    context_parts.append(f"[{category}] {doc}")
+                
+                context = "\n\n".join(context_parts)
+                logger.info(f"Retrieved {len(context_parts)} relevant documents for query")
+                return context
             
-            return crops
+            return ""
             
         except Exception as e:
-            logger.error(f"Error searching crops: {e}")
-            return self._fallback_text_search(query, n_results)
-    
-    def _fallback_text_search(self, query: str, n_results: int = 10) -> List[Dict]:
-        """Fallback text-based search when vector search fails"""
-        if self.df is None:
-            return []
-        
-        query_lower = query.lower()
-        matches = []
-        
-        for idx, row in self.df.iterrows():
-            score = 0
-            doc = self._create_crop_document(row)
-            if not doc:
-                continue
-                
-            # Simple text matching
-            text_lower = doc["text"].lower()
-            crop_name = doc["metadata"]["crop_name"].lower()
-            
-            # Score based on keyword matches
-            for word in query_lower.split():
-                if word in crop_name:
-                    score += 3
-                elif word in text_lower:
-                    score += 1
-            
-            if score > 0:
-                matches.append({
-                    "document": doc["text"],
-                    "metadata": doc["metadata"],
-                    "distance": 1.0 / (score + 1)  # Lower distance = better match
-                })
-        
-        # Sort by score (lower distance = better match)
-        matches.sort(key=lambda x: x["distance"])
-        return matches[:n_results]
+            logger.error(f"Error retrieving knowledge: {e}")
+            return ""
 
-class CropRAGChatbot:
-    """RAG-based chatbot for crop recommendations using Phi-4-mini-flash-reasoning"""
+class EnvironmentalDataFetcher:
+    """Fetches environmental data from various APIs"""
     
-    def __init__(self, knowledge_base: CropKnowledgeBase, model_path: str = "../../../../microsoft_Phi-4-mini-instruct-Q4_K_M.gguf"):
-        self.kb = knowledge_base
-        self.model_path = model_path
-        self.conversation_history = []
-        self.llm = None
-        self._initialize_model()
+    def __init__(self):
+        self.openweather_api_key = os.getenv('OWM_API_KEY')
+        # Use the actual variable names from your .env file
+        self.sentinel_client_id = os.getenv('CONFIG.SH_CLIENT_ID')
+        self.sentinel_client_secret = os.getenv('CONFIG.SH_CLIENT_SECRET')
+        self.sentinel_instance_id = os.getenv('CONFIG.INSTANCE_ID')
+        # Use Baguio coordinates as default
+        self.default_lat = float(os.getenv('DEFAULT_LOCATION_LAT', '13.1022'))
+        self.default_lon = float(os.getenv('DEFAULT_LOCATION_LON', '121.0583'))
+        self.env_data = {}
         
-    def _initialize_model(self) -> bool:
-        """Initialize the Phi-4 model with GPU support"""
+    def fetch_soil_ph(self, lat: float = None, lon: float = None) -> float:
+        """Fetch soil pH from SoilGrids API using correct endpoint"""
         try:
-            if not os.path.exists(self.model_path):
-                logger.error(f"Model file not found at: {self.model_path}")
-                return False
+            lat = lat or self.default_lat
+            lon = lon or self.default_lon
+            
+            # Use the correct ISRIC endpoint (same as your working 2_soilAPI.py)
+            url = f"https://rest.isric.org/soilgrids/v2.0/properties/query?lon={lon}&lat={lat}"
+            
+            response = requests.get(url, timeout=30)
+            response.raise_for_status()
+            data = response.json()
+            
+            # Extract pH from the response structure
+            if "properties" in data and "layers" in data["properties"]:
+                layers = data["properties"]["layers"]
+                for layer in layers:
+                    if layer.get("name") == "phh2o":
+                        depths = layer.get("depths", [])
+                        for depth in depths:
+                            if depth.get("label") == "0-5cm" and "values" in depth:
+                                ph_value = depth["values"].get("mean")
+                                if ph_value is not None:
+                                    return ph_value / 10  # Convert from mapped units
+                                    
+            logger.warning("No pH data found in SoilGrids response")
+            return 6.0  # Default pH value
                 
-            logger.info(f"Loading Phi-4 model from: {self.model_path}")
-            
-            # Initialize with GPU support (n_gpu_layers=-1 uses all available GPU layers)
-            self.llm = Llama(
-                model_path=self.model_path,
-                n_gpu_layers=-1,  # Use all GPU layers for maximum acceleration
-                n_ctx=8192,      # Context length for long conversations
-                n_batch=512,     # Batch size for processing
-                verbose=False,   # Reduce output verbosity
-                n_threads=4      # Number of CPU threads for parts not on GPU
-            )
-            
-            logger.info("✅ Phi-4 model loaded successfully with GPU acceleration")
-            return True
-            
         except Exception as e:
-            logger.error(f"Error loading model: {e}")
-            self.llm = None
-            return False
+            logger.error(f"Error fetching soil pH: {e}")
+            return 6.0  # Default pH value
     
-    def extract_environmental_conditions(self, user_input: str) -> Dict[str, Any]:
-        """Extract environmental conditions from user input using LLM"""
-        if not self.llm:
-            logger.warning("Model not loaded, skipping condition extraction")
-            return {}
-            
-        extraction_prompt = f"""<|user|>Extract environmental conditions from this text: "{user_input}"
-        
-Return ONLY a JSON object with these fields (use null for missing values):
-{{
-    "soil_ph": number or null,
-    "rainfall_mm": number or null, 
-    "temperature_c": number or null,
-    "climate_type": "string or null",
-    "location": "string or null",
-    "crop_category": "string or null"
-}}
-
-Examples:
-- "pH 6.5" → "soil_ph": 6.5
-- "1200mm rainfall" → "rainfall_mm": 1200
-- "25 degrees" → "temperature_c": 25
-- "rizal" → "location": "rizal"
-- "tropical climate" → "climate_type": "tropical"<|end|><|assistant|>"""
-        
+    def fetch_weather_data(self, lat: float = None, lon: float = None) -> Dict[str, float]:
+        """Fetch rainfall and temperature from OpenWeatherMap"""
         try:
-            response = self.llm(
-                extraction_prompt,
-                max_tokens=200,
-                temperature=0.1,
-                stop=["<|end|>", "<|user|"],
-                echo=False
-            )
-            
-            response_text = response['choices'][0]['text'].strip()
-            
-            # Parse JSON response
-            import re
-            json_match = re.search(r'\{.*\}', response_text, re.DOTALL)
-            if json_match:
-                return json.loads(json_match.group())
-            
-        except Exception as e:
-            logger.warning(f"Error extracting conditions: {e}")
-        
-        return {}
-    
-    def filter_crops_by_conditions(self, crops: List[Dict], conditions: Dict[str, Any]) -> List[Dict]:
-        """Filter crops based on environmental conditions"""
-        filtered_crops = []
-        
-        for crop in crops:
-            metadata = crop["metadata"]
-            suitable = True
-            reasons = []
-            
-            # Check pH compatibility
-            if conditions.get("soil_ph"):
-                ph = conditions["soil_ph"]
-                ph_min = metadata.get("ph_opt_min")
-                ph_max = metadata.get("ph_opt_max")
+            if not self.openweather_api_key or self.openweather_api_key == 'your_owm_api_key_here':
+                logger.warning("OpenWeather API key not configured")
+                return {'rainfall': 0.5, 'temperature': 28.0}  # Default values
                 
-                if ph_min is not None and ph_max is not None:
-                    if ph_min <= ph <= ph_max:
-                        reasons.append(f"pH {ph} within optimal range [{ph_min}-{ph_max}]")
-                    else:
-                        suitable = False
-                        reasons.append(f"pH {ph} outside optimal range [{ph_min}-{ph_max}]")
+            lat = lat or self.default_lat
+            lon = lon or self.default_lon
             
-            # Check rainfall compatibility
-            if conditions.get("rainfall_mm"):
-                rainfall = conditions["rainfall_mm"]
-                rain_min = metadata.get("rain_opt_min")
-                rain_max = metadata.get("rain_opt_max")
-                
-                if rain_min is not None and rain_max is not None:
-                    if rain_min <= rainfall <= rain_max:
-                        reasons.append(f"rainfall {rainfall}mm within optimal range [{rain_min}-{rain_max}]mm")
-                    else:
-                        suitable = False
-                        reasons.append(f"rainfall {rainfall}mm outside optimal range [{rain_min}-{rain_max}]mm")
+            url = f"https://api.openweathermap.org/data/2.5/weather"
+            params = {
+                'lat': lat,
+                'lon': lon,
+                'appid': self.openweather_api_key,
+                'units': 'metric'
+            }
             
-            # Check temperature compatibility
-            if conditions.get("temperature_c"):
-                temp = conditions["temperature_c"]
-                temp_min = metadata.get("temp_opt_min")
-                temp_max = metadata.get("temp_opt_max")
-                
-                if temp_min is not None and temp_max is not None:
-                    if temp_min <= temp <= temp_max:
-                        reasons.append(f"temperature {temp}°C within optimal range [{temp_min}-{temp_max}]°C")
-                    else:
-                        suitable = False
-                        reasons.append(f"temperature {temp}°C outside optimal range [{temp_min}-{temp_max}]°C")
-            
-            if suitable:
-                crop["suitability_reasons"] = reasons
-                filtered_crops.append(crop)
-        
-        return filtered_crops
-    
-    def generate_response(self, user_input: str) -> str:
-        """Generate conversational response with crop recommendations"""
-        try:
-            # Extract environmental conditions
-            conditions = self.extract_environmental_conditions(user_input)
-            logger.info(f"Extracted conditions: {conditions}")
-            
-            # Search for relevant crops
-            search_query = f"{user_input} crop agriculture farming"
-            crops = self.kb.search_crops(search_query, n_results=15)
-            
-            # Filter crops by environmental conditions
-            if conditions:
-                suitable_crops = self.filter_crops_by_conditions(crops, conditions)
-                if suitable_crops:
-                    crops = suitable_crops[:8]  # Top 8 suitable crops
-                else:
-                    crops = crops[:5]  # Fallback to similarity search
+            response = requests.get(url, params=params, timeout=10)
+            if response.status_code == 200:
+                data = response.json()
+                rainfall = data.get('rain', {}).get('3h', 0.0)  # 3-hour rainfall
+                temperature = data['main']['temp']
+                return {'rainfall': rainfall, 'temperature': temperature}
             else:
-                crops = crops[:8]
+                logger.warning(f"OpenWeather API error: {response.status_code}")
+                return {'rainfall': 0.5, 'temperature': 28.0}  # Default values
+                
+        except Exception as e:
+            logger.error(f"Error fetching weather data: {e}")
+            return {'rainfall': 0.5, 'temperature': 28.0}  # Default values
+    
+    def fetch_ndvi(self, lat: float = None, lon: float = None) -> float:
+        """Fetch NDVI from Sentinel Hub"""
+        try:
+            if not self.sentinel_client_id or not self.sentinel_client_secret or not self.sentinel_instance_id:
+                logger.info("Sentinel Hub credentials not configured, using mock NDVI data")
+                logger.debug(f"Missing credentials - client_id: {bool(self.sentinel_client_id)}, client_secret: {bool(self.sentinel_client_secret)}, instance_id: {bool(self.sentinel_instance_id)}")
+                return 0.75  # Default NDVI value
+                
+            # Import Sentinel Hub dependencies
+            try:
+                from sentinelhub import SHConfig, MimeType, CRS, BBox, SentinelHubRequest, DataCollection, bbox_to_dimensions
+            except ImportError:
+                logger.warning("sentinelhub package not installed, using mock NDVI data")
+                return 0.75
+                
+            lat = lat or self.default_lat
+            lon = lon or self.default_lon
             
-            # Build context for LLM
-            context = self._build_context(crops, conditions, user_input)
+            # Configure Sentinel Hub
+            config = SHConfig()
+            config.instance_id = self.sentinel_instance_id
+            config.sh_client_id = self.sentinel_client_id
+            config.sh_client_secret = self.sentinel_client_secret
             
-            # Generate reasoning response
-            response_prompt = f"""<|user|>You are Kaagri-bot, an expert agricultural advisor helping well-seasoned farmers choose the best crops based on environmental conditions and available crop data. You speak the language of the user input (English, Filipino, or Bisaya). If you cannot understand their language, inform them and default to Filipino.
-
-Your goal is to help farmers maximize crop success and improve their financial situation, including tips that could help them secure loans or reduce financial burdens.
-
-User question: "{user_input}"
-
-Environmental conditions detected: {json.dumps(conditions, indent=2)}
-
-Available crop information:
-{context}
-
-For only the FIRST query, be concise and follow this structure if there are environmental conditions mentioned:
-
-THIS STRUCTURE: Provide a helpful, conversational response that:
-1. Acknowledges their question/situation
-2. Recommends 1 - 3 most suitable crops with clear reasoning
-3. Explains WHY each crop is suitable based on environmental factors
-4. Reminds them to regularly maintain the crops
-5. Gives practical growing tips if relevant
-6. Asks a follow-up question to better help them
-7. If the user uses profane or offensive language, politely discourage it or redirect the conversation.
-
-GUIDELINES:
-For the ENTIRE conversation, be friendly, knowledgeable, and specific about giving crop-related advice.
-If you are unsure about something, answer but clearly say so.<|end|><|assistant|>"""
+            # Create bounding box around the coordinates (small area)
+            bbox_size = 0.01  # ~1km area
+            bbox = BBox(bbox=[lon - bbox_size, lat - bbox_size, lon + bbox_size, lat + bbox_size], crs=CRS.WGS84)
             
-            if not self.llm:
-                return "Sorry, the language model is not available. Please check the model setup."
+            # NDVI calculation evalscript
+            evalscript = """
+            //VERSION=3
+            function setup() {
+                return {
+                    input: [{
+                        bands: ["B04", "B08"]
+                    }],
+                    output: {
+                        bands: 1,
+                        sampleType: "FLOAT32"
+                    }
+                };
+            }
+
+            function evaluatePixel(sample) {
+                let ndvi = (sample.B08 - sample.B04) / (sample.B08 + sample.B04);
+                return [ndvi];
+            }
+            """
             
-            response = self.llm(
-                response_prompt,
-                max_tokens=800,
-                temperature=0.7,
-                stop=["<|end|>", "<|user|"],
-                echo=False
+            # Create request
+            request = SentinelHubRequest(
+                evalscript=evalscript,
+                input_data=[
+                    SentinelHubRequest.input_data(
+                        data_collection=DataCollection.SENTINEL2_L1C,
+                        time_interval=('2024-01-01', '2024-12-31'),
+                    )
+                ],
+                responses=[
+                    SentinelHubRequest.output_response('default', MimeType.TIFF)
+                ],
+                bbox=bbox,
+                size=bbox_to_dimensions(bbox, resolution=10),
+                config=config
             )
             
-            response_text = response['choices'][0]['text'].strip()
+            # Get NDVI data
+            ndvi_data = request.get_data()
             
-            # Store conversation
-            self.conversation_history.append({
-                "user": user_input,
-                "assistant": response_text,
-                "conditions": conditions,
-                "crops_considered": len(crops)
-            })
-            
-            return response_text
-            
+            if ndvi_data and len(ndvi_data) > 0:
+                # Calculate mean NDVI value
+                import numpy as np
+                ndvi_array = np.array(ndvi_data[0])
+                mean_ndvi = np.nanmean(ndvi_array)
+                
+                # Ensure NDVI is within valid range (-1 to 1)
+                if -1 <= mean_ndvi <= 1:
+                    return float(mean_ndvi)
+                else:
+                    logger.warning(f"Invalid NDVI value: {mean_ndvi}, using default")
+                    return 0.75
+            else:
+                logger.warning("No NDVI data received from Sentinel Hub")
+                return 0.75
+                
         except Exception as e:
-            logger.error(f"Error generating response: {e}")
-            return f"I apologize, but I encountered an error while processing your request. Please try again or contact support. Error: {str(e)}"
+            logger.error(f"Error fetching NDVI from Sentinel Hub: {e}")
+            return 0.75  # Default NDVI value
     
-    def _build_context(self, crops: List[Dict], conditions: Dict[str, Any], user_input: str) -> str:
-        """Build context string for LLM from crop data"""
-        if not crops:
-            return "No specific crop data found for this query."
+    def fetch_all_environmental_data(self, lat: float = None, lon: float = None) -> Dict[str, float]:
+        """Fetch all environmental data and store in dictionary"""
+        logger.info("🌍 Fetching environmental data...")
         
-        context_parts = []
-        for i, crop in enumerate(crops, 1):
-            metadata = crop["metadata"]
-            
-            crop_info = [f"{i}. {metadata['crop_name']}"]
-            
-            if metadata.get("scientific_name"):
-                crop_info.append(f"   Scientific name: {metadata['scientific_name']}")
-            
-            if metadata.get("category"):
-                crop_info.append(f"   Category: {metadata['category']}")
-            
-            # Environmental requirements
-            env_reqs = []
-            if metadata.get("ph_opt_min") and metadata.get("ph_opt_max"):
-                env_reqs.append(f"pH: {metadata['ph_opt_min']}-{metadata['ph_opt_max']}")
-            
-            if metadata.get("rain_opt_min") and metadata.get("rain_opt_max"):
-                env_reqs.append(f"rainfall: {metadata['rain_opt_min']}-{metadata['rain_opt_max']}mm")
-            
-            if metadata.get("temp_opt_min") and metadata.get("temp_opt_max"):
-                env_reqs.append(f"temperature: {metadata['temp_opt_min']}-{metadata['temp_opt_max']}°C")
-            
-            if env_reqs:
-                crop_info.append(f"   Optimal conditions: {', '.join(env_reqs)}")
-            
-            # Suitability reasoning if available
-            if "suitability_reasons" in crop:
-                crop_info.append(f"   Suitability: {'; '.join(crop['suitability_reasons'])}")
-            
-            context_parts.append("\n".join(crop_info))
+        # Fetch all data
+        soil_ph = self.fetch_soil_ph(lat, lon)
+        weather_data = self.fetch_weather_data(lat, lon)
+        ndvi = self.fetch_ndvi(lat, lon)
         
-        return "\n\n".join(context_parts)
-    
-    def chat(self, user_input: str) -> str:
-        """Main chat interface"""
-        if not self.llm:
-            if not self._initialize_model():
-                return "Sorry, I can't load the Phi-4 language model. Please check that the model file exists and you have sufficient GPU memory."
+        self.env_data = {
+            'soil_ph': soil_ph,
+            'rainfall': weather_data['rainfall'],
+            'temperature': weather_data['temperature'],
+            'ndvi': ndvi,
+            'last_updated': datetime.now().isoformat()
+        }
         
-        return self.generate_response(user_input)
+        logger.info(f"✅ Environmental data fetched: pH={soil_ph:.1f}, Rainfall={weather_data['rainfall']:.1f}mm, Temp={weather_data['temperature']:.1f}°C, NDVI={ndvi:.2f}")
+        return self.env_data
+
+
 
 def main():
-    """Initialize and test the RAG system"""
-    # Initialize knowledge base
-    kb = CropKnowledgeBase()
-    
-    print("Loading crop data...")
-    if not kb.load_data():
-        print("Failed to load crop data")
-        return
-    
-    print("Creating vector database...")
-    if not kb.create_vector_db():
-        print("Failed to create vector database")
-        return
-    
-    # Initialize chatbot
-    chatbot = CropRAGChatbot(kb)
-    
-    print("\n🌱 Crop Recommendation Chatbot Ready!")
-    print("Ask me about crop suggestions based on your environmental conditions.")
-    print("Type 'quit' to exit.\n")
-    
-    while True:
-        user_input = input("You: ").strip()
-        if user_input.lower() in ['quit', 'exit', 'bye']:
-            print("Goodbye! Happy farming! 🌾")
-            break
+    """Initialize and run the chatbot"""
+    try:
+        print("🌱 Initializing Kaagri-bot...")
+        chatbot = CropRAGChatbot()
         
-        if user_input:
-            print("\nBot: ", end="")
-            response = chatbot.chat(user_input)
-            print(response)
-            print("\n" + "-"*50 + "\n")
+        print("\n✅ Crop Recommendation Chatbot Ready!")
+        print("Ask me about crop suggestions and farming advice.")
+        print("Type 'quit' to exit, 'clear' to reset conversation.\n")
+        
+        while True:
+            user_input = input("You: ").strip()
+            
+            # Handle commands
+            if user_input.lower() in ['quit', 'exit', 'bye']:
+                print("Goodbye! Happy farming! 🌾")
+                break
+            
+            if user_input.lower() == 'clear':
+                chatbot.clear_history()
+                print("✨ Conversation history cleared.\n")
+                continue
+            
+            if user_input:
+                print("\nBot: ", end="", flush=True)
+                response = chatbot.chat(user_input)
+                print(response)
+                print("\n" + "-"*50 + "\n")
+    
+    except KeyboardInterrupt:
+        print("\n\nGoodbye! 🌾")
+    except Exception as e:
+        logger.error(f"Fatal error: {e}")
+
 
 if __name__ == "__main__":
     main()

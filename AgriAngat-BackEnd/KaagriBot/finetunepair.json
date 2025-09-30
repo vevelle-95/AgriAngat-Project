@@ -1,1057 +1,699 @@
 [
-    {
-      "input": "Soil pH: 6.0, Rainfall: 1200.0 mm/year, Temperature: 27.0 °C, NDVI: 0.8",
-      "output": {
-        "recommended_crops": ["Abaca (dried raw fiber)"],
-        "explanation": "soil pH within optimal [5.5, 7.0] ; rainfall within optimal [1000.0, 2000.0] mm/year ; temperature within optimal [24.0, 30.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.5, Rainfall: 1500.0 mm/year, Temperature: 28.0 °C, NDVI: 0.75",
-      "output": {
-        "recommended_crops": ["Coconut (w/ husk)"],
-        "explanation": "soil pH within optimal [6.0, 7.5] ; rainfall within optimal [1200.0, 2500.0] mm/year ; temperature within optimal [25.0, 35.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.8, Rainfall: 1400.0 mm/year, Temperature: 29.0 °C, NDVI: 0.72",
-      "output": {
-        "recommended_crops": ["Coconut Mature"],
-        "explanation": "soil pH within optimal [6.0, 7.5] ; rainfall within optimal [1200.0, 2500.0] mm/year ; temperature within optimal [25.0, 35.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.2, Rainfall: 1300.0 mm/year, Temperature: 28.5 °C, NDVI: 0.73",
-      "output": {
-        "recommended_crops": ["Coconut Young"],
-        "explanation": "soil pH within optimal [6.0, 7.5] ; rainfall within optimal [1200.0, 2500.0] mm/year ; temperature within optimal [25.0, 35.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.0, Rainfall: 1600.0 mm/year, Temperature: 24.0 °C, NDVI: 0.78",
-      "output": {
-        "recommended_crops": ["Coffee (dried berries w/ pulp)"],
-        "explanation": "soil pH within optimal [5.5, 6.5] ; rainfall within optimal [1200.0, 2000.0] mm/year ; temperature within optimal [18.0, 28.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 5.8, Rainfall: 1400.0 mm/year, Temperature: 22.0 °C, NDVI: 0.76",
-      "output": {
-        "recommended_crops": ["Coffee Arabica (dried berries)"],
-        "explanation": "soil pH within optimal [5.5, 6.5] ; rainfall within optimal [1200.0, 1800.0] mm/year ; temperature within optimal [18.0, 25.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.0, Rainfall: 1500.0 mm/year, Temperature: 26.0 °C, NDVI: 0.74",
-      "output": {
-        "recommended_crops": ["Coffee Excelsa (dried berries)"],
-        "explanation": "soil pH within optimal [5.5, 6.5] ; rainfall within optimal [1300.0, 2000.0] mm/year ; temperature within optimal [22.0, 30.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 5.9, Rainfall: 1800.0 mm/year, Temperature: 27.0 °C, NDVI: 0.77",
-      "output": {
-        "recommended_crops": ["Coffee Liberica (dried berries)"],
-        "explanation": "soil pH within optimal [5.5, 6.5] ; rainfall within optimal [1500.0, 2200.0] mm/year ; temperature within optimal [24.0, 32.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.1, Rainfall: 1700.0 mm/year, Temperature: 28.0 °C, NDVI: 0.75",
-      "output": {
-        "recommended_crops": ["Coffee Robusta (dried berries)"],
-        "explanation": "soil pH within optimal [5.5, 7.0] ; rainfall within optimal [1400.0, 2500.0] mm/year ; temperature within optimal [24.0, 32.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.0, Rainfall: 1550.0 mm/year, Temperature: 25.0 °C, NDVI: 0.76",
-      "output": {
-        "recommended_crops": ["Coffee Others (dried berries)"],
-        "explanation": "soil pH within optimal [5.5, 6.5] ; rainfall within optimal [1200.0, 2000.0] mm/year ; temperature within optimal [20.0, 30.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 5.8, Rainfall: 1450.0 mm/year, Temperature: 23.0 °C, NDVI: 0.78",
-      "output": {
-        "recommended_crops": ["Coffee (green coffee beans)"],
-        "explanation": "soil pH within optimal [5.5, 6.5] ; rainfall within optimal [1200.0, 2000.0] mm/year ; temperature within optimal [18.0, 28.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 5.7, Rainfall: 1350.0 mm/year, Temperature: 21.0 °C, NDVI: 0.79",
-      "output": {
-        "recommended_crops": ["Coffee Arabica (green coffee beans)"],
-        "explanation": "soil pH within optimal [5.5, 6.5] ; rainfall within optimal [1200.0, 1800.0] mm/year ; temperature within optimal [18.0, 25.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.2, Rainfall: 1600.0 mm/year, Temperature: 26.5 °C, NDVI: 0.74",
-      "output": {
-        "recommended_crops": ["Coffee Excelsa (green coffee beans)"],
-        "explanation": "soil pH within optimal [5.5, 6.5] ; rainfall within optimal [1300.0, 2000.0] mm/year ; temperature within optimal [22.0, 30.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.0, Rainfall: 1750.0 mm/year, Temperature: 27.5 °C, NDVI: 0.76",
-      "output": {
-        "recommended_crops": ["Coffee Liberica (green coffee beans)"],
-        "explanation": "soil pH within optimal [5.5, 6.5] ; rainfall within optimal [1500.0, 2200.0] mm/year ; temperature within optimal [24.0, 32.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.3, Rainfall: 1650.0 mm/year, Temperature: 28.5 °C, NDVI: 0.73",
-      "output": {
-        "recommended_crops": ["Coffee Robusta (green coffee beans)"],
-        "explanation": "soil pH within optimal [5.5, 7.0] ; rainfall within optimal [1400.0, 2500.0] mm/year ; temperature within optimal [24.0, 32.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 5.9, Rainfall: 1500.0 mm/year, Temperature: 24.5 °C, NDVI: 0.77",
-      "output": {
-        "recommended_crops": ["Coffee Others (green coffee beans)"],
-        "explanation": "soil pH within optimal [5.5, 6.5] ; rainfall within optimal [1200.0, 2000.0] mm/year ; temperature within optimal [20.0, 30.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.5, Rainfall: 2000.0 mm/year, Temperature: 26.0 °C, NDVI: 0.8",
-      "output": {
-        "recommended_crops": ["Rubber (coagulated cup lump)"],
-        "explanation": "soil pH within optimal [6.0, 7.0] ; rainfall within optimal [1800.0, 2500.0] mm/year ; temperature within optimal [24.0, 32.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.8, Rainfall: 1000.0 mm/year, Temperature: 30.0 °C, NDVI: 0.7",
-      "output": {
-        "recommended_crops": ["Sugarcane"],
-        "explanation": "soil pH within optimal [6.0, 8.0] ; rainfall within optimal [800.0, 1500.0] mm/year ; temperature within optimal [26.0, 35.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 7.0, Rainfall: 1200.0 mm/year, Temperature: 32.0 °C, NDVI: 0.72",
-      "output": {
-        "recommended_crops": ["Sugarcane for Centrifugal Sugar"],
-        "explanation": "soil pH within optimal [6.0, 8.0] ; rainfall within optimal [800.0, 1500.0] mm/year ; temperature within optimal [26.0, 35.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.7, Rainfall: 1100.0 mm/year, Temperature: 31.0 °C, NDVI: 0.69",
-      "output": {
-        "recommended_crops": ["Sugarcane for Ethanol"],
-        "explanation": "soil pH within optimal [6.0, 8.0] ; rainfall within optimal [800.0, 1500.0] mm/year ; temperature within optimal [26.0, 35.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.9, Rainfall: 900.0 mm/year, Temperature: 29.0 °C, NDVI: 0.71",
-      "output": {
-        "recommended_crops": ["Sugarcane for Panocha/Muscovado"],
-        "explanation": "soil pH within optimal [6.0, 8.0] ; rainfall within optimal [800.0, 1500.0] mm/year ; temperature within optimal [26.0, 35.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.6, Rainfall: 950.0 mm/year, Temperature: 28.0 °C, NDVI: 0.68",
-      "output": {
-        "recommended_crops": ["Sugarcane for Chewing"],
-        "explanation": "soil pH within optimal [6.0, 8.0] ; rainfall within optimal [800.0, 1500.0] mm/year ; temperature within optimal [26.0, 35.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 7.1, Rainfall: 1150.0 mm/year, Temperature: 30.5 °C, NDVI: 0.73",
-      "output": {
-        "recommended_crops": ["Sugarcane for Basi/Vinegar"],
-        "explanation": "soil pH within optimal [6.0, 8.0] ; rainfall within optimal [800.0, 1500.0] mm/year ; temperature within optimal [26.0, 35.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.0, Rainfall: 800.0 mm/year, Temperature: 27.0 °C, NDVI: 0.65",
-      "output": {
-        "recommended_crops": ["Tobacco"],
-        "explanation": "soil pH within optimal [5.8, 7.0] ; rainfall within optimal [600.0, 1200.0] mm/year ; temperature within optimal [20.0, 32.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 5.8, Rainfall: 900.0 mm/year, Temperature: 26.0 °C, NDVI: 0.64",
-      "output": {
-        "recommended_crops": ["Tobacco Native"],
-        "explanation": "soil pH within optimal [5.5, 6.8] ; rainfall within optimal [700.0, 1100.0] mm/year ; temperature within optimal [22.0, 30.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.2, Rainfall: 1000.0 mm/year, Temperature: 28.0 °C, NDVI: 0.66",
-      "output": {
-        "recommended_crops": ["Tobacco Virginia"],
-        "explanation": "soil pH within optimal [5.8, 7.0] ; rainfall within optimal [800.0, 1300.0] mm/year ; temperature within optimal [24.0, 32.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.1, Rainfall: 850.0 mm/year, Temperature: 27.5 °C, NDVI: 0.65",
-      "output": {
-        "recommended_crops": ["Tobacco Others"],
-        "explanation": "soil pH within optimal [5.8, 7.0] ; rainfall within optimal [600.0, 1200.0] mm/year ; temperature within optimal [20.0, 32.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.5, Rainfall: 1800.0 mm/year, Temperature: 25.0 °C, NDVI: 0.82",
-      "output": {
-        "recommended_crops": ["Cacao"],
-        "explanation": "soil pH within optimal [6.0, 7.5] ; rainfall within optimal [1500.0, 3000.0] mm/year ; temperature within optimal [21.0, 32.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.8, Rainfall: 1100.0 mm/year, Temperature: 26.0 °C, NDVI: 0.67",
-      "output": {
-        "recommended_crops": ["Cashew"],
-        "explanation": "soil pH within optimal [6.0, 7.5] ; rainfall within optimal [800.0, 1500.0] mm/year ; temperature within optimal [20.0, 35.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 7.0, Rainfall: 700.0 mm/year, Temperature: 28.0 °C, NDVI: 0.6",
-      "output": {
-        "recommended_crops": ["Cotton"],
-        "explanation": "soil pH within optimal [6.5, 8.0] ; rainfall within optimal [500.0, 1000.0] mm/year ; temperature within optimal [23.0, 32.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.2, Rainfall: 2200.0 mm/year, Temperature: 27.0 °C, NDVI: 0.85",
-      "output": {
-        "recommended_crops": ["Oil Palm (fresh fruit bunch)"],
-        "explanation": "soil pH within optimal [5.5, 7.0] ; rainfall within optimal [2000.0, 3000.0] mm/year ; temperature within optimal [24.0, 32.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.4, Rainfall: 1600.0 mm/year, Temperature: 28.0 °C, NDVI: 0.78",
-      "output": {
-        "recommended_crops": ["Kaong"],
-        "explanation": "soil pH within optimal [6.0, 7.0] ; rainfall within optimal [1400.0, 2000.0] mm/year ; temperature within optimal [25.0, 32.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.0, Rainfall: 1300.0 mm/year, Temperature: 26.0 °C, NDVI: 0.75",
-      "output": {
-        "recommended_crops": ["Bromeliad"],
-        "explanation": "soil pH within optimal [5.5, 6.5] ; rainfall within optimal [1000.0, 1800.0] mm/year ; temperature within optimal [22.0, 30.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.5, Rainfall: 800.0 mm/year, Temperature: 25.0 °C, NDVI: 0.62",
-      "output": {
-        "recommended_crops": ["Euphorbia"],
-        "explanation": "soil pH within optimal [6.0, 7.5] ; rainfall within optimal [600.0, 1200.0] mm/year ; temperature within optimal [20.0, 30.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.3, Rainfall: 950.0 mm/year, Temperature: 24.0 °C, NDVI: 0.7",
-      "output": {
-        "recommended_crops": ["Green Corn Stalk"],
-        "explanation": "soil pH within optimal [6.0, 7.0] ; rainfall within optimal [700.0, 1300.0] mm/year ; temperature within optimal [18.0, 30.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.8, Rainfall: 1400.0 mm/year, Temperature: 30.0 °C, NDVI: 0.76",
-      "output": {
-        "recommended_crops": ["Rice Hay"],
-        "explanation": "soil pH within optimal [6.0, 7.5] ; rainfall within optimal [1000.0, 2000.0] mm/year ; temperature within optimal [22.0, 35.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.6, Rainfall: 1500.0 mm/year, Temperature: 29.0 °C, NDVI: 0.74",
-      "output": {
-        "recommended_crops": ["Coconut Sap/Tuba"],
-        "explanation": "soil pH within optimal [6.0, 7.5] ; rainfall within optimal [1200.0, 2500.0] mm/year ; temperature within optimal [25.0, 35.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.4, Rainfall: 1200.0 mm/year, Temperature: 27.0 °C, NDVI: 0.69",
-      "output": {
-        "recommended_crops": ["Pili Nut"],
-        "explanation": "soil pH within optimal [6.0, 7.0] ; rainfall within optimal [1000.0, 1800.0] mm/year ; temperature within optimal [24.0, 32.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.2, Rainfall: 1300.0 mm/year, Temperature: 28.5 °C, NDVI: 0.72",
-      "output": {
-        "recommended_crops": ["Coir"],
-        "explanation": "soil pH within optimal [6.0, 7.5] ; rainfall within optimal [1200.0, 2500.0] mm/year ; temperature within optimal [25.0, 35.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.0, Rainfall: 1000.0 mm/year, Temperature: 25.0 °C, NDVI: 0.68",
-      "output": {
-        "recommended_crops": ["Jute"],
-        "explanation": "soil pH within optimal [5.8, 7.0] ; rainfall within optimal [800.0, 1500.0] mm/year ; temperature within optimal [20.0, 32.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 7.2, Rainfall: 600.0 mm/year, Temperature: 26.0 °C, NDVI: 0.55",
-      "output": {
-        "recommended_crops": ["Kapok"],
-        "explanation": "soil pH within optimal [6.5, 8.0] ; rainfall within optimal [400.0, 1000.0] mm/year ; temperature within optimal [20.0, 35.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.8, Rainfall: 800.0 mm/year, Temperature: 27.0 °C, NDVI: 0.63",
-      "output": {
-        "recommended_crops": ["Maguey"],
-        "explanation": "soil pH within optimal [6.5, 7.5] ; rainfall within optimal [600.0, 1200.0] mm/year ; temperature within optimal [22.0, 32.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.1, Rainfall: 1100.0 mm/year, Temperature: 24.0 °C, NDVI: 0.71",
-      "output": {
-        "recommended_crops": ["Ramie"],
-        "explanation": "soil pH within optimal [5.8, 7.0] ; rainfall within optimal [900.0, 1600.0] mm/year ; temperature within optimal [20.0, 30.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.5, Rainfall: 1000.0 mm/year, Temperature: 26.0 °C, NDVI: 0.67",
-      "output": {
-        "recommended_crops": ["Salago"],
-        "explanation": "soil pH within optimal [6.0, 7.0] ; rainfall within optimal [800.0, 1400.0] mm/year ; temperature within optimal [22.0, 30.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.7, Rainfall: 900.0 mm/year, Temperature: 22.0 °C, NDVI: 0.65",
-      "output": {
-        "recommended_crops": ["Chrysanthemum"],
-        "explanation": "soil pH within optimal [6.0, 7.5] ; rainfall within optimal [600.0, 1200.0] mm/year ; temperature within optimal [15.0, 25.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.9, Rainfall: 1000.0 mm/year, Temperature: 24.0 °C, NDVI: 0.68",
-      "output": {
-        "recommended_crops": ["Gladiola"],
-        "explanation": "soil pH within optimal [6.0, 7.5] ; rainfall within optimal [700.0, 1300.0] mm/year ; temperature within optimal [18.0, 28.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 5.8, Rainfall: 1400.0 mm/year, Temperature: 26.0 °C, NDVI: 0.78",
-      "output": {
-        "recommended_crops": ["Orchids"],
-        "explanation": "soil pH within optimal [5.5, 6.5] ; rainfall within optimal [1200.0, 2000.0] mm/year ; temperature within optimal [20.0, 30.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 5.9, Rainfall: 1350.0 mm/year, Temperature: 25.0 °C, NDVI: 0.79",
-      "output": {
-        "recommended_crops": ["Orchids, Dendrobium"],
-        "explanation": "soil pH within optimal [5.5, 6.5] ; rainfall within optimal [1200.0, 2000.0] mm/year ; temperature within optimal [20.0, 30.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 5.7, Rainfall: 1500.0 mm/year, Temperature: 27.0 °C, NDVI: 0.8",
-      "output": {
-        "recommended_crops": ["Orchids, Vanda"],
-        "explanation": "soil pH within optimal [5.5, 6.5] ; rainfall within optimal [1300.0, 2200.0] mm/year ; temperature within optimal [22.0, 32.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.8, Rainfall: 800.0 mm/year, Temperature: 20.0 °C, NDVI: 0.62",
-      "output": {
-        "recommended_crops": ["Roses"],
-        "explanation": "soil pH within optimal [6.0, 7.5] ; rainfall within optimal [600.0, 1200.0] mm/year ; temperature within optimal [15.0, 25.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.4, Rainfall: 1350.0 mm/year, Temperature: 28.0 °C, NDVI: 0.73",
-      "output": {
-        "recommended_crops": ["Coconut Leaves"],
-        "explanation": "soil pH within optimal [6.0, 7.5] ; rainfall within optimal [1200.0, 2500.0] mm/year ; temperature within optimal [25.0, 35.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.0, Rainfall: 700.0 mm/year, Temperature: 25.0 °C, NDVI: 0.6",
-      "output": {
-        "recommended_crops": ["Cogon"],
-        "explanation": "soil pH within optimal [5.5, 7.0] ; rainfall within optimal [500.0, 1200.0] mm/year ; temperature within optimal [20.0, 35.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.6, Rainfall: 900.0 mm/year, Temperature: 27.0 °C, NDVI: 0.64",
-      "output": {
-        "recommended_crops": ["Romblon"],
-        "explanation": "soil pH within optimal [6.0, 7.0] ; rainfall within optimal [700.0, 1300.0] mm/year ; temperature within optimal [22.0, 32.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 5.8, Rainfall: 800.0 mm/year, Temperature: 26.0 °C, NDVI: 0.61",
-      "output": {
-        "recommended_crops": ["Tiger Grass"],
-        "explanation": "soil pH within optimal [5.5, 6.8] ; rainfall within optimal [600.0, 1200.0] mm/year ; temperature within optimal [20.0, 32.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.2, Rainfall: 1600.0 mm/year, Temperature: 28.0 °C, NDVI: 0.81",
-      "output": {
-        "recommended_crops": ["Banana Leaves"],
-        "explanation": "soil pH within optimal [5.5, 7.0] ; rainfall within optimal [1200.0, 2500.0] mm/year ; temperature within optimal [24.0, 35.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.8, Rainfall: 1200.0 mm/year, Temperature: 26.0 °C, NDVI: 0.7",
-      "output": {
-        "recommended_crops": ["Laza/Tambo"],
-        "explanation": "soil pH within optimal [6.0, 7.5] ; rainfall within optimal [1000.0, 1800.0] mm/year ; temperature within optimal [22.0, 30.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.3, Rainfall: 1800.0 mm/year, Temperature: 29.0 °C, NDVI: 0.82",
-      "output": {
-        "recommended_crops": ["Nipa Sap/Wine"],
-        "explanation": "soil pH within optimal [6.0, 7.0] ; rainfall within optimal [1500.0, 2500.0] mm/year ; temperature within optimal [25.0, 35.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.1, Rainfall: 1100.0 mm/year, Temperature: 23.0 °C, NDVI: 0.72",
-      "output": {
-        "recommended_crops": ["Anthurium"],
-        "explanation": "soil pH within optimal [5.5, 6.8] ; rainfall within optimal [900.0, 1500.0] mm/year ; temperature within optimal [18.0, 28.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.5, Rainfall: 950.0 mm/year, Temperature: 22.0 °C, NDVI: 0.68",
-      "output": {
-        "recommended_crops": ["Aster"],
-        "explanation": "soil pH within optimal [6.0, 7.0] ; rainfall within optimal [700.0, 1300.0] mm/year ; temperature within optimal [16.0, 26.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.8, Rainfall: 1000.0 mm/year, Temperature: 25.0 °C, NDVI: 0.69",
-      "output": {
-        "recommended_crops": ["Azucena"],
-        "explanation": "soil pH within optimal [6.0, 7.5] ; rainfall within optimal [800.0, 1400.0] mm/year ; temperature within optimal [20.0, 30.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.6, Rainfall: 850.0 mm/year, Temperature: 21.0 °C, NDVI: 0.64",
-      "output": {
-        "recommended_crops": ["Baby's Breath"],
-        "explanation": "soil pH within optimal [6.0, 7.5] ; rainfall within optimal [600.0, 1200.0] mm/year ; temperature within optimal [15.0, 25.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.7, Rainfall: 900.0 mm/year, Temperature: 20.0 °C, NDVI: 0.66",
-      "output": {
-        "recommended_crops": ["Carnation"],
-        "explanation": "soil pH within optimal [6.0, 7.5] ; rainfall within optimal [700.0, 1200.0] mm/year ; temperature within optimal [15.0, 24.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.4, Rainfall: 800.0 mm/year, Temperature: 22.0 °C, NDVI: 0.63",
-      "output": {
-        "recommended_crops": ["Daisy"],
-        "explanation": "soil pH within optimal [6.0, 7.0] ; rainfall within optimal [600.0, 1100.0] mm/year ; temperature within optimal [16.0, 26.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.5, Rainfall: 1000.0 mm/year, Temperature: 23.0 °C, NDVI: 0.68",
-      "output": {
-        "recommended_crops": ["Gerbera"],
-        "explanation": "soil pH within optimal [6.0, 7.0] ; rainfall within optimal [800.0, 1300.0] mm/year ; temperature within optimal [18.0, 28.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.0, Rainfall: 1400.0 mm/year, Temperature: 27.0 °C, NDVI: 0.76",
-      "output": {
-        "recommended_crops": ["Heliconia"],
-        "explanation": "soil pH within optimal [5.5, 6.8] ; rainfall within optimal [1200.0, 2000.0] mm/year ; temperature within optimal [22.0, 32.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.3, Rainfall: 1300.0 mm/year, Temperature: 26.0 °C, NDVI: 0.74",
-      "output": {
-        "recommended_crops": ["Ilang-Ilang"],
-        "explanation": "soil pH within optimal [6.0, 7.0] ; rainfall within optimal [1100.0, 1800.0] mm/year ; temperature within optimal [22.0, 32.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.2, Rainfall: 1200.0 mm/year, Temperature: 25.0 °C, NDVI: 0.71",
-      "output": {
-        "recommended_crops": ["Sampaguita"],
-        "explanation": "soil pH within optimal [6.0, 7.0] ; rainfall within optimal [1000.0, 1600.0] mm/year ; temperature within optimal [20.0, 30.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.6, Rainfall: 950.0 mm/year, Temperature: 21.0 °C, NDVI: 0.65",
-      "output": {
-        "recommended_crops": ["Spraymum"],
-        "explanation": "soil pH within optimal [6.0, 7.5] ; rainfall within optimal [700.0, 1300.0] mm/year ; temperature within optimal [16.0, 26.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.8, Rainfall: 800.0 mm/year, Temperature: 20.0 °C, NDVI: 0.62",
-      "output": {
-        "recommended_crops": ["Statice"],
-        "explanation": "soil pH within optimal [6.0, 7.5] ; rainfall within optimal [600.0, 1100.0] mm/year ; temperature within optimal [15.0, 25.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.0, Rainfall: 1000.0 mm/year, Temperature: 28.0 °C, NDVI: 0.73",
-      "output": {
-        "recommended_crops": ["Guinea Grass"],
-        "explanation": "soil pH within optimal [5.5, 7.0] ; rainfall within optimal [800.0, 1500.0] mm/year ; temperature within optimal [22.0, 35.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 5.8, Rainfall: 1200.0 mm/year, Temperature: 29.0 °C, NDVI: 0.75",
-      "output": {
-        "recommended_crops": ["Napier Grass"],
-        "explanation": "soil pH within optimal [5.5, 7.0] ; rainfall within optimal [1000.0, 2000.0] mm/year ; temperature within optimal [25.0, 35.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.7, Rainfall: 700.0 mm/year, Temperature: 26.0 °C, NDVI: 0.58",
-      "output": {
-        "recommended_crops": ["Castor Beans"],
-        "explanation": "soil pH within optimal [6.0, 7.5] ; rainfall within optimal [500.0, 1200.0] mm/year ; temperature within optimal [20.0, 35.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.5, Rainfall: 600.0 mm/year, Temperature: 27.0 °C, NDVI: 0.55",
-      "output": {
-        "recommended_crops": ["Sesame"],
-        "explanation": "soil pH within optimal [6.0, 7.5] ; rainfall within optimal [400.0, 1000.0] mm/year ; temperature within optimal [22.0, 32.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.8, Rainfall: 750.0 mm/year, Temperature: 30.0 °C, NDVI: 0.61",
-      "output": {
-        "recommended_crops": ["Sorghum"],
-        "explanation": "soil pH within optimal [6.0, 8.0] ; rainfall within optimal [500.0, 1200.0] mm/year ; temperature within optimal [25.0, 35.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 5.5, Rainfall: 1500.0 mm/year, Temperature: 26.0 °C, NDVI: 0.8",
-      "output": {
-        "recommended_crops": ["Pineapple Fiber"],
-        "explanation": "soil pH within optimal [5.0, 6.5] ; rainfall within optimal [1200.0, 2000.0] mm/year ; temperature within optimal [22.0, 32.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.5, Rainfall: 2000.0 mm/year, Temperature: 28.0 °C, NDVI: 0.83",
-      "output": {
-        "recommended_crops": ["African Palm Leaves"],
-        "explanation": "soil pH within optimal [6.0, 7.0] ; rainfall within optimal [1800.0, 2800.0] mm/year ; temperature within optimal [24.0, 34.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.2, Rainfall: 1100.0 mm/year, Temperature: 25.0 °C, NDVI: 0.69",
-      "output": {
-        "recommended_crops": ["Apatot"],
-        "explanation": "soil pH within optimal [6.0, 7.0] ; rainfall within optimal [900.0, 1500.0] mm/year ; temperature within optimal [20.0, 30.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.6, Rainfall: 1000.0 mm/year, Temperature: 24.0 °C, NDVI: 0.67",
-      "output": {
-        "recommended_crops": ["Banaba"],
-        "explanation": "soil pH within optimal [6.0, 7.5] ; rainfall within optimal [800.0, 1400.0] mm/year ; temperature within optimal [20.0, 30.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.8, Rainfall: 1200.0 mm/year, Temperature: 27.0 °C, NDVI: 0.71",
-      "output": {
-        "recommended_crops": ["Betel Nut"],
-        "explanation": "soil pH within optimal [6.0, 7.5] ; rainfall within optimal [1000.0, 1800.0] mm/year ; temperature within optimal [22.0, 32.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.4, Rainfall: 1150.0 mm/year, Temperature: 26.0 °C, NDVI: 0.7",
-      "output": {
-        "recommended_crops": ["Ikmo/Buyo"],
-        "explanation": "soil pH within optimal [6.0, 7.0] ; rainfall within optimal [1000.0, 1600.0] mm/year ; temperature within optimal [22.0, 30.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.7, Rainfall: 900.0 mm/year, Temperature: 21.0 °C, NDVI: 0.64",
-      "output": {
-        "recommended_crops": ["Dahlia"],
-        "explanation": "soil pH within optimal [6.0, 7.5] ; rainfall within optimal [700.0, 1300.0] mm/year ; temperature within optimal [16.0, 26.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.0, Rainfall: 1300.0 mm/year, Temperature: 28.0 °C, NDVI: 0.74",
-      "output": {
-        "recommended_crops": ["Dawa"],
-        "explanation": "soil pH within optimal [5.8, 6.8] ; rainfall within optimal [1100.0, 1800.0] mm/year ; temperature within optimal [24.0, 32.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.1, Rainfall: 1000.0 mm/year, Temperature: 25.0 °C, NDVI: 0.68",
-      "output": {
-        "recommended_crops": ["Flemingia"],
-        "explanation": "soil pH within optimal [5.8, 6.8] ; rainfall within optimal [800.0, 1400.0] mm/year ; temperature within optimal [20.0, 30.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.5, Rainfall: 800.0 mm/year, Temperature: 18.0 °C, NDVI: 0.6",
-      "output": {
-        "recommended_crops": ["Ginseng"],
-        "explanation": "soil pH within optimal [6.0, 7.0] ; rainfall within optimal [600.0, 1200.0] mm/year ; temperature within optimal [15.0, 25.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.8, Rainfall: 1100.0 mm/year, Temperature: 26.0 °C, NDVI: 0.72",
-      "output": {
-        "recommended_crops": ["Ipil-Ipil Leaves"],
-        "explanation": "soil pH within optimal [6.0, 8.0] ; rainfall within optimal [800.0, 1800.0] mm/year ; temperature within optimal [20.0, 35.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.3, Rainfall: 900.0 mm/year, Temperature: 24.0 °C, NDVI: 0.66",
-      "output": {
-        "recommended_crops": ["Lagundi"],
-        "explanation": "soil pH within optimal [6.0, 7.0] ; rainfall within optimal [700.0, 1300.0] mm/year ; temperature within optimal [20.0, 30.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.2, Rainfall: 1000.0 mm/year, Temperature: 25.0 °C, NDVI: 0.67",
-      "output": {
-        "recommended_crops": ["Ngalug"],
-        "explanation": "soil pH within optimal [6.0, 7.0] ; rainfall within optimal [800.0, 1400.0] mm/year ; temperature within optimal [22.0, 30.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.6, Rainfall: 750.0 mm/year, Temperature: 23.0 °C, NDVI: 0.61",
-      "output": {
-        "recommended_crops": ["Oregano"],
-        "explanation": "soil pH within optimal [6.0, 7.5] ; rainfall within optimal [500.0, 1200.0] mm/year ; temperature within optimal [18.0, 30.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.4, Rainfall: 1300.0 mm/year, Temperature: 27.0 °C, NDVI: 0.74",
-      "output": {
-        "recommended_crops": ["Palm Ornamentals"],
-        "explanation": "soil pH within optimal [6.0, 7.0] ; rainfall within optimal [1100.0, 1800.0] mm/year ; temperature within optimal [22.0, 32.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.1, Rainfall: 950.0 mm/year, Temperature: 24.0 °C, NDVI: 0.65",
-      "output": {
-        "recommended_crops": ["Puto-Puto"],
-        "explanation": "soil pH within optimal [5.8, 6.8] ; rainfall within optimal [800.0, 1300.0] mm/year ; temperature within optimal [20.0, 28.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.7, Rainfall: 1000.0 mm/year, Temperature: 25.0 °C, NDVI: 0.68",
-      "output": {
-        "recommended_crops": ["Rensoni"],
-        "explanation": "soil pH within optimal [6.0, 7.5] ; rainfall within optimal [800.0, 1400.0] mm/year ; temperature within optimal [20.0, 30.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.5, Rainfall: 900.0 mm/year, Temperature: 23.0 °C, NDVI: 0.64",
-      "output": {
-        "recommended_crops": ["San Francisco"],
-        "explanation": "soil pH within optimal [6.0, 7.0] ; rainfall within optimal [700.0, 1300.0] mm/year ; temperature within optimal [18.0, 28.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.3, Rainfall: 850.0 mm/year, Temperature: 26.0 °C, NDVI: 0.63",
-      "output": {
-        "recommended_crops": ["Santan"],
-        "explanation": "soil pH within optimal [6.0, 7.0] ; rainfall within optimal [700.0, 1200.0] mm/year ; temperature within optimal [22.0, 32.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.0, Rainfall: 1200.0 mm/year, Temperature: 26.0 °C, NDVI: 0.71",
-      "output": {
-        "recommended_crops": ["Tikog"],
-        "explanation": "soil pH within optimal [5.8, 6.8] ; rainfall within optimal [1000.0, 1600.0] mm/year ; temperature within optimal [22.0, 30.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.8, Rainfall: 1400.0 mm/year, Temperature: 24.0 °C, NDVI: 0.76",
-      "output": {
-        "recommended_crops": ["Water Lily"],
-        "explanation": "soil pH within optimal [6.0, 7.5] ; rainfall within optimal [1200.0, 2000.0] mm/year ; temperature within optimal [18.0, 30.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.6, Rainfall: 800.0 mm/year, Temperature: 25.0 °C, NDVI: 0.62",
-      "output": {
-        "recommended_crops": ["Yellow Bell"],
-        "explanation": "soil pH within optimal [6.0, 7.5] ; rainfall within optimal [600.0, 1200.0] mm/year ; temperature within optimal [20.0, 32.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.2, Rainfall: 700.0 mm/year, Temperature: 24.0 °C, NDVI: 0.59",
-      "output": {
-        "recommended_crops": ["Yerba Buena"],
-        "explanation": "soil pH within optimal [6.0, 7.0] ; rainfall within optimal [500.0, 1100.0] mm/year ; temperature within optimal [18.0, 30.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.4, Rainfall: 950.0 mm/year, Temperature: 26.0 °C, NDVI: 0.66",
-      "output": {
-        "recommended_crops": ["Calachuci"],
-        "explanation": "soil pH within optimal [6.0, 7.0] ; rainfall within optimal [800.0, 1300.0] mm/year ; temperature within optimal [22.0, 32.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 5.8, Rainfall: 1100.0 mm/year, Temperature: 27.0 °C, NDVI: 0.7",
-      "output": {
-        "recommended_crops": ["Pandan (For Fiber)"],
-        "explanation": "soil pH within optimal [5.5, 6.5] ; rainfall within optimal [900.0, 1500.0] mm/year ; temperature within optimal [22.0, 32.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.1, Rainfall: 1600.0 mm/year, Temperature: 28.0 °C, NDVI: 0.79",
-      "output": {
-        "recommended_crops": ["Nipa Leaves"],
-        "explanation": "soil pH within optimal [5.8, 6.8] ; rainfall within optimal [1400.0, 2200.0] mm/year ; temperature within optimal [24.0, 34.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.3, Rainfall: 1250.0 mm/year, Temperature: 25.0 °C, NDVI: 0.72",
-      "output": {
-        "recommended_crops": ["Lumbia Leaves"],
-        "explanation": "soil pH within optimal [6.0, 7.0] ; rainfall within optimal [1000.0, 1700.0] mm/year ; temperature within optimal [20.0, 30.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.0, Rainfall: 850.0 mm/year, Temperature: 24.0 °C, NDVI: 0.63",
-      "output": {
-        "recommended_crops": ["Pahid"],
-        "explanation": "soil pH within optimal [5.8, 6.8] ; rainfall within optimal [700.0, 1200.0] mm/year ; temperature within optimal [20.0, 28.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.4, Rainfall: 900.0 mm/year, Temperature: 23.0 °C, NDVI: 0.65",
-      "output": {
-        "recommended_crops": ["Pansit-Pansitan"],
-        "explanation": "soil pH within optimal [6.0, 7.0] ; rainfall within optimal [700.0, 1300.0] mm/year ; temperature within optimal [18.0, 28.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.2, Rainfall: 800.0 mm/year, Temperature: 25.0 °C, NDVI: 0.61",
-      "output": {
-        "recommended_crops": ["Gotocola"],
-        "explanation": "soil pH within optimal [6.0, 7.0] ; rainfall within optimal [600.0, 1200.0] mm/year ; temperature within optimal [20.0, 30.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.8, Rainfall: 600.0 mm/year, Temperature: 28.0 °C, NDVI: 0.54",
-      "output": {
-        "recommended_crops": ["Jatropha"],
-        "explanation": "soil pH within optimal [6.0, 8.0] ; rainfall within optimal [400.0, 1200.0] mm/year ; temperature within optimal [20.0, 35.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.1, Rainfall: 1000.0 mm/year, Temperature: 26.0 °C, NDVI: 0.67",
-      "output": {
-        "recommended_crops": ["Hanlilika"],
-        "explanation": "soil pH within optimal [5.8, 6.8] ; rainfall within optimal [800.0, 1400.0] mm/year ; temperature within optimal [22.0, 30.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.3, Rainfall: 950.0 mm/year, Temperature: 25.0 °C, NDVI: 0.66",
-      "output": {
-        "recommended_crops": ["Halib-on"],
-        "explanation": "soil pH within optimal [6.0, 7.0] ; rainfall within optimal [800.0, 1300.0] mm/year ; temperature within optimal [20.0, 30.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.5, Rainfall: 850.0 mm/year, Temperature: 24.0 °C, NDVI: 0.63",
-      "output": {
-        "recommended_crops": ["Mayana"],
-        "explanation": "soil pH within optimal [6.0, 7.5] ; rainfall within optimal [700.0, 1200.0] mm/year ; temperature within optimal [20.0, 30.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.0, Rainfall: 1150.0 mm/year, Temperature: 26.0 °C, NDVI: 0.71",
-      "output": {
-        "recommended_crops": ["Abaca Leafsheath"],
-        "explanation": "soil pH within optimal [5.5, 7.0] ; rainfall within optimal [1000.0, 2000.0] mm/year ; temperature within optimal [24.0, 30.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.2, Rainfall: 1000.0 mm/year, Temperature: 24.0 °C, NDVI: 0.68",
-      "output": {
-        "recommended_crops": ["Dracaena"],
-        "explanation": "soil pH within optimal [6.0, 7.0] ; rainfall within optimal [800.0, 1400.0] mm/year ; temperature within optimal [18.0, 30.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.4, Rainfall: 900.0 mm/year, Temperature: 23.0 °C, NDVI: 0.65",
-      "output": {
-        "recommended_crops": ["Florida Beauty"],
-        "explanation": "soil pH within optimal [6.0, 7.0] ; rainfall within optimal [700.0, 1300.0] mm/year ; temperature within optimal [18.0, 28.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.3, Rainfall: 950.0 mm/year, Temperature: 25.0 °C, NDVI: 0.66",
-      "output": {
-        "recommended_crops": ["Song of Korea"],
-        "explanation": "soil pH within optimal [6.0, 7.0] ; rainfall within optimal [800.0, 1300.0] mm/year ; temperature within optimal [20.0, 30.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.1, Rainfall: 900.0 mm/year, Temperature: 27.0 °C, NDVI: 0.68",
-      "output": {
-        "recommended_crops": ["Carabao Grass"],
-        "explanation": "soil pH within optimal [5.8, 7.0] ; rainfall within optimal [700.0, 1500.0] mm/year ; temperature within optimal [22.0, 35.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.0, Rainfall: 850.0 mm/year, Temperature: 26.0 °C, NDVI: 0.64",
-      "output": {
-        "recommended_crops": ["Blue Grass"],
-        "explanation": "soil pH within optimal [5.8, 7.0] ; rainfall within optimal [700.0, 1400.0] mm/year ; temperature within optimal [20.0, 32.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 7.2, Rainfall: 400.0 mm/year, Temperature: 29.0 °C, NDVI: 0.45",
-      "output": {
-        "recommended_crops": ["Cactus"],
-        "explanation": "soil pH within optimal [6.5, 8.5] ; rainfall within optimal [200.0, 800.0] mm/year ; temperature within optimal [15.0, 40.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.2, Rainfall: 1100.0 mm/year, Temperature: 25.0 °C, NDVI: 0.69",
-      "output": {
-        "recommended_crops": ["Labig Leaves"],
-        "explanation": "soil pH within optimal [6.0, 7.0] ; rainfall within optimal [900.0, 1500.0] mm/year ; temperature within optimal [20.0, 30.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.1, Rainfall: 950.0 mm/year, Temperature: 24.0 °C, NDVI: 0.66",
-      "output": {
-        "recommended_crops": ["D.Sanderiana White (Whitecorn)"],
-        "explanation": "soil pH within optimal [5.8, 6.8] ; rainfall within optimal [800.0, 1300.0] mm/year ; temperature within optimal [18.0, 30.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.2, Rainfall: 900.0 mm/year, Temperature: 25.0 °C, NDVI: 0.65",
-      "output": {
-        "recommended_crops": ["D.Sanderiana Yellow"],
-        "explanation": "soil pH within optimal [5.8, 6.8] ; rainfall within optimal [800.0, 1300.0] mm/year ; temperature within optimal [18.0, 30.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.3, Rainfall: 1000.0 mm/year, Temperature: 23.0 °C, NDVI: 0.68",
-      "output": {
-        "recommended_crops": ["D.Marginata Tricolor"],
-        "explanation": "soil pH within optimal [6.0, 7.0] ; rainfall within optimal [800.0, 1400.0] mm/year ; temperature within optimal [18.0, 28.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 5.9, Rainfall: 1200.0 mm/year, Temperature: 22.0 °C, NDVI: 0.73",
-      "output": {
-        "recommended_crops": ["Leaf Fern"],
-        "explanation": "soil pH within optimal [5.5, 6.5] ; rainfall within optimal [1000.0, 1800.0] mm/year ; temperature within optimal [16.0, 28.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.4, Rainfall: 1300.0 mm/year, Temperature: 26.0 °C, NDVI: 0.75",
-      "output": {
-        "recommended_crops": ["Fishtail Palm"],
-        "explanation": "soil pH within optimal [6.0, 7.0] ; rainfall within optimal [1100.0, 1800.0] mm/year ; temperature within optimal [22.0, 32.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.0, Rainfall: 800.0 mm/year, Temperature: 24.0 °C, NDVI: 0.62",
-      "output": {
-        "recommended_crops": ["Palong Manok"],
-        "explanation": "soil pH within optimal [5.8, 6.8] ; rainfall within optimal [600.0, 1200.0] mm/year ; temperature within optimal [20.0, 28.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 5.6, Rainfall: 1400.0 mm/year, Temperature: 25.0 °C, NDVI: 0.78",
-      "output": {
-        "recommended_crops": ["Mini Pineapple"],
-        "explanation": "soil pH within optimal [5.0, 6.5] ; rainfall within optimal [1200.0, 2000.0] mm/year ; temperature within optimal [22.0, 30.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.5, Rainfall: 1500.0 mm/year, Temperature: 27.0 °C, NDVI: 0.77",
-      "output": {
-        "recommended_crops": ["Kaong Sap"],
-        "explanation": "soil pH within optimal [6.0, 7.0] ; rainfall within optimal [1300.0, 2000.0] mm/year ; temperature within optimal [24.0, 32.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.1, Rainfall: 1000.0 mm/year, Temperature: 26.0 °C, NDVI: 0.68",
-      "output": {
-        "recommended_crops": ["Bariw Fiber"],
-        "explanation": "soil pH within optimal [5.8, 6.8] ; rainfall within optimal [800.0, 1400.0] mm/year ; temperature within optimal [22.0, 30.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 5.8, Rainfall: 1600.0 mm/year, Temperature: 24.0 °C, NDVI: 0.81",
-      "output": {
-        "recommended_crops": ["Orchid Vanilla"],
-        "explanation": "soil pH within optimal [5.5, 6.5] ; rainfall within optimal [1400.0, 2200.0] mm/year ; temperature within optimal [20.0, 30.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.3, Rainfall: 950.0 mm/year, Temperature: 21.0 °C, NDVI: 0.67",
-      "output": {
-        "recommended_crops": ["Begonia"],
-        "explanation": "soil pH within optimal [6.0, 7.0] ; rainfall within optimal [800.0, 1300.0] mm/year ; temperature within optimal [16.0, 26.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.4, Rainfall: 900.0 mm/year, Temperature: 22.0 °C, NDVI: 0.65",
-      "output": {
-        "recommended_crops": ["Ladybird"],
-        "explanation": "soil pH within optimal [6.0, 7.0] ; rainfall within optimal [700.0, 1300.0] mm/year ; temperature within optimal [16.0, 28.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.8, Rainfall: 1200.0 mm/year, Temperature: 23.0 °C, NDVI: 0.72",
-      "output": {
-        "recommended_crops": ["Madre de Agua"],
-        "explanation": "soil pH within optimal [6.0, 7.5] ; rainfall within optimal [1000.0, 1600.0] mm/year ; temperature within optimal [18.0, 28.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.7, Rainfall: 650.0 mm/year, Temperature: 26.0 °C, NDVI: 0.57",
-      "output": {
-        "recommended_crops": ["Sunflower"],
-        "explanation": "soil pH within optimal [6.0, 7.5] ; rainfall within optimal [500.0, 1000.0] mm/year ; temperature within optimal [20.0, 32.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.5, Rainfall: 800.0 mm/year, Temperature: 25.0 °C, NDVI: 0.62",
-      "output": {
-        "recommended_crops": ["Torch Flower"],
-        "explanation": "soil pH within optimal [6.0, 7.0] ; rainfall within optimal [600.0, 1200.0] mm/year ; temperature within optimal [20.0, 30.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    },
-    {
-      "input": "Soil pH: 6.2, Rainfall: 1000.0 mm/year, Temperature: 24.0 °C, NDVI: 0.68",
-      "output": {
-        "recommended_crops": ["Aglomena"],
-        "explanation": "soil pH within optimal [6.0, 7.0] ; rainfall within optimal [800.0, 1400.0] mm/year ; temperature within optimal [18.0, 30.0] °C",
-        "sources": ["FAO", "PSA"]
-      }
-    }]
+  {
+    "prompt": "Soil pH: 6.1, Rainfall: 0.51mm/3h, Temp: 25°C, NDVI: 0.80\nUser: Ano ang pwede kong itanim dito?",
+    "response": "Suriin natin ang kondisyon:\n\n✓ pH 6.1 - Sakto, bahagyang acidic na bagay sa maraming pananim\n✓ Rainfall 0.51mm/3h - Sapat para sa palay (rice), saging (banana), at kape (coffee)\n✓ Temp 25°C - Ideal para sa tropical crops\n✓ NDVI 0.80 - Malusog ang lupa, mataas ang fertility\n\nPwede kang magtanim ng **palay** dahil consistent ang tubig at mataas ang ulan. Pwede rin ang **kape (Arabica o Robusta)** depende sa microclimate, at **saging** dahil gusto nito ang init at ulan.\n\nTips:\n1. Para sa palay, maglagay ng tamang irrigation channels.\n2. Para sa kape, Robusta kung mas mainit, Arabica kung mas malamig.\n3. Para sa saging, siguraduhin may sapat na espasyo at fertilization.\n\nKung gusto mong i-diversify, pwede ring cacao dahil compatible din ang conditions."
+  },
+  {
+    "prompt": "Soil pH: 5.8, Rainfall: 0.31mm/3h, Temp: 26°C, NDVI: 0.65\nUser: Gusto ko magtanim ng coffee pero mababa ang ulan dito. Possible pa ba?",
+    "response": "Tingnan natin ang datos:\n\n✓ pH 5.8 - Pasok para sa kape (5.5–6.5 optimal)\n✓ Temp 26°C - Swak (18–28°C gusto ng kape)\n⚠ Rainfall 0.31mm/3h - Medyo kulang (0.41–0.68mm/3h ang ideal)\n✓ NDVI 0.65 - Katamtaman, may potensyal pa sa lupa\n\nPwede pa rin magtanim ng kape pero kailangan ng dagdag effort:\n1. **Maglagay ng patubig (irrigation system)** lalo na tuwing tag-init\n2. **Pumili ng Robusta** kaysa Arabica dahil mas kaya nito ang mababang ulan\n3. **Mulching** para i-retain ang moisture ng lupa\n\nAlternatibo: **Tobacco** o **Cashew** dahil mas akma sila sa 0.21–0.41mm/3h na ulan."
+  },
+  {
+    "prompt": "Soil pH: 7.2, Rainfall: 0.41mm/3h, Temp: 28°C, NDVI: 0.70\nUser: Gusto ko magtanim ng palay, okay ba?",
+    "response": "Suriin natin:\n\n⚠ pH 7.2 - Medyo alkaline, hindi ideal para sa palay (gusto ng 5.5–6.5)\n✓ Rainfall 0.41mm/3h - Sapat para sa palay\n✓ Temp 28°C - Katanggap-tanggap, nasa upper range\n✓ NDVI 0.70 - Katamtaman, okay ang vegetation\n\nPwede ang palay pero mas maganda kung i-adjust ang lupa:\n1. Gumamit ng **organic matter** o sulfur-based fertilizer para pababain ang pH\n2. Panatilihin ang field na may tubig (flooded) para bumaba ang epekto ng alkalinity\n\nAlternatibo: **Mais (corn)** at **cassava** ay mas tolerant sa medyo alkaline na lupa."
+  },
+  {
+    "prompt": "Soil pH: 5.3, Rainfall: 0.86mm/3h, Temp: 24°C, NDVI: 0.82\nUser: May cacao ako, bagay ba talaga ito sa lupa ko?",
+    "response": "Suriin natin:\n\n✓ pH 5.3 - Bahagyang acidic, okay para sa cacao (5.0–7.0 range)\n✓ Rainfall 0.86mm/3h - Medyo mataas pero cacao ay kaya pa (0.51–0.86mm/3h gusto nito)\n✓ Temp 24°C - Swak, gusto ng cacao ang 20–28°C\n✓ NDVI 0.82 - Fertile at healthy ang lupa\n\nMaganda ang kondisyon para sa cacao pero dahil sobra ng konti ang ulan:\n1. Siguraduhin ang maayos na drainage para maiwasan ang waterlogging\n2. Gumamit ng shade trees para ma-regulate ang tubig at araw\n\nKaya oo, bagay ang cacao. Pwede ka ring mag-intercrop ng saging bilang shade crop."
+  },
+  {
+    "prompt": "Soil pH: 6.5, Rainfall: 0.27mm/3h, Temp: 30°C, NDVI: 0.60\nUser: Ano pinakamagandang pananim sa lupa ko?",
+    "response": "Tingnan natin:\n\n✓ pH 6.5 - Neutral, bagay sa karamihan ng pananim\n⚠ Rainfall 0.27mm/3h - Medyo mababa, kulang para sa palay o kape\n✓ Temp 30°C - Medyo mainit pero kaya ng ilang crops\n⚠ NDVI 0.60 - Katamtaman lang ang fertility\n\nDahil kulang ang ulan, mas bagay ang **tobacco**, **mais**, o **cashew** na hindi masyadong water-demanding.\n\nTips:\n1. Gumamit ng **mulching** para hindi agad matuyo ang lupa\n2. Mag-ipon ng tubig ulan (rainwater harvesting)\n\nAlternatibo: **kamote (sweet potato)** na matibay kahit sa kulang na ulan."
+  },
+  {
+    "prompt": "Soil pH: 5.0, Rainfall: 1.03mm/3h, Temp: 22°C, NDVI: 0.75\nUser: Pwede ba ang Arabica coffee dito?",
+    "response": "Suriin natin:\n\n⚠ pH 5.0 - Medyo acidic, borderline para sa Arabica (5.5–6.5 optimal)\n✓ Rainfall 1.03mm/3h - Sobra pero kaya ng Arabica basta may drainage\n✓ Temp 22°C - Perfect para sa Arabica\n✓ NDVI 0.75 - Fertile, healthy soil\n\nPwede ang Arabica pero kailangan ng soil adjustment:\n1. Magdagdag ng **lime** para itaas ng konti ang pH\n2. Siguraduhin ang maayos na drainage para hindi malunod ang ugat\n\nKung hindi ma-manage ang acidity, pwede rin ang **Liberica** o **Cacao** na mas kaya ang acidic soil."
+  },
+  {
+    "prompt": "Soil pH: 6.8, Rainfall: 0.38mm/3h, Temp: 31°C, NDVI: 0.58\nUser: Gusto ko magtanim ng mais, bagay ba?",
+    "response": "Suriin natin:\n\n✓ pH 6.8 - Sakto para sa mais\n✓ Rainfall 0.38mm/3h - Sakto rin (0.21–0.41mm/3h optimal)\n⚠ Temp 31°C - Medyo mainit pero kaya pa rin ng mais\n⚠ NDVI 0.58 - Indikasyon na moderate lang ang soil health\n\nBagay ang mais, pero para mas tumaas ang ani:\n1. Gumamit ng organic fertilizer o compost\n2. Mag-irrigate sa peak ng init para hindi matuyuan\n\nPwede ring **tobacco** kung gusto ng cash crop alternative."
+  },
+  {
+    "prompt": "Soil pH: 7.5, Rainfall: 0.68mm/3h, Temp: 27°C, NDVI: 0.72\nUser: Bakit hindi lumalaki ng maayos ang palay ko?",
+    "response": "Suriin natin:\n\n✗ pH 7.5 - Mas mataas kaysa gusto ng palay (5.5–6.5). Ang alkaline soil ay nagpapabagal ng nutrient uptake\n✓ Rainfall 0.68mm/3h - Sapat\n✓ Temp 27°C - Ideal\n✓ NDVI 0.72 - Okay ang vegetation pero hindi optimal\n\nProblema: Dahil mataas ang pH, hirap sumipsip ng nutrients ang palay.\n\nSolusyon:\n1. Gumamit ng **ammonium sulfate** o sulfur fertilizer para pababain ang pH\n2. Magdagdag ng **organic matter** tulad ng compost\n3. Regular na mag-check ng leaf yellowing para makita kung may nutrient deficiency\n\nKaya’t hindi sa tubig o init ang problema kundi sa pH ng lupa."
+  },
+  {
+    "prompt": "Soil pH: 6.2, Rainfall: 0.21mm/3h, Temp: 32°C, NDVI: 0.55\nUser: Anong magandang pananim kung kulang ang ulan dito?",
+    "response": "Tingnan natin:\n\n✓ pH 6.2 - Maganda, sakto para sa karamihan ng crops\n⚠ Rainfall 0.21mm/3h - Kulang para sa high-water crops (palay, saging, kape)\n⚠ Temp 32°C - Mainit, hindi bagay sa delicate crops\n⚠ NDVI 0.55 - Medyo mababa, nangangailangan ng soil improvement\n\nPinaka-bagay: **Tobacco**, **Corn**, **Cashew**, o **Sweet potato** dahil mas drought-tolerant sila.\n\nTips:\n1. Gumamit ng drought-resistant varieties\n2. Rainwater harvesting o drip irrigation kung kaya\n3. Mulching para protektado ang lupa\n\nIwasan ang palay at kape dito dahil kulang talaga sa tubig."
+  },
+  {
+    "prompt": "Soil pH: 5.6, Rainfall: 0.62mm/3h, Temp: 27°C, NDVI: 0.83\nUser: Paano ko aalagaan ang cacao ko?",
+    "response": "Suriin muna ang kondisyon:\n\n✓ pH 5.6 - Ideal para sa cacao\n✓ Rainfall 0.62mm/3h - Sakto, gusto ng cacao ang consistent na ulan\n✓ Temp 27°C - Pasok sa range\n✓ NDVI 0.83 - Fertile at healthy soil\n\nTips sa pag-aalaga:\n1. Gumamit ng **shade trees** para protektado laban sa sobrang init\n2. Regular na maglagay ng organic fertilizer (compost o manure)\n3. Panatilihin ang maayos na drainage para iwas waterlogging\n4. Mag-prune para pumasok ang hangin at liwanag\n\nMaganda ang kondisyon, kailangan lang ng tuloy-tuloy na maintenance."
+  },
+  {
+    "prompt": "Soil pH: 6.0, Rainfall: 0.75mm/3h, Temp: 23°C, NDVI: 0.77\nUser: Pwede ba ang Liberica coffee dito?",
+    "response": "Suriin natin:\n\n✓ pH 6.0 - Okay para sa Liberica\n✓ Rainfall 0.75mm/3h - Sakto (Liberica gusto ng mataas na ulan)\n✓ Temp 23°C - Pasok, gusto rin nito ang medyo malamig\n✓ NDVI 0.77 - Fertile soil\n\nMaganda ang kondisyon para sa **Liberica coffee**. Tips:\n1. Siguraduhin na may bahagyang shade para hindi ma-expose sa sobrang init\n2. Regular na mag-apply ng organic fertilizer\n3. Magtanim ng windbreaks para proteksyon sa hangin\n\nPwede rin itong ihalo sa intercropping kasama ang saging o kakaw para mas kumita."
+  },
+  {
+    "prompt": "Soil pH: 5.4, Rainfall: 0.48mm/3h, Temp: 29°C, NDVI: 0.68\nUser: Paano ko palalakasin ang tubo ko (sugarcane)?",
+    "response": "Suriin:\n\n✓ pH 5.4 - Sakto para sa tubo (5.0–6.5 ok)\n✓ Rainfall 0.48mm/3h - Medyo sapat pero borderline (0.51–0.86mm/3h mas ideal)\n✓ Temp 29°C - Perfect para sa tubo\n⚠ NDVI 0.68 - Katamtaman, nangangailangan ng dagdag na fertility\n\nPara mas lumakas ang tubo:\n1. Gumamit ng nitrogen-rich fertilizer tuwing early growth\n2. Mag-mulching para mag-retain ng moisture\n3. Kung kaya, mag-irrigate lalo na sa dry months\n\nAlternatibo: Kung kulang talaga ang ulan, pwede ring magtanim ng **mais**."
+  },
+  {
+    "prompt": "Soil pH: 6.9, Rainfall: 0.92mm/3h, Temp: 20°C, NDVI: 0.85\nUser: Ano magandang crop ngayong tag-ulan?",
+    "response": "Suriin:\n\n✓ pH 6.9 - Slightly alkaline pero kaya ng ilang crops\n✓ Rainfall 0.92mm/3h - Mataas, tag-ulan nga\n✓ Temp 20°C - Medyo malamig, bagay sa highland crops\n✓ NDVI 0.85 - Fertile, healthy soil\n\nPinaka-bagay ngayong tag-ulan:\n- **Palay (lowland rice)** dahil mataas ang tubig\n- **Vegetables** tulad ng repolyo at pechay sa malamig na klima\n- **Arabica coffee** sa highland areas\n\nTips:\n1. Magtanim ng palay kaagad para ma-maximize ang tubig ulan\n2. Siguraduhin ang drainage para iwas baha sa gulay\n3. Mag-intercrop ng legumes para dagdag fertility"
+  },
+  {
+    "prompt": "Soil pH: 5.7, Rainfall: 0.34mm/3h, Temp: 33°C, NDVI: 0.50\nUser: Bakit parang naninilaw ang dahon ng mais ko?",
+    "response": "Suriin:\n\n✓ pH 5.7 - Sakto para sa mais\n⚠ Rainfall 0.34mm/3h - Katamtaman pero kulang kung sobrang init\n✗ Temp 33°C - Sobra ang init, stress sa mais\n✗ NDVI 0.50 - Mababa, indikasyon ng stress o nutrient deficiency\n\nPosibleng dahilan:\n1. **Heat stress** dahil mataas ang temperatura\n2. **Nitrogen deficiency** (kaya naninilaw ang dahon)\n3. **Kakulangan sa tubig**\n\nSolusyon:\n1. Magdagdag ng nitrogen fertilizer (urea)\n2. Magpatubig lalo na sa mainit na panahon\n3. Maglagay ng mulch para bawas moisture loss"
+  },
+  {
+    "prompt": "Soil pH: 6.4, Rainfall: 0.65mm/3h, Temp: 26°C, NDVI: 0.79\nUser: Gusto ko subukan ang abaca, okay ba?",
+    "response": "Suriin:\n\n✓ pH 6.4 - Sakto para sa abaca\n✓ Rainfall 0.65mm/3h - Swak (0.62–0.86mm/3h gusto ng abaca)\n✓ Temp 26°C - Perfect\n✓ NDVI 0.79 - Fertile, maganda ang lupa\n\nBagay na bagay ang abaca dito. Tips:\n1. Magtanim sa bahagyang shaded area\n2. Regular na mag-apply ng organic fertilizer\n3. Magbantay sa pests tulad ng abaca bunchy top virus\n\nPwede ring mag-intercrop ng cacao para dagdag kita."
+  },
+  {
+    "prompt": "Soil pH: 5.2, Rainfall: 0.17mm/3h, Temp: 34°C, NDVI: 0.47\nUser: May problema sa lupa ko, paano ko aayusin?",
+    "response": "Suriin:\n\n✓ pH 5.2 - Acidic pero kaya pa rin ng ilang crops\n✗ Rainfall 0.17mm/3h - Sobrang kulang para sa karamihan ng pananim\n✗ Temp 34°C - Mainit, nagdadagdag ng stress\n✗ NDVI 0.47 - Mababa, indikasyon ng degraded soil\n\nProblema: Mababa ang ulan, mataas ang init, at mababa ang soil fertility.\n\nMga hakbang:\n1. Gumamit ng drought-tolerant crops tulad ng **kamote** o **cassava**\n2. Maglagay ng organic matter para buhayin ang lupa\n3. Mag-ipon ng tubig ulan (rainwater harvesting)\n4. Mag-mulching para mapanatiling basa ang lupa\n\nLong-term: Mag-invest sa irrigation kung gusto ng mas demanding crops."
+  },
+  {
+    "prompt": "Soil pH: 6.0, Rainfall: 0.79mm/3h, Temp: 24°C, NDVI: 0.81\nUser: Paano ang tamang alaga sa palay ngayong tag-ulan?",
+    "response": "Suriin:\n\n✓ pH 6.0 - Sakto para sa palay\n✓ Rainfall 0.79mm/3h - Mataas, babagay sa palay\n✓ Temp 24°C - Ideal\n✓ NDVI 0.81 - Healthy ang soil\n\nTips ngayong tag-ulan:\n1. Siguraduhin ang tamang level ng tubig sa paddies\n2. Maglagay ng fertilizer sa tillering stage (urea o ammonium sulfate)\n3. Bantayan ang pests tulad ng rice blast na madalas sa maulan na panahon\n4. I-manage ang weeds sa early stage\n\nSwak ang kondisyon, pero ingat lang sa sobrang tubig at peste."
+  },
+  {
+    "prompt": "Soil pH: 7.0, Rainfall: 0.51mm/3h, Temp: 27°C, NDVI: 0.74\nUser: Gusto ko magtanim ng gulay tulad ng kamatis, okay ba?",
+    "response": "Suriin:\n\n⚠ pH 7.0 - Medyo alkaline, gusto ng kamatis 5.5–6.8\n✓ Rainfall 0.51mm/3h - Sakto para sa gulay\n✓ Temp 27°C - Bagay\n✓ NDVI 0.74 - Katamtamang fertility\n\nPwede ang kamatis pero kailangan ng konting adjustment:\n1. Gumamit ng sulfur-based fertilizer para bahagyang pababain ang pH\n2. Gumamit ng raised beds para sa magandang drainage\n3. Regular na magpataba (organic o inorganic)\n\nAlternatibo: **okra** at **talong** mas kaya ang medyo alkaline soil."
+  },
+  {
+    "prompt": "Soil pH: 5.9, Rainfall: 0.89mm/3h, Temp: 21°C, NDVI: 0.84\nUser: Kailan pinakamagandang magtanim ng Arabica coffee?",
+    "response": "Suriin:\n\n✓ pH 5.9 - Sakto para sa Arabica\n✓ Rainfall 0.89mm/3h - Mataas, kaya ng Arabica basta may drainage\n✓ Temp 21°C - Ideal, gusto ng Arabica ang malamig\n✓ NDVI 0.84 - Fertile\n\nPinakamagandang magtanim ng Arabica ay sa **simula ng tag-ulan (June–July)** para natural ang irrigation at stable ang pagtubo. Iwasan ang sobrang tag-init dahil sensitive ito.\n\nTips:\n1. Magtanim sa shaded areas\n2. Gumamit ng compost sa planting hole\n3. Regular na mag-prune para sa maayos na airflow"
+  },
+  {
+    "prompt": "Soil pH: 6.3, Rainfall: 0.45mm/3h, Temp: 30°C, NDVI: 0.61\nUser: Ilang beses ako dapat magdilig kung gulay ang itatanim ko?",
+    "response": "Suriin:\n\n✓ pH 6.3 - Swak para sa karamihan ng gulay\n⚠ Rainfall 0.45mm/3h - Katamtaman, hindi sapat buong taon\n⚠ Temp 30°C - Mainit, madaling matuyo ang lupa\n⚠ NDVI 0.61 - Moderate fertility\n\nKung gulay ang itatanim:\n- **2–3 beses kada linggo** kung tag-init\n- **1–2 beses kada linggo** kung maulan naman\n\nTips:\n1. Gumamit ng drip irrigation para tipid sa tubig\n2. Mag-mulching para hindi agad matuyo ang lupa\n3. Bantayan ang wilting bilang senyales ng kakulangan sa tubig"
+  },
+  {
+    "prompt": "Soil pH: 5.5, Rainfall: 0.72mm/3h, Temp: 28°C, NDVI: 0.80\nUser: Pwede ba ang coconut dito?",
+    "response": "Suriin:\n\n✓ pH 5.5 - Sakto para sa niyog\n✓ Rainfall 0.72mm/3h - Sakto (1200–2500mm optimal)\n✓ Temp 28°C - Perfect\n✓ NDVI 0.80 - Fertile\n\nBagay na bagay ang niyog. Tips:\n1. Magtanim sa wide spacing (8–10 meters apart)\n2. Panatilihin ang tamang weeding\n3. Maglagay ng organic fertilizer taon-taon\n\nPwede ring mag-intercrop ng cacao o saging sa ilalim para dagdag kita."
+  },
+  {
+    "prompt": "Soil pH: 6.7, Rainfall: 0.24mm/3h, Temp: 33°C, NDVI: 0.56\nUser: Hindi lumalaki ng maayos ang kamote ko, bakit kaya?",
+    "response": "Suriin:\n\n✓ pH 6.7 - Swak para sa kamote\n✗ Rainfall 0.24mm/3h - Medyo kulang\n✗ Temp 33°C - Mainit, nagdadagdag ng stress\n⚠ NDVI 0.56 - Moderate fertility\n\nDahilan kung bakit hindi lumalaki:\n1. Kakulangan sa tubig\n2. Heat stress\n3. Posibleng kulang sa fertilizer\n\nSolusyon:\n1. Magpatubig lalo na sa early growth stage\n2. Gumamit ng organic matter para humawak ng moisture\n3. Magtanim ng heat-tolerant varieties"
+  },
+  {
+    "prompt": "Soil pH: 6.2, Rainfall: 0.55mm/3h, Temp: 25°C, NDVI: 0.78\nUser: May plano akong magtanim ng tobacco, okay ba?",
+    "response": "Suriin:\n\n✓ pH 6.2 - Sakto para sa tobacco (5.5–7.0)\n✓ Rainfall 0.55mm/3h - Medyo mataas, tobacco mas gusto 0.21–0.41mm/3h\n✓ Temp 25°C - Swak\n✓ NDVI 0.78 - Fertile\n\nPwede pero hindi ideal dahil sobra ang ulan. Tobacco mas gusto ang moderate rainfall.\n\nKung itutuloy:\n1. Siguraduhin ang drainage\n2. Gumamit ng raised beds\n3. Bantayan ang fungal diseases dahil sa basa\n\nAlternatibo: **Palay** o **Cacao** mas bagay sa ganitong ulan."
+  },
+  {
+    "prompt": "Soil pH: 5.9, Rainfall: 0.58mm/3h, Temp: 27°C, NDVI: 0.82\nUser: Anong magandang itanim kung gusto ko ng stable na kita?",
+    "response": "Suriin:\n\n✓ pH 5.9 - Sakto para sa karamihan ng crops\n✓ Rainfall 0.58mm/3h - Ideal para sa rice, cacao, banana\n✓ Temp 27°C - Perfect\n✓ NDVI 0.82 - Fertile soil\n\nMagandang crops:\n- **Rice** para sa staple at siguradong market\n- **Cacao** para sa export market\n- **Banana** para sa local at export demand\n\nPwede kang mag-diversify:\n1. Magtanim ng palay bilang base crop\n2. Mag-intercrop ng cacao at banana para dagdag kita\n\nIto ang paraan para hindi nakadepende sa isang produkto lang."
+  },
+  {
+    "prompt": "Soil pH: 6.6, Rainfall: 0.34mm/3h, Temp: 29°C, NDVI: 0.59\nUser: Ngayong dry season, ano dapat gawin?",
+    "response": "Suriin:\n\n✓ pH 6.6 - Neutral, okay para sa karamihan ng crops\n⚠ Rainfall 0.34mm/3h - Katamtaman, pero mas mababa sa dry season\n⚠ Temp 29°C - Mainit, dagdag stress\n⚠ NDVI 0.59 - Moderate fertility\n\nSa dry season:\n1. Magpatubig gamit ang drip irrigation kung kaya\n2. Magtanim ng drought-tolerant crops tulad ng mais o kamote\n3. Gumamit ng mulching para bawasan ang moisture loss\n\nIwasan muna ang palay o gulay na mataas sa tubig."
+  },
+  {
+    "prompt": "Soil pH: 6.1, Rainfall: 0.75mm/3h, Temp: 27°C, NDVI: 0.82\nUser: Ano ang magandang itanim dito sa mababang lugar ng Bicol?",
+    "response": "Suriin:\n\n✓ pH 6.1 - Sakto para sa karamihan ng crops\n✓ Rainfall 0.75mm/3h - Malakas, bagay sa water-loving crops\n✓ Temp 27°C - Mainit pero normal sa tropiko\n✓ NDVI 0.82 - Mataas, malusog ang lupa\n\nMaganda para sa **palay (lowland rice)** at **coconut** dahil parehong gusto nila ng mataas na tubig. Pwede ring cacao at gabi.\n\nTips:\n1. Gumamit ng drainage para hindi mag-overflood ang palay\n2. Magtanim ng coconut sa gilid bilang long-term crop\n3. Pwede ring intercrop ng cacao sa ilalim ng niyog"
+  },
+  {
+    "prompt": "Soil pH: 5.2, Rainfall: 0.48mm/3h, Temp: 23°C, NDVI: 0.77\nUser: Balak ko sana mag-coffee, okay ba sa kondisyon na ito?",
+    "response": "Suriin:\n\n✓ pH 5.2 - Medyo acidic pero okay pa para sa coffee (5.0–6.5)\n✓ Rainfall 0.48mm/3h - Pasok, sapat para sa coffee\n✓ Temp 23°C - Ideal, gusto ng coffee ang mas malamig\n✓ NDVI 0.77 - Maganda ang fertility\n\nPwede ang **Arabica coffee** dahil malamig at acidic ang lupa. Mas babagay sa upland areas.\n\nTips:\n1. Maglagay ng shade trees para protektado ang kape\n2. Gumamit ng organic fertilizer para mapanatili ang acidity\n3. Bantayan ang fungal diseases sa maulan na buwan"
+  },
+  {
+    "prompt": "Soil pH: 7.5, Rainfall: 0.38mm/3h, Temp: 29°C, NDVI: 0.62\nUser: Pwede ba akong magtanim ng tobacco dito?",
+    "response": "Suriin:\n\n⚠ pH 7.5 - Medyo alkaline, borderline para sa tobacco (5.5–7.5)\n✓ Rainfall 0.38mm/3h - Sakto para sa tobacco (0.21–0.41mm/3h)\n✓ Temp 29°C - Mainit pero kaya pa\n⚠ NDVI 0.62 - Katamtaman ang fertility\n\nPwede ang tobacco, pero kailangan ng soil management para bumaba ang alkalinity.\n\nTips:\n1. Magdagdag ng compost o sulfur upang i-adjust ang pH\n2. Gamitin ang crop rotation para i-improve ang fertility\n3. Bantayan ang sobrang init, magtanim sa tamang buwan"
+  },
+  {
+    "prompt": "Soil pH: 6.4, Rainfall: 0.89mm/3h, Temp: 25°C, NDVI: 0.85\nUser: Sabi nila maganda daw cacao dito sa amin sa Davao, totoo ba?",
+    "response": "Suriin:\n\n✓ pH 6.4 - Pasok para sa cacao (5.5–7.0)\n✓ Rainfall 0.89mm/3h - Mataas, bagay sa cacao\n✓ Temp 25°C - Sakto, mahilig sa humid tropics ang cacao\n✓ NDVI 0.85 - Fertile ang lupa\n\nOo, bagay ang cacao. Ang kondisyon mo ay halos perpekto.\n\nTips:\n1. Maglagay ng shade trees (saging o madre de cacao)\n2. Gumamit ng pruning para kontrolin ang airflow\n3. Iwasan ang waterlogging sa sobrang ulan"
+  },
+  {
+    "prompt": "Soil pH: 5.0, Rainfall: 0.65mm/3h, Temp: 30°C, NDVI: 0.59\nUser: Namamatay ang kamatis ko dito sa lowland, bakit kaya?",
+    "response": "Suriin:\n\n✗ pH 5.0 - Sobrang acidic para sa kamatis (optimal 5.5–7.0)\n✓ Rainfall 0.65mm/3h - Sapat, pero prone sa fungal diseases\n⚠ Temp 30°C - Medyo mainit para sa kamatis\n⚠ NDVI 0.59 - Katamtaman lang ang fertility\n\nProblema: Sobrang acidic ang lupa at mainit, kaya hirap ang kamatis.\n\nSolusyon:\n1. Magdagdag ng lime para i-neutralize ang acidity\n2. Magtanim sa mas malamig na buwan kung pwede\n3. Mag-focus sa disease-resistant varieties"
+  },
+  {
+    "prompt": "Soil pH: 6.9, Rainfall: 0.27mm/3h, Temp: 32°C, NDVI: 0.55\nUser: May pag-asa ba sa mais sa ganitong kondisyon?",
+    "response": "Suriin:\n\n✓ pH 6.9 - Neutral, okay para sa mais\n⚠ Rainfall 0.27mm/3h - Medyo mababa, pero tolerable sa mais\n⚠ Temp 32°C - Mainit, stress-prone\n⚠ NDVI 0.55 - Mababa, borderline fertility\n\nMais ay pwede, pero yield ay baka mababa.\n\nTips:\n1. Gumamit ng drought-tolerant corn varieties\n2. Magpatubig lalo na sa flowering stage\n3. Gumamit ng organic matter para dagdag fertility"
+  },
+  {
+    "prompt": "Soil pH: 7.0, Rainfall: 0.82mm/3h, Temp: 28°C, NDVI: 0.83\nUser: Balak ko magtanim ng saging, okay ba?",
+    "response": "Suriin:\n\n✓ pH 7.0 - Neutral, bagay sa saging\n✓ Rainfall 0.82mm/3h - Mataas, gusto ng saging\n✓ Temp 28°C - Ideal sa tropiko\n✓ NDVI 0.83 - Fertile\n\nPerfect para sa banana plantation.\n\nTips:\n1. Magtanim ng windbreaks laban sa bagyo\n2. Regular na mag-fertilize ng potassium\n3. Maglagay ng drainage channels sa sobrang ulan"
+  },
+  {
+    "prompt": "Soil pH: 6.2, Rainfall: 0.17mm/3h, Temp: 34°C, NDVI: 0.48\nUser: Gusto ko sana magtanim ng palay, pwede ba?",
+    "response": "Suriin:\n\n✓ pH 6.2 - Okay para sa rice\n✗ Rainfall 0.17mm/3h - Sobrang kulang, hindi pwede sa palay\n✗ Temp 34°C - Mas mainit kaysa ideal\n✗ NDVI 0.48 - Mababa, mahina ang fertility\n\nHindi advisable ang palay dito. Mas bagay ang drought-tolerant crops gaya ng cassava o munggo.\n\nTips:\n1. Mag-focus sa root crops at legumes\n2. Gumamit ng water harvesting kung talagang gusto mag-rice\n3. Maglagay ng organic matter para mapataas ang fertility"
+  },
+  {
+    "prompt": "Soil pH: 6.7, Rainfall: 0.51mm/3h, Temp: 22°C, NDVI: 0.79\nUser: Kailan magandang magtanim ng repolyo dito sa Benguet?",
+    "response": "Suriin:\n\n✓ pH 6.7 - Bagay para sa gulay\n✓ Rainfall 0.51mm/3h - Sakto para sa gulay\n✓ Temp 22°C - Malamig, ideal sa repolyo\n✓ NDVI 0.79 - Maganda ang fertility\n\nPwede ka magtanim ng repolyo halos buong taon, pero mas maganda sa **taglamig na buwan (Nov–Feb)** kung saan mas malamig.\n\nTips:\n1. Gumamit ng raised beds para maiwasan ang waterlogging\n2. Regular na mag-fertilize ng nitrogen\n3. Bantayan ang cabbage worms"
+  },
+  {
+    "prompt": "Soil pH: 5.9, Rainfall: 0.68mm/3h, Temp: 26°C, NDVI: 0.81\nUser: Pwede bang sabayan ang coconut at cacao planting?",
+    "response": "Suriin:\n\n✓ pH 5.9 - Bagay pareho sa coconut at cacao\n✓ Rainfall 0.68mm/3h - Sapat para sa pareho\n✓ Temp 26°C - Tropikal, bagay sa dalawa\n✓ NDVI 0.81 - Fertile\n\nOo, magandang intercrop ang cacao sa ilalim ng coconut. Parehong tropical crops.\n\nTips:\n1. Panatilihin ang tamang distansya ng pagtatanim\n2. Gumamit ng organic mulch para moisture retention\n3. Bantayan ang shade level, huwag masyadong madilim"
+  },
+  {
+    "prompt": "Soil pH: 6.0, Rainfall: 0.45mm/3h, Temp: 28°C, NDVI: 0.73\nUser: Paano ko maalagaan ang mais ko para hindi masira sa init?",
+    "response": "Suriin:\n\n✓ pH 6.0 - Sakto para sa mais\n✓ Rainfall 0.45mm/3h - Katamtaman, sapat kung may irrigation\n⚠ Temp 28°C - Mainit, risk ng heat stress\n✓ NDVI 0.73 - Fertile\n\nPwede ang mais pero bantayan ang init.\n\nTips:\n1. Magdilig lalo na sa flowering stage\n2. Gumamit ng mulch para mapanatili ang moisture\n3. Piliin ang heat-tolerant varieties"
+  },
+  {
+    "prompt": "Soil pH: 5.4, Rainfall: 0.86mm/3h, Temp: 27°C, NDVI: 0.76\nUser: Bakit kaya hindi lumalaki ng maayos ang cacao ko?",
+    "response": "Suriin:\n\n⚠ pH 5.4 - Medyo acidic, borderline para sa cacao\n✓ Rainfall 0.86mm/3h - Sakto\n✓ Temp 27°C - Ideal\n✓ NDVI 0.76 - Fertile\n\nProblema: sobra ang acidity kaya naapektuhan ang growth.\n\nSolusyon:\n1. Maglagay ng lime para i-neutralize ang lupa\n2. Gumamit ng organic compost\n3. Siguruhing hindi sobra ang shade"
+  },
+  {
+    "prompt": "Soil pH: 7.2, Rainfall: 0.55mm/3h, Temp: 24°C, NDVI: 0.71\nUser: Gusto ko sana mag-abaca, pwede ba?",
+    "response": "Suriin:\n\n⚠ pH 7.2 - Medyo mataas, pero pwede pa\n✓ Rainfall 0.55mm/3h - Sapat\n✓ Temp 24°C - Ideal para sa abaca\n✓ NDVI 0.71 - Katamtaman\n\nPwede ang abaca, pero bantayan ang soil alkalinity.\n\nTips:\n1. Magdagdag ng organic matter\n2. Siguraduhin na may partial shade\n3. Gumamit ng pest management laban sa abaca bunchy top virus"
+  },
+  {
+    "prompt": "Soil pH: 5.7, Rainfall: 0.72mm/3h, Temp: 31°C, NDVI: 0.66\nUser: Okay ba ang palay dito kahit mainit?",
+    "response": "Suriin:\n\n✓ pH 5.7 - Sakto para sa palay\n✓ Rainfall 0.72mm/3h - Sapat para sa rice\n⚠ Temp 31°C - Mainit, risk sa flowering stage\n⚠ NDVI 0.66 - Katamtaman lang ang fertility\n\nPwede pero dapat bantayan ang init.\n\nTips:\n1. Gumamit ng heat-tolerant rice varieties\n2. Magpatubig ng tuloy-tuloy\n3. Gumamit ng organic fertilizer para dagdag fertility"
+  },
+  {
+    "prompt": "Soil pH: 6.3, Rainfall: 0.31mm/3h, Temp: 30°C, NDVI: 0.58\nUser: Bakit kaya namamatay ang cassava ko?",
+    "response": "Suriin:\n\n✓ pH 6.3 - Sakto para sa cassava\n⚠ Rainfall 0.31mm/3h - Medyo mababa\n⚠ Temp 30°C - Mainit pero kaya pa\n⚠ NDVI 0.58 - Mababa ang fertility\n\nProblema: mababang fertility at limited na ulan.\n\nSolusyon:\n1. Gumamit ng drought-tolerant cassava variety\n2. Magdagdag ng organic matter\n3. Mag-mulch para moisture retention"
+  },
+  {
+    "prompt": "Soil pH: 6.8, Rainfall: 0.92mm/3h, Temp: 26°C, NDVI: 0.82\nUser: Gusto kong subukan ang gabi (taro), bagay ba?",
+    "response": "Suriin:\n\n✓ pH 6.8 - Sakto para sa gabi\n✓ Rainfall 0.92mm/3h - Sobra pero gusto ng gabi\n✓ Temp 26°C - Ideal\n✓ NDVI 0.82 - Fertile\n\nBagay na bagay ang gabi dito.\n\nTips:\n1. Pwede sa lowland na may standing water\n2. Magdagdag ng organic fertilizer\n3. Bantayan laban sa leaf blight"
+  },
+  {
+    "prompt": "Soil pH: 5.5, Rainfall: 0.41mm/3h, Temp: 29°C, NDVI: 0.61\nUser: Paano ko mapapaganda ang ani ng tobacco ko?",
+    "response": "Suriin:\n\n✓ pH 5.5 - Sakto para sa tobacco\n✓ Rainfall 0.41mm/3h - Sakto\n⚠ Temp 29°C - Mainit, risk sa leaf quality\n⚠ NDVI 0.61 - Katamtaman lang ang fertility\n\nPwede pero dapat dagdagan ang fertility.\n\nTips:\n1. Maglagay ng organic compost\n2. Iwasan ang sobrang patubig\n3. Harvest sa tamang oras para mataas ang quality"
+  },
+  {
+    "prompt": "Soil pH: 7.4, Rainfall: 0.21mm/3h, Temp: 33°C, NDVI: 0.50\nUser: May crops pa bang bagay sa ganito ka-init at ka-dry?",
+    "response": "Suriin:\n\n⚠ pH 7.4 - Medyo alkaline\n✗ Rainfall 0.21mm/3h - Kulang\n✗ Temp 33°C - Sobrang init\n✗ NDVI 0.50 - Mababa fertility\n\nMahirap pero pwede pa ang drought-tolerant crops gaya ng munggo at sorghum.\n\nTips:\n1. Gumamit ng drip irrigation kung kaya\n2. Magdagdag ng organic matter\n3. Piliin ang short-duration crops"
+  },
+  {
+    "prompt": "Soil pH: 6.6, Rainfall: 0.62mm/3h, Temp: 27°C, NDVI: 0.80\nUser: Pwede bang sabayan ang palay at isda?",
+    "response": "Suriin:\n\n✓ pH 6.6 - Sakto para sa palay\n✓ Rainfall 0.62mm/3h - Sapat\n✓ Temp 27°C - Ideal\n✓ NDVI 0.80 - Fertile\n\nOo, magandang **rice-fish farming** system ito.\n\nTips:\n1. Gumawa ng kanal para sa isda\n2. Gumamit ng organic fertilizer para safe sa isda\n3. Piliin ang palay variety na compatible"
+  },
+  {
+    "prompt": "Soil pH: 5.1, Rainfall: 0.96mm/3h, Temp: 24°C, NDVI: 0.74\nUser: Pwede bang coconut sa amin na malapit sa dagat?",
+    "response": "Suriin:\n\n⚠ pH 5.1 - Medyo acidic pero kaya pa\n✓ Rainfall 0.96mm/3h - Sakto para sa coconut\n✓ Temp 24°C - Ideal\n✓ NDVI 0.74 - Fertile\n\nPwede ang coconut, lalo na’t mahilig ito sa coastal areas.\n\nTips:\n1. Magtanim ng salt-tolerant coconut varieties\n2. Gumamit ng organic mulch\n3. Maglagay ng windbreaks"
+  },
+  {
+    "prompt": "Soil pH: 7.8, Rainfall: 0.34mm/3h, Temp: 32°C, NDVI: 0.47\nUser: Halos walang tumutubo dito, ano pwede?",
+    "response": "Suriin:\n\n✗ pH 7.8 - Alkaline, problema\n⚠ Rainfall 0.34mm/3h - Katamtaman\n⚠ Temp 32°C - Mainit\n✗ NDVI 0.47 - Mababa fertility\n\nMahirap, pero pwede ang drought- and alkaline-tolerant crops gaya ng sorghum at cassava.\n\nTips:\n1. Gumamit ng gypsum para bumaba ang alkalinity\n2. Magdagdag ng compost\n3. Gumamit ng drought-tolerant varieties"
+  },
+  {
+    "prompt": "Soil pH: 6.9, Rainfall: 0.75mm/3h, Temp: 26°C, NDVI: 0.79\nUser: Bagay ba dito ang kape?",
+    "response": "Suriin:\n\n✓ pH 6.9 - Sakto\n✓ Rainfall 0.75mm/3h - Sakto para sa kape\n✓ Temp 26°C - Ideal\n✓ NDVI 0.79 - Fertile\n\nOo, bagay na bagay ang kape.\n\nTips:\n1. Magtanim sa bahagyang shaded area\n2. Gumamit ng organic mulch\n3. Bantayan laban sa coffee rust"
+  },
+  {
+    "prompt": "Soil pH: 5.2, Rainfall: 0.89mm/3h, Temp: 25°C, NDVI: 0.84\nUser: Puwede bang banana plantation dito?",
+    "response": "Suriin:\n\n✓ pH 5.2 - Medyo acidic pero okay sa saging\n✓ Rainfall 0.89mm/3h - Sakto\n✓ Temp 25°C - Ideal\n✓ NDVI 0.84 - Fertile\n\nOo, magandang banana plantation.\n\nTips:\n1. Siguraduhin ang drainage kasi ayaw ng saging sa sobrang tubig\n2. Gumamit ng disease-free suckers\n3. Maglagay ng potash fertilizer"
+  },
+  {
+    "prompt": "Soil pH: 6.2, Rainfall: 0.27mm/3h, Temp: 31°C, NDVI: 0.60\nUser: Paano kung gusto ko ng munggo?",
+    "response": "Suriin:\n\n✓ pH 6.2 - Sakto\n⚠ Rainfall 0.27mm/3h - Medyo kulang pero kaya ng munggo\n⚠ Temp 31°C - Mainit pero tolerable\n⚠ NDVI 0.60 - Katamtaman\n\nPwede ang munggo.\n\nTips:\n1. Piliin ang drought-tolerant na variety\n2. Gumamit ng Rhizobium inoculant\n3. Iwasan ang sobrang init sa pagtatanim"
+  },
+  {
+    "prompt": "Soil pH: 7.0, Rainfall: 0.68mm/3h, Temp: 27°C, NDVI: 0.77\nUser: Maganda ba ang sitaw sa ganito?",
+    "response": "Suriin:\n\n✓ pH 7.0 - Neutral, okay para sa sitaw\n✓ Rainfall 0.68mm/3h - Sakto\n✓ Temp 27°C - Ideal\n✓ NDVI 0.77 - Fertile\n\nOo, maganda ang sitaw dito.\n\nTips:\n1. Gumamit ng trellis para umakyat\n2. Maglagay ng organic fertilizer\n3. Harvest ng maaga para continuous yield"
+  },
+  {
+    "prompt": "Soil pH: 5.9, Rainfall: 1.03mm/3h, Temp: 25°C, NDVI: 0.81\nUser: Pwede bang taro (gabi) plantation dito?",
+    "response": "Suriin:\n\n✓ pH 5.9 - Sakto\n✓ Rainfall 1.03mm/3h - Sobra pero gusto ng gabi\n✓ Temp 25°C - Ideal\n✓ NDVI 0.81 - Fertile\n\nOo, perfect para sa gabi.\n\nTips:\n1. Siguraduhin na hindi mag-stagnant ang tubig\n2. Gumamit ng organic mulch\n3. Magtanim sa rotation para iwas disease"
+  },
+  {
+    "prompt": "Soil pH: 7.3, Rainfall: 0.48mm/3h, Temp: 28°C, NDVI: 0.65\nUser: Ano ang bagay dito?",
+    "response": "Suriin:\n\n⚠ pH 7.3 - Medyo alkaline\n✓ Rainfall 0.48mm/3h - Katamtaman\n✓ Temp 28°C - Mainit pero okay\n⚠ NDVI 0.65 - Katamtaman lang\n\nPwede ang sorghum at cassava.\n\nTips:\n1. Gumamit ng gypsum para sa alkaline soil\n2. Piliin ang drought-tolerant varieties\n3. Dagdagan ang organic matter"
+  },
+  {
+    "prompt": "Soil pH: 6.4, Rainfall: 0.58mm/3h, Temp: 26°C, NDVI: 0.83\nUser: Okay ba para sa sweet potato (kamote)?",
+    "response": "Suriin:\n\n✓ pH 6.4 - Sakto\n✓ Rainfall 0.58mm/3h - Sapat\n✓ Temp 26°C - Ideal\n✓ NDVI 0.83 - Fertile\n\nOo, bagay ang kamote dito.\n\nTips:\n1. Gumamit ng cuttings mula sa healthy vines\n2. Maglagay ng compost\n3. Harvest sa tamang maturity"
+  },
+  {
+    "prompt": "Soil pH: 5.0, Rainfall: 0.82mm/3h, Temp: 29°C, NDVI: 0.72\nUser: Pwede ba ang sugarcane?",
+    "response": "Suriin:\n\n⚠ pH 5.0 - Medyo acidic pero kaya ng sugarcane\n✓ Rainfall 0.82mm/3h - Sapat\n✓ Temp 29°C - Ideal\n✓ NDVI 0.72 - Fertile\n\nPwede ang sugarcane.\n\nTips:\n1. Gumamit ng lime para bawas acidity\n2. Magdagdag ng nitrogen fertilizer\n3. Siguruhin ang pest control"
+  },
+  {
+    "prompt": "Soil pH: 6.7, Rainfall: 0.65mm/3h, Temp: 30°C, NDVI: 0.68\nUser: Bagay ba dito ang mani (peanut)?",
+    "response": "Suriin:\n\n✓ pH 6.7 - Sakto\n✓ Rainfall 0.65mm/3h - Sakto\n⚠ Temp 30°C - Mainit pero kaya\n⚠ NDVI 0.68 - Katamtaman lang\n\nPwede ang mani.\n\nTips:\n1. Gumamit ng Rhizobium inoculant\n2. Iwasan ang sobrang tubig\n3. Harvest agad kapag mature"
+  },
+  {
+    "prompt": "Soil pH: 5.6, Rainfall: 0.51mm/3h, Temp: 27°C, NDVI: 0.75\nUser: Pwede ba ang kalabasa?",
+    "response": "Suriin:\n\n✓ pH 5.6 - Sakto\n✓ Rainfall 0.51mm/3h - Sapat\n✓ Temp 27°C - Ideal\n✓ NDVI 0.75 - Fertile\n\nOo, pwede ang kalabasa.\n\nTips:\n1. Gumamit ng trellis kung gusto ng vertical growing\n2. Maglagay ng compost\n3. Harvest habang bata pa ang bunga"
+  },
+  {
+    "prompt": "Soil pH: 7.5, Rainfall: 0.41mm/3h, Temp: 32°C, NDVI: 0.52\nUser: Halos dry, ano pwede kong itanim?",
+    "response": "Suriin:\n\n⚠ pH 7.5 - Alkaline\n⚠ Rainfall 0.41mm/3h - Medyo mababa\n✗ Temp 32°C - Mainit\n⚠ NDVI 0.52 - Mababa fertility\n\nPwede ang sorghum, munggo, at cassava.\n\nTips:\n1. Gumamit ng drought-tolerant crops\n2. Magdagdag ng organic matter\n3. Mag-drip irrigation kung kaya"
+  },
+  {
+    "prompt": "Soil pH: 6.1, Rainfall: 0.72mm/3h, Temp: 27°C, NDVI: 0.82\nUser: Bagay ba ang palay dito?",
+    "response": "Suriin natin:\n\n✓ pH 6.1 - Sakto para sa palay\n✓ Rainfall 0.72mm/3h - Sapat\n✓ Temp 27°C - Ideal\n✓ NDVI 0.82 - Fertile\n\nOo, maganda ang kondisyon para sa palay.\n\nTips:\n1. Gumamit ng certified seeds\n2. Panatilihin ang tamang level ng tubig\n3. Maglagay ng nitrogen fertilizer sa tamang yugto"
+  },
+  {
+    "prompt": "Soil pH: 5.4, Rainfall: 0.31mm/3h, Temp: 30°C, NDVI: 0.60\nUser: Puwede bang mais ang itanim ko?",
+    "response": "Suriin natin:\n\n⚠ pH 5.4 - Medyo acidic pero kaya ng mais\n⚠ Rainfall 0.31mm/3h - Medyo kulang\n⚠ Temp 30°C - Mainit pero kaya\n⚠ NDVI 0.60 - Katamtaman lang\n\nPwede pa rin ang mais pero kailangan ng dagdag effort.\n\nTips:\n1. Gumamit ng drought-tolerant hybrid variety\n2. Mag-apply ng lime para bawas acidity\n3. Irrigation lalo na sa dry months"
+  },
+  {
+    "prompt": "Soil pH: 7.1, Rainfall: 0.55mm/3h, Temp: 26°C, NDVI: 0.74\nUser: Ano ang pinakamainam na gulay?",
+    "response": "Suriin:\n\n⚠ pH 7.1 - Medyo alkaline pero tolerable\n✓ Rainfall 0.55mm/3h - Sakto\n✓ Temp 26°C - Ideal\n✓ NDVI 0.74 - Fertile\n\nPwede ang talong, okra, at sitaw.\n\nTips:\n1. Maglagay ng organic compost para balanseng nutrients\n2. Gumamit ng crop rotation\n3. Iwasan ang sobrang chemical fertilizer"
+  },
+  {
+    "prompt": "Soil pH: 6.5, Rainfall: 0.96mm/3h, Temp: 24°C, NDVI: 0.85\nUser: Okay ba ang cacao?",
+    "response": "Suriin:\n\n✓ pH 6.5 - Sakto\n✓ Rainfall 0.96mm/3h - Sapat\n✓ Temp 24°C - Ideal\n✓ NDVI 0.85 - Fertile\n\nOo, ideal ang cacao.\n\nTips:\n1. Magtanim sa shaded area (30–50%)\n2. Gumamit ng disease-resistant clones\n3. Siguraduhin ang drainage"
+  },
+  {
+    "prompt": "Soil pH: 5.8, Rainfall: 0.17mm/3h, Temp: 32°C, NDVI: 0.55\nUser: Anong pwede sa tuyong lupa na ito?",
+    "response": "Suriin:\n\n✓ pH 5.8 - Katamtaman\n✗ Rainfall 0.17mm/3h - Kulang\n⚠ Temp 32°C - Mainit\n⚠ NDVI 0.55 - Mababa fertility\n\nBagay dito ang cassava at munggo.\n\nTips:\n1. Gumamit ng drought-tolerant crops\n2. Magdagdag ng compost\n3. Kung kaya, drip irrigation"
+  },
+  {
+    "prompt": "Soil pH: 7.4, Rainfall: 0.82mm/3h, Temp: 25°C, NDVI: 0.80\nUser: Maganda ba ang tubo dito?",
+    "response": "Suriin:\n\n⚠ pH 7.4 - Medyo alkaline\n✓ Rainfall 0.82mm/3h - Sakto\n✓ Temp 25°C - Ideal\n✓ NDVI 0.80 - Fertile\n\nPwede ang tubo pero kailangan ng soil management.\n\nTips:\n1. Magdagdag ng organic matter\n2. Maglagay ng sulfur fertilizer para i-balance ang pH\n3. Regular na weeding"
+  },
+  {
+    "prompt": "Soil pH: 6.0, Rainfall: 0.62mm/3h, Temp: 28°C, NDVI: 0.78\nUser: Bagay ba dito ang tabako?",
+    "response": "Suriin:\n\n✓ pH 6.0 - Sakto\n✓ Rainfall 0.62mm/3h - Sakto\n⚠ Temp 28°C - Medyo mainit pero kaya\n✓ NDVI 0.78 - Fertile\n\nOo, pwede ang tabako.\n\nTips:\n1. Gumamit ng tamang variety para sa klima\n2. Magpataba gamit ang balanced NPK\n3. Iwasan ang waterlogging"
+  },
+  {
+    "prompt": "Soil pH: 5.2, Rainfall: 0.92mm/3h, Temp: 23°C, NDVI: 0.83\nUser: Pwede ba ang Arabica coffee?",
+    "response": "Suriin:\n\n⚠ pH 5.2 - Medyo acidic, borderline\n✓ Rainfall 0.92mm/3h - Sakto\n✓ Temp 23°C - Ideal\n✓ NDVI 0.83 - Fertile\n\nPwede pero kailangan ng soil amendment.\n\nTips:\n1. Mag-apply ng lime para itaas ang pH\n2. Gumamit ng shade trees\n3. Bantayan ang fungal diseases"
+  },
+  {
+    "prompt": "Soil pH: 6.8, Rainfall: 0.41mm/3h, Temp: 29°C, NDVI: 0.62\nUser: Pwede bang mani?",
+    "response": "Suriin:\n\n✓ pH 6.8 - Sakto\n⚠ Rainfall 0.41mm/3h - Katamtaman\n⚠ Temp 29°C - Mainit\n⚠ NDVI 0.62 - Katamtaman lang\n\nPwede ang mani pero hindi max yield.\n\nTips:\n1. Gumamit ng Rhizobium inoculant\n2. Siguraduhin ang tamang spacing\n3. Magdagdag ng compost"
+  },
+  {
+    "prompt": "Soil pH: 6.3, Rainfall: 0.75mm/3h, Temp: 27°C, NDVI: 0.79\nUser: Maganda ba para sa abaka?",
+    "response": "Suriin:\n\n✓ pH 6.3 - Sakto\n✓ Rainfall 0.75mm/3h - Sapat\n✓ Temp 27°C - Ideal\n✓ NDVI 0.79 - Fertile\n\nOo, bagay ang abaka.\n\nTips:\n1. Piliin ang pest-resistant varieties\n2. Panatilihing malinis ang plantation\n3. Maglagay ng organic fertilizer"
+  },
+  {
+    "prompt": "Soil pH: 5.9, Rainfall: 0.27mm/3h, Temp: 31°C, NDVI: 0.58\nUser: Ano ang magandang gulay sa tuyong lupa?",
+    "response": "Suriin:\n\n✓ pH 5.9 - Sakto\n✗ Rainfall 0.27mm/3h - Mababa\n⚠ Temp 31°C - Mainit\n⚠ NDVI 0.58 - Medyo mababa fertility\n\nPwede ang munggo at sitaw.\n\nTips:\n1. Gumamit ng drought-tolerant na variety\n2. Maglagay ng mulch\n3. Mag-drip irrigation kung kaya"
+  },
+  {
+    "prompt": "Soil pH: 7.2, Rainfall: 0.68mm/3h, Temp: 26°C, NDVI: 0.70\nUser: Bagay ba ang kamatis?",
+    "response": "Suriin:\n\n⚠ pH 7.2 - Medyo alkaline\n✓ Rainfall 0.68mm/3h - Sakto\n✓ Temp 26°C - Ideal\n✓ NDVI 0.70 - Katamtaman lang\n\nPwede ang kamatis.\n\nTips:\n1. Gumamit ng organic matter para i-balance ang pH\n2. Gamitin ang disease-resistant varieties\n3. Magpatubig nang regular"
+  },
+  {
+    "prompt": "Soil pH: 6.0, Rainfall: 0.51mm/3h, Temp: 28°C, NDVI: 0.64\nUser: Pwede ba ang patatas?",
+    "response": "Suriin:\n\n✓ pH 6.0 - Sakto\n⚠ Rainfall 0.51mm/3h - Katamtaman\n⚠ Temp 28°C - Medyo mainit (patatas gusto mas malamig)\n⚠ NDVI 0.64 - Katamtaman\n\nPwede pero hindi ideal. Mas okay sa upland Benguet.\n\nAlternatives: Cassava o sweet potato."
+  },
+  {
+    "prompt": "Soil pH: 5.6, Rainfall: 0.86mm/3h, Temp: 24°C, NDVI: 0.82\nUser: Okay ba ang gabi (taro)?",
+    "response": "Suriin:\n\n✓ pH 5.6 - Sakto\n✓ Rainfall 0.86mm/3h - Sapat\n✓ Temp 24°C - Ideal\n✓ NDVI 0.82 - Fertile\n\nOo, bagay ang gabi.\n\nTips:\n1. Siguraduhin ang drainage\n2. Gumamit ng organic mulch\n3. Magtanim sa rotation"
+  },
+  {
+    "prompt": "Soil pH: 7.0, Rainfall: 0.34mm/3h, Temp: 33°C, NDVI: 0.57\nUser: Ano ang pwede kong itanim dito?",
+    "response": "Suriin:\n\n✓ pH 7.0 - Sakto\n⚠ Rainfall 0.34mm/3h - Medyo kulang\n✗ Temp 33°C - Mainit\n⚠ NDVI 0.57 - Mababa fertility\n\nPwede ang sorghum, cassava, o munggo.\n\nTips:\n1. Gumamit ng drought-tolerant crops\n2. Magdagdag ng compost\n3. Irrigation kung posible"
+  },
+  {
+    "prompt": "Soil pH: 6.2, Rainfall: 0.79mm/3h, Temp: 25°C, NDVI: 0.80\nUser: Pwede bang coconut plantation?",
+    "response": "Suriin:\n\n✓ pH 6.2 - Sakto\n✓ Rainfall 0.79mm/3h - Sapat\n✓ Temp 25°C - Ideal\n✓ NDVI 0.80 - Fertile\n\nOo, bagay ang coconut.\n\nTips:\n1. Gumamit ng tamang spacing (8–10 meters)\n2. Maglagay ng potash fertilizer\n3. Bantayan laban sa rhinoceros beetle"
+  },
+  {
+    "prompt": "Soil pH: 6.9, Rainfall: 0.21mm/3h, Temp: 30°C, NDVI: 0.53\nUser: Pwede ba ang palay?",
+    "response": "Suriin:\n\n✓ pH 6.9 - Sakto\n✗ Rainfall 0.21mm/3h - Kulang para sa palay\n⚠ Temp 30°C - Mainit\n⚠ NDVI 0.53 - Mababa fertility\n\nHindi ideal para sa palay. Kulang ang tubig.\n\nAlternatives: Sorghum, cassava, tobacco."
+  },
+  {
+    "prompt": "Soil pH: 5.7, Rainfall: 0.68mm/3h, Temp: 27°C, NDVI: 0.76\nUser: Okay ba ang papaya?",
+    "response": "Suriin:\n\n✓ pH 5.7 - Sakto\n✓ Rainfall 0.68mm/3h - Sapat\n✓ Temp 27°C - Ideal\n✓ NDVI 0.76 - Fertile\n\nOo, bagay ang papaya.\n\nTips:\n1. Gumamit ng hybrid varieties\n2. Maglagay ng organic fertilizer\n3. Harvest sa tamang maturity"
+  },
+  {
+    "prompt": "Soil pH: 6.0, Rainfall: 0.72mm/3h, Temp: 26°C, NDVI: 0.81\nUser: Bagay ba ang saging dito?",
+    "response": "Suriin:\n\n✓ pH 6.0 – Sakto\n✓ Rainfall 0.72mm/3h – Sapat\n✓ Temp 26°C – Ideal\n✓ NDVI 0.81 – Fertile\n\nOo, bagay ang saging dito.\n\nTips:\n1. Gumamit ng disease-free suckers\n2. Siguraduhing may drainage\n3. Maglagay ng potash fertilizer para sa bunga"
+  },
+  {
+    "prompt": "Soil pH: 5.5, Rainfall: 0.48mm/3h, Temp: 28°C, NDVI: 0.69\nUser: Puwede bang kamote?",
+    "response": "Suriin:\n\n✓ pH 5.5 – Sakto\n✓ Rainfall 0.48mm/3h – Sakto\n✓ Temp 28°C – Mainit pero okay\n✓ NDVI 0.69 – Katamtaman fertility\n\nPwede ang kamote.\n\nTips:\n1. Gumamit ng healthy cuttings\n2. Maglagay ng compost\n3. Harvest sa tamang maturity"
+  },
+  {
+    "prompt": "Soil pH: 7.3, Rainfall: 0.41mm/3h, Temp: 30°C, NDVI: 0.55\nUser: Ano ang puwedeng pananim dito?",
+    "response": "Suriin:\n\n⚠ pH 7.3 – Medyo alkaline\n⚠ Rainfall 0.41mm/3h – Katamtaman\n⚠ Temp 30°C – Mainit\n⚠ NDVI 0.55 – Mababa fertility\n\nPwede ang sorghum, cassava, at munggo.\n\nTips:\n1. Gumamit ng drought-tolerant varieties\n2. Magdagdag ng organic matter\n3. Mag-drip irrigation kung posible"
+  },
+  {
+    "prompt": "Soil pH: 6.6, Rainfall: 0.89mm/3h, Temp: 24°C, NDVI: 0.84\nUser: Pwede ba ang cacao?",
+    "response": "Suriin:\n\n✓ pH 6.6 – Sakto\n✓ Rainfall 0.89mm/3h – Sapat\n✓ Temp 24°C – Ideal\n✓ NDVI 0.84 – Fertile\n\nOo, perfect para sa cacao.\n\nTips:\n1. Magtanim sa bahagyang shaded area\n2. Gumamit ng disease-resistant clones\n3. Siguraduhin ang drainage"
+  },
+  {
+    "prompt": "Soil pH: 5.9, Rainfall: 0.55mm/3h, Temp: 27°C, NDVI: 0.72\nUser: Bagay ba ang talong?",
+    "response": "Suriin:\n\n✓ pH 5.9 – Sakto\n✓ Rainfall 0.55mm/3h – Sakto\n✓ Temp 27°C – Ideal\n✓ NDVI 0.72 – Fertile\n\nOo, bagay ang talong.\n\nTips:\n1. Maglagay ng compost\n2. Gumamit ng disease-resistant variety\n3. Mag-trellis para sa magandang fruit set"
+  },
+  {
+    "prompt": "Soil pH: 6.4, Rainfall: 0.31mm/3h, Temp: 31°C, NDVI: 0.61\nUser: Puwede bang mais?",
+    "response": "Suriin:\n\n✓ pH 6.4 – Sakto\n⚠ Rainfall 0.31mm/3h – Medyo kulang\n⚠ Temp 31°C – Mainit pero tolerable\n⚠ NDVI 0.61 – Katamtaman fertility\n\nPwede ang mais pero kailangan ng dagdag effort.\n\nTips:\n1. Gumamit ng drought-tolerant hybrid\n2. Magpataba at mag-mulch\n3. Mag-irrigate kung kaya"
+  },
+  {
+    "prompt": "Soil pH: 6.2, Rainfall: 0.86mm/3h, Temp: 25°C, NDVI: 0.82\nUser: Bagay ba ang abaka?",
+    "response": "Suriin:\n\n✓ pH 6.2 – Sakto\n✓ Rainfall 0.86mm/3h – Sapat\n✓ Temp 25°C – Ideal\n✓ NDVI 0.82 – Fertile\n\nOo, bagay ang abaka.\n\nTips:\n1. Gumamit ng pest-resistant varieties\n2. Regular pruning\n3. Maglagay ng organic fertilizer"
+  },
+  {
+    "prompt": "Soil pH: 5.8, Rainfall: 0.68mm/3h, Temp: 26°C, NDVI: 0.77\nUser: Puwede ba ang papaya?",
+    "response": "Suriin:\n\n✓ pH 5.8 – Sakto\n✓ Rainfall 0.68mm/3h – Sapat\n✓ Temp 26°C – Ideal\n✓ NDVI 0.77 – Fertile\n\nOo, bagay ang papaya.\n\nTips:\n1. Gumamit ng hybrid varieties\n2. Maglagay ng compost\n3. Harvest sa tamang maturity"
+  },
+  {
+    "prompt": "Soil pH: 6.7, Rainfall: 0.45mm/3h, Temp: 28°C, NDVI: 0.63\nUser: Pwede ba ang mani?",
+    "response": "Suriin:\n\n✓ pH 6.7 – Sakto\n⚠ Rainfall 0.45mm/3h – Katamtaman\n⚠ Temp 28°C – Mainit\n⚠ NDVI 0.63 – Katamtaman fertility\n\nPwede ang mani pero hindi max yield.\n\nTips:\n1. Gumamit ng Rhizobium inoculant\n2. Magdagdag ng compost\n3. Siguraduhing may spacing"
+  },
+  {
+    "prompt": "Soil pH: 7.0, Rainfall: 0.62mm/3h, Temp: 30°C, NDVI: 0.68\nUser: Maganda ba ang tubo?",
+    "response": "Suriin:\n\n✓ pH 7.0 – Sakto\n✓ Rainfall 0.62mm/3h – Sakto\n⚠ Temp 30°C – Mainit pero kaya\n⚠ NDVI 0.68 – Katamtaman fertility\n\nPwede ang tubo.\n\nTips:\n1. Magdagdag ng sulfur kung soil medyo alkaline\n2. Regular weeding\n3. Maglagay ng organic matter"
+  },
+  {
+    "prompt": "Soil pH: 6.3, Rainfall: 0.31mm/3h, Temp: 32°C, NDVI: 0.57\nUser: Ano ang puwede sa tuyong lugar?",
+    "response": "Suriin:\n\n✓ pH 6.3 – Sakto\n✗ Rainfall 0.31mm/3h – Mababa\n⚠ Temp 32°C – Mainit\n⚠ NDVI 0.57 – Katamtaman fertility\n\nPwede ang sorghum, cassava, munggo.\n\nTips:\n1. Drought-tolerant varieties\n2. Magdagdag ng compost\n3. Mag-drip irrigation kung kaya"
+  },
+  {
+    "prompt": "Soil pH: 5.9, Rainfall: 0.82mm/3h, Temp: 25°C, NDVI: 0.81\nUser: Bagay ba ang gabi (taro)?",
+    "response": "Suriin:\n\n✓ pH 5.9 – Sakto\n✓ Rainfall 0.82mm/3h – Sapat\n✓ Temp 25°C – Ideal\n✓ NDVI 0.81 – Fertile\n\nOo, bagay ang gabi.\n\nTips:\n1. Siguraduhin na hindi mag-stagnant ang tubig\n2. Gumamit ng mulch\n3. Rotation planting"
+  },
+  {
+    "prompt": "Soil pH: 6.8, Rainfall: 0.27mm/3h, Temp: 31°C, NDVI: 0.56\nUser: Pwede bang mais dito?",
+    "response": "Suriin:\n\n✓ pH 6.8 – Sakto\n✗ Rainfall 0.27mm/3h – Mababa\n⚠ Temp 31°C – Mainit\n⚠ NDVI 0.56 – Katamtaman\n\nPwede ang mais pero kailangan ng irrigation at soil improvement.\n\nTips:\n1. Drought-tolerant hybrid\n2. Mulching\n3. Fertilizer application"
+  },
+  {
+    "prompt": "Soil pH: 6.1, Rainfall: 0.75mm/3h, Temp: 27°C, NDVI: 0.78\nUser: Pwede ba ang abaka?",
+    "response": "Suriin:\n\n✓ pH 6.1 – Sakto\n✓ Rainfall 0.75mm/3h – Sapat\n✓ Temp 27°C – Ideal\n✓ NDVI 0.78 – Fertile\n\nOo, bagay ang abaka.\n\nTips:\n1. Pest-resistant varieties\n2. Regular pruning\n3. Organic fertilizer"
+  },
+  {
+    "prompt": "Soil pH: 5.6, Rainfall: 0.62mm/3h, Temp: 28°C, NDVI: 0.75\nUser: Pwede ba ang kalabasa?",
+    "response": "Suriin:\n\n✓ pH 5.6 – Sakto\n✓ Rainfall 0.62mm/3h – Sapat\n✓ Temp 28°C – Ideal\n✓ NDVI 0.75 – Fertile\n\nOo, pwede ang kalabasa.\n\nTips:\n1. Trellis para sa vines\n2. Compost\n3. Harvest sa tamang laki"
+  },
+  {
+    "prompt": "Soil pH: 6.5, Rainfall: 0.68mm/3h, Temp: 27°C, NDVI: 0.77\nUser: Puwede ba ang cacao sa lupa ko?",
+    "response": "Suriin:\n\n✓ pH 6.5 – Sakto\n✓ Rainfall 0.68mm/3h – Sapat\n✓ Temp 27°C – Ideal\n✓ NDVI 0.77 – Fertile\n\nOo, bagay ang cacao.\n\nTips:\n1. Magtanim sa bahagyang shade\n2. Gumamit ng disease-resistant clones\n3. Siguraduhin ang maayos na drainage"
+  },
+  {
+    "prompt": "Soil pH: 5.8, Rainfall: 0.31mm/3h, Temp: 30°C, NDVI: 0.60\nUser: Puwede bang munggo?",
+    "response": "Suriin:\n\n✓ pH 5.8 – Sakto\n⚠ Rainfall 0.31mm/3h – Katamtaman\n⚠ Temp 30°C – Mainit\n⚠ NDVI 0.60 – Katamtaman\n\nPwede ang munggo.\n\nTips:\n1. Gumamit ng drought-tolerant varieties\n2. Magdagdag ng compost\n3. Iwasan ang water stress sa critical stages"
+  },
+  {
+    "prompt": "Soil pH: 6.9, Rainfall: 0.41mm/3h, Temp: 32°C, NDVI: 0.55\nUser: Ano ang puwede sa tuyong lugar?",
+    "response": "Suriin:\n\n✓ pH 6.9 – Sakto\n⚠ Rainfall 0.41mm/3h – Katamtaman\n⚠ Temp 32°C – Mainit\n✗ NDVI 0.55 – Mababa fertility\n\nPwede ang sorghum, cassava, o mani.\n\nTips:\n1. Drought-tolerant varieties\n2. Magdagdag ng compost\n3. Mag-drip irrigation kung posible"
+  },
+  {
+    "prompt": "Soil pH: 6.2, Rainfall: 0.79mm/3h, Temp: 25°C, NDVI: 0.80\nUser: Bagay ba ang coconut?",
+    "response": "Suriin:\n\n✓ pH 6.2 – Sakto\n✓ Rainfall 0.79mm/3h – Sapat\n✓ Temp 25°C – Ideal\n✓ NDVI 0.80 – Fertile\n\nOo, bagay ang coconut.\n\nTips:\n1. Tamang spacing 8–10 meters\n2. Maglagay ng potash fertilizer\n3. Bantayan laban sa peste"
+  },
+  {
+    "prompt": "Soil pH: 5.9, Rainfall: 0.62mm/3h, Temp: 26°C, NDVI: 0.76\nUser: Pwede ba ang papaya?",
+    "response": "Suriin:\n\n✓ pH 5.9 – Sakto\n✓ Rainfall 0.62mm/3h – Sapat\n✓ Temp 26°C – Ideal\n✓ NDVI 0.76 – Fertile\n\nOo, bagay ang papaya.\n\nTips:\n1. Gumamit ng hybrid varieties\n2. Maglagay ng compost\n3. Harvest sa tamang maturity"
+  },
+  {
+    "prompt": "Soil pH: 6.7, Rainfall: 0.45mm/3h, Temp: 28°C, NDVI: 0.63\nUser: Pwede ba ang mani?",
+    "response": "Suriin:\n\n✓ pH 6.7 – Sakto\n⚠ Rainfall 0.45mm/3h – Katamtaman\n⚠ Temp 28°C – Mainit\n⚠ NDVI 0.63 – Katamtaman fertility\n\nPwede ang mani pero hindi max yield.\n\nTips:\n1. Gumamit ng Rhizobium inoculant\n2. Magdagdag ng compost\n3. Siguraduhing may spacing"
+  },
+  {
+    "prompt": "Soil pH: 6.0, Rainfall: 0.51mm/3h, Temp: 28°C, NDVI: 0.64\nUser: Puwede ba ang patatas?",
+    "response": "Suriin:\n\n✓ pH 6.0 – Sakto\n⚠ Rainfall 0.51mm/3h – Katamtaman\n⚠ Temp 28°C – Medyo mainit\n⚠ NDVI 0.64 – Katamtaman\n\nPwede pero hindi ideal. Mas okay sa upland Benguet.\n\nAlternatives: Cassava o sweet potato."
+  },
+  {
+    "prompt": "Soil pH: 5.7, Rainfall: 0.62mm/3h, Temp: 28°C, NDVI: 0.75\nUser: Pwede ba ang kalabasa?",
+    "response": "Suriin:\n\n✓ pH 5.7 – Sakto\n✓ Rainfall 0.62mm/3h – Sapat\n✓ Temp 28°C – Ideal\n✓ NDVI 0.75 – Fertile\n\nOo, pwede ang kalabasa.\n\nTips:\n1. Trellis para sa vines\n2. Compost\n3. Harvest sa tamang laki"
+  },
+  {
+    "prompt": "Soil pH: 6.1, Rainfall: 0.58mm/3h, Temp: 27°C, NDVI: 0.74\nUser: Ano ang puwedeng pananim dito?",
+    "response": "Suriin:\n\n✓ pH 6.1 – Sakto para sa maraming tropical crops\n✓ Rainfall 0.58mm/3h – Sapat\n✓ Temp 27°C – Ideal\n✓ NDVI 0.74 – Katamtamang fertility\n\nPwede ang cacao, papaya, o saging.\n\nTips:\n1. Pumili ng disease-resistant varieties\n2. Magdagdag ng compost para mas fertility\n3. Siguraduhin ang maayos na drainage"
+  },
+  {
+    "prompt": "Soil pH: 5.8, Rainfall: 0.31mm/3h, Temp: 30°C, NDVI: 0.59\nUser: Puwede bang mais dito?",
+    "response": "Suriin:\n\n✓ pH 5.8 – Sakto\n✗ Rainfall 0.31mm/3h – Medyo mababa\n⚠ Temp 30°C – Mainit pero tolerable\n⚠ NDVI 0.59 – Katamtamang fertility\n\nPwede ang mais pero kailangan ng irrigation at organic fertilizer.\n\nTips:\n1. Drought-tolerant hybrid\n2. Mulching para retain moisture\n3. Fertilizer application sa early growth"
+  },
+  {
+    "prompt": "Soil pH: 6.4, Rainfall: 0.82mm/3h, Temp: 25°C, NDVI: 0.82\nUser: Bagay ba ang abaka?",
+    "response": "Suriin:\n\n✓ pH 6.4 – Sakto\n✓ Rainfall 0.82mm/3h – Sapat\n✓ Temp 25°C – Ideal\n✓ NDVI 0.82 – Fertile\n\nOo, bagay ang abaka.\n\nTips:\n1. Gumamit ng pest-resistant varieties\n2. Regular pruning\n3. Organic fertilization"
+  },
+  {
+    "prompt": "Soil pH: 6.7, Rainfall: 0.68mm/3h, Temp: 28°C, NDVI: 0.70\nUser: Puwede ba ang cacao?",
+    "response": "Suriin:\n\n✓ pH 6.7 – Sakto\n✓ Rainfall 0.68mm/3h – Sapat\n✓ Temp 28°C – Ideal\n✓ NDVI 0.70 – Fertile\n\nOo, bagay ang cacao.\n\nTips:\n1. Plant under shade trees\n2. Use disease-resistant clones\n3. Maintain good drainage"
+  },
+  {
+    "prompt": "Soil pH: 5.9, Rainfall: 0.62mm/3h, Temp: 27°C, NDVI: 0.73\nUser: Ano ang puwedeng pananim sa lupa ko?",
+    "response": "Suriin:\n\n✓ pH 5.9 – Sakto\n✓ Rainfall 0.62mm/3h – Sapat\n✓ Temp 27°C – Ideal\n✓ NDVI 0.73 – Fertile\n\nPwede ang saging, papaya, o talong.\n\nTips:\n1. Compost at organic fertilizer\n2. Disease-resistant varieties\n3. Proper spacing para sa airflow"
+  },
+  {
+    "prompt": "Soil pH: 6.2, Rainfall: 0.41mm/3h, Temp: 31°C, NDVI: 0.62\nUser: Puwede bang mais dito?",
+    "response": "Suriin:\n\n✓ pH 6.2 – Sakto\n⚠ Rainfall 0.41mm/3h – Katamtaman\n⚠ Temp 31°C – Mainit\n⚠ NDVI 0.62 – Katamtaman fertility\n\nPwede ang mais pero kailangan ng irrigation at mulching.\n\nTips:\n1. Drought-tolerant hybrid\n2. Mulching to retain soil moisture\n3. Fertilizer application"
+  },
+  {
+    "prompt": "Soil pH: 5.7, Rainfall: 0.68mm/3h, Temp: 26°C, NDVI: 0.78\nUser: Pwede ba ang talong?",
+    "response": "Suriin:\n\n✓ pH 5.7 – Sakto\n✓ Rainfall 0.68mm/3h – Sapat\n✓ Temp 26°C – Ideal\n✓ NDVI 0.78 – Fertile\n\nOo, bagay ang talong.\n\nTips:\n1. Compost application\n2. Disease-resistant variety\n3. Trellis support para sa fruits"
+  },
+  {
+    "prompt": "Soil pH: 6.8, Rainfall: 0.31mm/3h, Temp: 32°C, NDVI: 0.57\nUser: Ano ang puwede sa tuyong lugar?",
+    "response": "Suriin:\n\n✓ pH 6.8 – Sakto\n✗ Rainfall 0.31mm/3h – Mababa\n⚠ Temp 32°C – Mainit\n⚠ NDVI 0.57 – Katamtamang fertility\n\nPwede ang sorghum, cassava, o mani.\n\nTips:\n1. Drought-tolerant varieties\n2. Compost at soil amendment\n3. Drip irrigation kung posible"
+  },
+  {
+    "prompt": "Soil pH: 6.5, Rainfall: 0.51mm/3h, Temp: 28°C, NDVI: 0.65\nUser: Puwede ba ang papaya?",
+    "response": "Suriin:\n\n✓ pH 6.5 – Sakto\n✓ Rainfall 0.51mm/3h – Sapat\n✓ Temp 28°C – Ideal\n✓ NDVI 0.65 – Katamtamang fertility\n\nOo, bagay ang papaya.\n\nTips:\n1. Hybrid varieties para sa mataas na ani\n2. Compost at fertilization\n3. Harvest sa tamang maturity"
+  },
+  {
+    "prompt": "Soil pH: 5.9, Rainfall: 0.65mm/3h, Temp: 26°C, NDVI: 0.76\nUser: Bagay ba ang cacao?",
+    "response": "Suriin:\n\n✓ pH 5.9 – Sakto\n✓ Rainfall 0.65mm/3h – Sapat\n✓ Temp 26°C – Ideal\n✓ NDVI 0.76 – Fertile\n\nOo, bagay ang cacao.\n\nTips:\n1. Shade planting\n2. Disease-resistant clones\n3. Drainage maintenance"
+  },
+  {
+    "prompt": "Soil pH: 6.0, Rainfall: 0.55mm/3h, Temp: 27°C, NDVI: 0.71\nUser: Puwede bang saging dito?",
+    "response": "Suriin:\n\n✓ pH 6.0 – Sakto\n✓ Rainfall 0.55mm/3h – Sapat\n✓ Temp 27°C – Ideal\n✓ NDVI 0.71 – Fertile\n\nOo, bagay ang saging.\n\nTips:\n1. Gumamit ng disease-free suckers\n2. Maglagay ng compost o organic fertilizer\n3. Siguraduhin ang maayos na drainage"
+  },
+  {
+    "prompt": "Soil pH: 5.6, Rainfall: 0.41mm/3h, Temp: 30°C, NDVI: 0.60\nUser: Ano ang puwedeng pananim sa tuyong lugar?",
+    "response": "Suriin:\n\n✓ pH 5.6 – Sakto\n⚠ Rainfall 0.41mm/3h – Katamtaman\n⚠ Temp 30°C – Mainit\n⚠ NDVI 0.60 – Katamtamang fertility\n\nPwede ang cassava, sorghum, o munggo.\n\nTips:\n1. Drought-tolerant varieties\n2. Magdagdag ng compost\n3. Mag-drip irrigation kung posible"
+  },
+  {
+    "prompt": "Soil pH: 6.3, Rainfall: 0.75mm/3h, Temp: 26°C, NDVI: 0.78\nUser: Bagay ba ang cacao?",
+    "response": "Suriin:\n\n✓ pH 6.3 – Sakto\n✓ Rainfall 0.75mm/3h – Sapat\n✓ Temp 26°C – Ideal\n✓ NDVI 0.78 – Fertile\n\nOo, bagay ang cacao.\n\nTips:\n1. Shade planting\n2. Disease-resistant clones\n3. Drainage maintenance"
+  },
+  {
+    "prompt": "Soil pH: 6.7, Rainfall: 0.48mm/3h, Temp: 28°C, NDVI: 0.66\nUser: Pwede bang talong?",
+    "response": "Suriin:\n\n✓ pH 6.7 – Sakto\n✓ Rainfall 0.48mm/3h – Sapat\n✓ Temp 28°C – Ideal\n✓ NDVI 0.66 – Katamtamang fertility\n\nOo, talong ay puwede.\n\nTips:\n1. Gumamit ng disease-resistant variety\n2. Maglagay ng compost\n3. Trellis support para sa fruits"
+  },
+  {
+    "prompt": "Soil pH: 6.5, Rainfall: 0.31mm/3h, Temp: 32°C, NDVI: 0.58\nUser: Puwede bang mais sa tuyong lugar?",
+    "response": "Suriin:\n\n✓ pH 6.5 – Sakto\n✗ Rainfall 0.31mm/3h – Mababa\n⚠ Temp 32°C – Mainit\n⚠ NDVI 0.58 – Katamtamang fertility\n\nPwede ang mais pero kailangan ng irrigation at mulching.\n\nTips:\n1. Drought-tolerant hybrid\n2. Mulching to retain soil moisture\n3. Fertilizer application"
+  },
+  {
+    "prompt": "Soil pH: 5.9, Rainfall: 0.62mm/3h, Temp: 26°C, NDVI: 0.74\nUser: Puwede ba ang abaka?",
+    "response": "Suriin:\n\n✓ pH 5.9 – Sakto\n✓ Rainfall 0.62mm/3h – Sapat\n✓ Temp 26°C – Ideal\n✓ NDVI 0.74 – Fertile\n\nOo, bagay ang abaca.\n\nTips:\n1. Pest-resistant varieties\n2. Regular pruning\n3. Organic fertilizer"
+  },
+  {
+    "prompt": "Soil pH: 6.2, Rainfall: 0.86mm/3h, Temp: 25°C, NDVI: 0.80\nUser: Bagay ba ang coconut?",
+    "response": "Suriin:\n\n✓ pH 6.2 – Sakto\n✓ Rainfall 0.86mm/3h – Sapat\n✓ Temp 25°C – Ideal\n✓ NDVI 0.80 – Fertile\n\nOo, bagay ang coconut.\n\nTips:\n1. Tamang spacing 8–10 meters\n2. Potash fertilizer\n3. Bantayan sa peste"
+  },
+  {
+    "prompt": "Soil pH: 5.8, Rainfall: 0.68mm/3h, Temp: 27°C, NDVI: 0.77\nUser: Pwede ba ang papaya?",
+    "response": "Suriin:\n\n✓ pH 5.8 – Sakto\n✓ Rainfall 0.68mm/3h – Sapat\n✓ Temp 27°C – Ideal\n✓ NDVI 0.77 – Fertile\n\nOo, bagay ang papaya.\n\nTips:\n1. Hybrid varieties\n2. Compost application\n3. Harvest sa tamang maturity"
+  },
+  {
+    "prompt": "Soil pH: 6.0, Rainfall: 0.65mm/3h, Temp: 28°C, NDVI: 0.75\nUser: Bagay ba ang cacao?",
+    "response": "Suriin:\n\n✓ pH 6.0 – Sakto\n✓ Rainfall 0.65mm/3h – Sapat\n✓ Temp 28°C – Ideal\n✓ NDVI 0.75 – Fertile\n\nOo, bagay ang cacao.\n\nTips:\n1. Shade planting\n2. Disease-resistant clones\n3. Drainage maintenance"
+  },
+  {
+    "prompt": "Soil pH: 5.7, Rainfall: 0.41mm/3h, Temp: 30°C, NDVI: 0.62\nUser: Puwede bang kamote sa lupa ko?",
+    "response": "Suriin:\n\n✓ pH 5.7 – Sakto\n⚠ Rainfall 0.41mm/3h – Katamtaman\n⚠ Temp 30°C – Mainit\n⚠ NDVI 0.62 – Katamtamang fertility\n\nPwede ang kamote.\n\nTips:\n1. Gumamit ng healthy cuttings\n2. Compost application\n3. Harvest sa tamang maturity"
+  },
+  {
+    "prompt": "Soil pH: 6.3, Rainfall: 0.62mm/3h, Temp: 27°C, NDVI: 0.72\nUser: Bagay ba ang saging dito?",
+    "response": "Suriin:\n\n✓ pH 6.3 – Sakto\n✓ Rainfall 0.62mm/3h – Sapat\n✓ Temp 27°C – Ideal\n✓ NDVI 0.72 – Fertile\n\nOo, bagay ang saging.\n\nTips:\n1. Gumamit ng disease-free suckers\n2. Compost application\n3. Siguraduhin ang maayos na drainage"
+  },
+  {
+    "prompt": "Soil pH: 5.9, Rainfall: 0.31mm/3h, Temp: 30°C, NDVI: 0.58\nUser: Puwede bang mais sa tuyong lugar?",
+    "response": "Suriin:\n\n✓ pH 5.9 – Sakto\n✗ Rainfall 0.31mm/3h – Mababa\n⚠ Temp 30°C – Mainit\n⚠ NDVI 0.58 – Katamtamang fertility\n\nPwede ang mais pero kailangan ng irrigation at mulch.\n\nTips:\n1. Drought-tolerant hybrid\n2. Mulching para retain moisture\n3. Fertilizer application"
+  },
+  {
+    "prompt": "Soil pH: 6.6, Rainfall: 0.82mm/3h, Temp: 25°C, NDVI: 0.81\nUser: Bagay ba ang cacao?",
+    "response": "Suriin:\n\n✓ pH 6.6 – Sakto\n✓ Rainfall 0.82mm/3h – Sapat\n✓ Temp 25°C – Ideal\n✓ NDVI 0.81 – Fertile\n\nOo, bagay ang cacao.\n\nTips:\n1. Shade planting\n2. Disease-resistant clones\n3. Good drainage"
+  },
+  {
+    "prompt": "Soil pH: 6.1, Rainfall: 0.55mm/3h, Temp: 28°C, NDVI: 0.70\nUser: Puwede ba ang talong?",
+    "response": "Suriin:\n\n✓ pH 6.1 – Sakto\n✓ Rainfall 0.55mm/3h – Sapat\n✓ Temp 28°C – Ideal\n✓ NDVI 0.70 – Fertile\n\nOo, talong ay puwede.\n\nTips:\n1. Disease-resistant variety\n2. Compost application\n3. Trellis support"
+  },
+  {
+    "prompt": "Soil pH: 6.5, Rainfall: 0.41mm/3h, Temp: 31°C, NDVI: 0.61\nUser: Puwede bang mais dito?",
+    "response": "Suriin:\n\n✓ pH 6.5 – Sakto\n⚠ Rainfall 0.41mm/3h – Katamtaman\n⚠ Temp 31°C – Mainit\n⚠ NDVI 0.61 – Katamtamang fertility\n\nPwede ang mais pero kailangan ng irrigation at mulch.\n\nTips:\n1. Drought-tolerant hybrid\n2. Mulching\n3. Fertilizer application"
+  },
+  {
+    "prompt": "Soil pH: 5.8, Rainfall: 0.68mm/3h, Temp: 27°C, NDVI: 0.75\nUser: Bagay ba ang abaka?",
+    "response": "Suriin:\n\n✓ pH 5.8 – Sakto\n✓ Rainfall 0.68mm/3h – Sapat\n✓ Temp 27°C – Ideal\n✓ NDVI 0.75 – Fertile\n\nOo, bagay ang abaca.\n\nTips:\n1. Pest-resistant varieties\n2. Regular pruning\n3. Organic fertilization"
+  },
+  {
+    "prompt": "Soil pH: 6.2, Rainfall: 0.86mm/3h, Temp: 25°C, NDVI: 0.80\nUser: Pwede ba ang coconut?",
+    "response": "Suriin:\n\n✓ pH 6.2 – Sakto\n✓ Rainfall 0.86mm/3h – Sapat\n✓ Temp 25°C – Ideal\n✓ NDVI 0.80 – Fertile\n\nOo, bagay ang coconut.\n\nTips:\n1. Tamang spacing 8–10 meters\n2. Potash fertilizer\n3. Bantayan sa peste"
+  },
+  {
+    "prompt": "Soil pH: 5.9, Rainfall: 0.62mm/3h, Temp: 27°C, NDVI: 0.73\nUser: Bagay ba ang papaya?",
+    "response": "Suriin:\n\n✓ pH 5.9 – Sakto\n✓ Rainfall 0.62mm/3h – Sapat\n✓ Temp 27°C – Ideal\n✓ NDVI 0.73 – Fertile\n\nOo, bagay ang papaya.\n\nTips:\n1. Hybrid varieties\n2. Compost\n3. Harvest sa tamang maturity"
+  },
+  {
+    "prompt": "Soil pH: 6.0, Rainfall: 0.65mm/3h, Temp: 28°C, NDVI: 0.76\nUser: Bagay ba ang cacao?",
+    "response": "Suriin:\n\n✓ pH 6.0 – Sakto\n✓ Rainfall 0.65mm/3h – Sapat\n✓ Temp 28°C – Ideal\n✓ NDVI 0.76 – Fertile\n\nOo, bagay ang cacao.\n\nTips:\n1. Shade planting\n2. Disease-resistant clones\n3. Drainage maintenance"
+  },
+  {
+    "prompt": "Soil pH: 5.7, Rainfall: 0.41mm/3h, Temp: 30°C, NDVI: 0.62\nUser: Puwede bang kamote?",
+    "response": "Suriin:\n\n✓ pH 5.7 – Sakto\n⚠ Rainfall 0.41mm/3h – Katamtaman\n⚠ Temp 30°C – Mainit\n⚠ NDVI 0.62 – Katamtamang fertility\n\nPwede ang kamote.\n\nTips:\n1. Healthy cuttings\n2. Compost application\n3. Harvest sa tamang maturity"
+  },
+  {
+    "prompt": "Soil pH: 5.8, Rainfall: 0.51mm/3h, Temp: 30°C, NDVI: 0.65\nUser: Ano ang pinakamagandang pananim sa lupa ko sa ganitong init at ulan?",
+    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.8 – Medyo mababa\n⚠ Rainfall 0.51mm/3h – Katamtaman, maaaring kailanganin ng dagdag na tubig\n⚠ Temp 30°C – Medyo mainit\n⚠ NDVI 0.65 – Katamtamang fertility\n\nMga rekomendasyon:\n1. **Malunggay** – Resilient sa mainit at medyo mababang pH\n2. **kamote tops** – Kailangan ng dagdag na watering\n\nTips:\n- Maglagay ng compost para tumaas ang fertility\n- Mulching para ma-retain ang moisture"
+  },
+  {
+    "prompt": "Soil pH: 6.1, Rainfall: 0.62mm/3h, Temp: 28°C, NDVI: 0.72\nUser: Paano ko aalagaan ang pananim sa ganitong kondisyon?",
+    "response": "Suriin ang kondisyon:\n\n✓ pH 6.1 – Sakto\n✓ Rainfall 0.62mm/3h – Sapat\n✓ Temp 28°C – Ideal\n✓ NDVI 0.72 – Fertile\n\nMaaaring itanim:\n- **Rambutan, Lanzones, Guyabano** – Lahat ay kaya ang fertility at rainfall\n\nTips sa pag-aalaga:\n1. Regular watering sa dry season\n2. Fertilizer application tuwing planting season\n3. Mulching para sa moisture retention\n4. Protektahan sa peste at sakit"
+  },
+  {
+    "prompt": "Soil pH: 5.9, Rainfall: 0.55mm/3h, Temp: 29°C, NDVI: 0.68\nUser: Ano ang puwede kong itanim at paano aalagaan sa mainit na klima?",
+    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.9 – Medyo mababa\n✓ Rainfall 0.55mm/3h – Sapat\n✓ Temp 29°C – Mainit pero kaya ng maraming tropical crops\n⚠ NDVI 0.68 – Katamtamang fertility\n\nMaaaring itanim:\n- **Malunggay, kamote tops, Atis** – Resilient sa mainit at medyo mababang pH\n\nPag-aalaga:\n1. Soil amendment para sa pH\n2. Mulching para retain moisture\n3. Regular watering"
+  },
+  {
+    "prompt": "Soil pH: 6.0, Rainfall: 0.68mm/3h, Temp: 27°C, NDVI: 0.75\nUser: Ano ang pinakamagandang gawin sa ganitong fertile at basang lupa?",
+    "response": "Suriin ang kondisyon:\n\n✓ pH 6.0 – Sakto\n✓ Rainfall 0.68mm/3h – Sapat, mataas\n✓ Temp 27°C – Ideal\n✓ NDVI 0.75 – Fertile\n\nMaaaring itanim:\n- **Durian, Mangosteen, Atis** – Mahusay sa fertile at high-water soil\n\nPag-aalaga:\n1. Mulching at compost application\n2. Regular pruning para healthy growth\n3. Proteksyon sa peste"
+  },
+  {
+    "prompt": "Soil pH: 6.2, Rainfall: 0.58mm/3h, Temp: 28°C, NDVI: 0.70\nUser: Ano ang pinakamainam na pananim at paano aalagaan ang lupa sa ganitong klima?",
+    "response": "Suriin ang kondisyon:\n\n✓ pH 6.2 – Sakto\n✓ Rainfall 0.58mm/3h – Sapat\n✓ Temp 28°C – Ideal\n✓ NDVI 0.70 – Fertile\n\nMaaaring itanim:\n- **Rambutan, Guyabano, Pili nut** – Sakto ang soil at rainfall\n\nPag-aalaga:\n1. Fertilizer application sa planting season\n2. Mulching para sa moisture\n3. Regular watering at pest control"
+  },
+  {
+    "prompt": "Soil pH: 5.8, Rainfall: 0.53mm/3h, Temp: 29°C, NDVI: 0.67\nUser: Ano ang puwede kong itanim at paano aalagaan sa medyo mainit na lugar?",
+    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.8 – Medyo mababa\n⚠ Rainfall 0.53mm/3h – Katamtaman\n✓ Temp 29°C – Mainit pero kaya ng tropical crops\n⚠ NDVI 0.67 – Katamtamang fertility\n\nMaaaring itanim:\n- **Malunggay, kamote tops** – Resilient sa mainit at medyo mababang pH\n\nPag-aalaga:\n1. Soil amendment para sa pH\n2. Mulching at regular watering"
+  },
+  {
+    "prompt": "Soil pH: 6.0, Rainfall: 0.55mm/3h, Temp: 28°C, NDVI: 0.72\nUser: Ano ang pinakamagandang pananim sa fertile soil at katamtamang ulan?",
+    "response": "Suriin ang kondisyon:\n\n✓ pH 6.0 – Sakto\n✓ Rainfall 0.55mm/3h – Katamtaman\n✓ Temp 28°C – Ideal\n✓ NDVI 0.72 – Fertile\n\nMaaaring itanim:\n- **Atis, Lanzones, Guyabano** – Mahusay sa fertile soil\n\nPag-aalaga:\n1. Fertilizer application\n2. Mulching para sa moisture\n3. Proteksyon sa peste"
+  },
+  {
+    "prompt": "Soil pH: 5.9, Rainfall: 0.51mm/3h, Temp: 27°C, NDVI: 0.65\nUser: Paano ko mapapalaki ang mga pananim sa ganitong medyo mababa ang pH at katamtamang fertility?",
+    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.9 – Medyo mababa\n⚠ Rainfall 0.51mm/3h – Katamtaman\n✓ Temp 27°C – Ideal\n⚠ NDVI 0.65 – Katamtamang fertility\n\nMaaaring itanim:\n- **Malunggay, kamote tops** – Kaya ang soil at temp\n\nPag-aalaga:\n1. Soil amendment para sa pH\n2. Mulching at compost\n3. Regular watering"
+  },
+  {
+    "prompt": "Soil pH: 6.1, Rainfall: 0.62mm/3h, Temp: 28°C, NDVI: 0.74\nUser: Ano ang pinakamagandang pananim at paano aalagaan sa fertile at sapat ang ulan?",
+    "response": "Suriin ang kondisyon:\n\n✓ pH 6.1 – Sakto\n✓ Rainfall 0.62mm/3h – Sapat\n✓ Temp 28°C – Ideal\n✓ NDVI 0.74 – Fertile\n\nMaaaring itanim:\n- **Durian, Mangosteen, Rambutan** – Lahat ay bagay sa fertile soil at sapat na ulan\n\nPag-aalaga:\n1. Fertilizer application\n2. Mulching para sa moisture\n3. Proteksyon sa peste\n4. Regular watering sa dry season"
+  },
+  {
+    "prompt": "Soil pH: 6.0, Rainfall: 0.60mm/3h, Temp: 29°C, NDVI: 0.71\nUser: Ano ang puwede kong itanim sa ganitong mainit at katamtamang ulan?",
+    "response": "Suriin ang kondisyon:\n\n✓ pH 6.0 – Sakto\n✓ Rainfall 0.60mm/3h – Katamtaman, maaaring dagdagan sa dry periods\n✓ Temp 29°C – Mainit, pero kaya ng tropical crops\n✓ NDVI 0.71 – Fertile\n\nMaaaring itanim:\n- **Saging, Malunggay, Atis** – Resilient sa mainit at katamtamang ulan\n\nPag-aalaga:\n1. Regular watering sa dry spells\n2. Mulching para sa moisture retention\n3. Fertilization tuwing planting season"
+  },
+  {
+    "prompt": "Soil pH: 5.7, Rainfall: 0.55mm/3h, Temp: 30°C, NDVI: 0.68\nUser: Ano ang pinakamagandang pananim at paano aalagaan sa mainit na klima?",
+    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.7 – Medyo mababa\n✓ Rainfall 0.55mm/3h – Katamtaman\n✓ Temp 30°C – Mainit pero kayang suportahan ng tropical crops\n⚠ NDVI 0.68 – Katamtamang fertility\n\nMaaaring itanim:\n- **kamote tops, Malunggay, Gabi** – Kaya ang init at medyo mababang pH\n\nPag-aalaga:\n1. Soil amendment para sa pH\n2. Regular watering\n3. Mulching para sa moisture"
+  },
+  {
+    "prompt": "Soil pH: 6.2, Rainfall: 0.65mm/3h, Temp: 28°C, NDVI: 0.76\nUser: Ano ang puwede kong itanim sa fertile soil at sapat ang ulan?",
+    "response": "Suriin ang kondisyon:\n\n✓ pH 6.2 – Sakto\n✓ Rainfall 0.65mm/3h – Sapat\n✓ Temp 28°C – Ideal\n✓ NDVI 0.76 – Malusog at fertile\n\nMaaaring itanim:\n- **Durian, Mangosteen, Rambutan** – Lahat ay bagay sa fertile soil at sapat na ulan\n\nPag-aalaga:\n1. Mulching at compost\n2. Fertilization sa planting season\n3. Proteksyon sa peste"
+  },
+  {
+    "prompt": "Soil pH: 5.9, Rainfall: 0.50mm/3h, Temp: 29°C, NDVI: 0.66\nUser: Paano ko aalagaan ang lupa at pananim sa mainit at medyo mababang fertility?",
+    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.9 – Medyo mababa\n⚠ Rainfall 0.50mm/3h – Katamtaman\n✓ Temp 29°C – Mainit, kaya ng tropical crops\n⚠ NDVI 0.66 – Katamtamang fertility\n\nMaaaring itanim:\n- **Malunggay, kamote tops** – Kaya ang init at soil conditions\n\nPag-aalaga:\n1. Soil amendment para sa pH\n2. Regular watering at mulching\n3. Fertilization para sa fertility boost"
+  },
+  {
+    "prompt": "Soil pH: 6.1, Rainfall: 0.58mm/3h, Temp: 27°C, NDVI: 0.73\nUser: Ano ang pinakamainam na pananim sa ganitong fertile at katamtamang ulan?",
+    "response": "Suriin ang kondisyon:\n\n✓ pH 6.1 – Sakto\n✓ Rainfall 0.58mm/3h – Katamtaman, maaaring dagdagan sa dry period\n✓ Temp 27°C – Ideal\n✓ NDVI 0.73 – Fertile\n\nMaaaring itanim:\n- **Rambutan, Guyabano, Atis** – Angkop sa fertility at rainfall\n\nPag-aalaga:\n1. Mulching para sa moisture retention\n2. Fertilizer application tuwing planting season\n3. Proteksyon sa peste at sakit"
+  },
+  {
+    "prompt": "Soil pH: 6.0, Rainfall: 0.52mm/3h, Temp: 28°C, NDVI: 0.70\nUser: Ano ang puwede kong itanim at paano aalagaan sa medyo mababa ang ulan?",
+    "response": "Suriin ang kondisyon:\n\n✓ pH 6.0 – Sakto\n⚠ Rainfall 0.52mm/3h – Medyo mababa, dagdagan ang watering\n✓ Temp 28°C – Ideal\n✓ NDVI 0.70 – Fertile\n\nMaaaring itanim:\n- **kamote tops, Malunggay** – Kaya ang soil at temperature\n\nPag-aalaga:\n1. Regular watering\n2. Mulching para retain moisture\n3. Soil amendment kung kinakailangan"
+  },
+  {
+    "prompt": "Soil pH: 5.8, Rainfall: 0.57mm/3h, Temp: 30°C, NDVI: 0.69\nUser: Ano ang pinakamainam na pananim sa mainit at katamtamang fertility?",
+    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.8 – Medyo mababa\n✓ Rainfall 0.57mm/3h – Katamtaman\n✓ Temp 30°C – Mainit\n⚠ NDVI 0.69 – Katamtamang fertility\n\nMaaaring itanim:\n- **Malunggay, kamote tops, Atis** – Kaya ang init at soil conditions\n\nPag-aalaga:\n1. Soil amendment para sa pH\n2. Regular watering at mulching\n3. Fertilization tuwing planting season"
+  },
+  {
+    "prompt": "Soil pH: 6.2, Rainfall: 0.61mm/3h, Temp: 27°C, NDVI: 0.75\nUser: Ano ang pinakamagandang pananim sa fertile soil at sapat ang ulan?",
+    "response": "Suriin ang kondisyon:\n\n✓ pH 6.2 – Sakto\n✓ Rainfall 0.61mm/3h – Sapat\n✓ Temp 27°C – Ideal\n✓ NDVI 0.75 – Fertile\n\nMaaaring itanim:\n- **Durian, Mangosteen, Rambutan** – Lahat ay bagay sa fertile soil at sapat na ulan\n\nPag-aalaga:\n1. Mulching at compost\n2. Fertilizer application sa planting season\n3. Proteksyon sa peste"
+  },
+  {
+    "prompt": "Soil pH: 5.9, Rainfall: 0.54mm/3h, Temp: 29°C, NDVI: 0.68\nUser: Paano ko aalagaan ang mga pananim sa mainit at medyo mababang pH?",
+    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.9 – Medyo mababa\n⚠ Rainfall 0.54mm/3h – Katamtaman\n✓ Temp 29°C – Mainit\n⚠ NDVI 0.68 – Katamtamang fertility\n\nMaaaring itanim:\n- **Malunggay, kamote tops** – Kaya ang soil at temp\n\nPag-aalaga:\n1. Soil amendment para sa pH\n2. Mulching at regular watering\n3. Fertilization para sa fertility boost"
+  },
+  {
+    "prompt": "Soil pH: 6.2, Rainfall: 0.65mm/3h, Temp: 28°C, NDVI: 0.76\nUser: Ano ang puwede kong itanim sa fertile soil at sapat ang ulan?",
+    "response": "Suriin ang kondisyon:\n\n✓ pH 6.2 – Sakto\n✓ Rainfall 0.65mm/3h – Sapat\n✓ Temp 28°C – Ideal\n✓ NDVI 0.76 – Malusog at fertile\n\nMaaaring itanim:\n- **Durian, Mangosteen, Rambutan** – Lahat ay bagay sa fertile soil at sapat na ulan\n\nPag-aalaga:\n1. Mulching at compost\n2. Fertilization sa planting season\n3. Proteksyon sa peste"
+  },
+  {
+    "prompt": "Soil pH: 5.9, Rainfall: 0.50mm/3h, Temp: 29°C, NDVI: 0.66\nUser: Paano ko aalagaan ang lupa at pananim sa mainit at medyo mababang fertility?",
+    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.9 – Medyo mababa\n⚠ Rainfall 0.50mm/3h – Katamtaman\n✓ Temp 29°C – Mainit, kaya ng tropical crops\n⚠ NDVI 0.66 – Katamtamang fertility\n\nMaaaring itanim:\n- **Malunggay, kamote tops** – Kaya ang init at soil conditions\n\nPag-aalaga:\n1. Soil amendment para sa pH\n2. Regular watering at mulching\n3. Fertilization para sa fertility boost"
+  },
+  {
+    "prompt": "Soil pH: 6.1, Rainfall: 0.58mm/3h, Temp: 27°C, NDVI: 0.73\nUser: Ano ang pinakamainam na pananim sa ganitong fertile at katamtamang ulan?",
+    "response": "Suriin ang kondisyon:\n\n✓ pH 6.1 – Sakto\n✓ Rainfall 0.58mm/3h – Katamtaman, maaaring dagdagan sa dry period\n✓ Temp 27°C – Ideal\n✓ NDVI 0.73 – Fertile\n\nMaaaring itanim:\n- **Rambutan, Guyabano, Atis** – Angkop sa fertility at rainfall\n\nPag-aalaga:\n1. Mulching para sa moisture retention\n2. Fertilizer application tuwing planting season\n3. Proteksyon sa peste at sakit"
+  },
+  {
+    "prompt": "Soil pH: 6.0, Rainfall: 0.52mm/3h, Temp: 28°C, NDVI: 0.70\nUser: Ano ang puwede kong itanim at paano aalagaan sa medyo mababa ang ulan?",
+    "response": "Suriin ang kondisyon:\n\n✓ pH 6.0 – Sakto\n⚠ Rainfall 0.52mm/3h – Medyo mababa, dagdagan ang watering\n✓ Temp 28°C – Ideal\n✓ NDVI 0.70 – Fertile\n\nMaaaring itanim:\n- **kamote tops, Malunggay** – Kaya ang soil at temperature\n\nPag-aalaga:\n1. Regular watering\n2. Mulching para retain moisture\n3. Soil amendment kung kinakailangan"
+  },
+  {
+    "prompt": "Soil pH: 5.8, Rainfall: 0.57mm/3h, Temp: 30°C, NDVI: 0.69\nUser: Ano ang pinakamainam na pananim sa mainit at katamtamang fertility?",
+    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.8 – Medyo mababa\n✓ Rainfall 0.57mm/3h – Katamtaman\n✓ Temp 30°C – Mainit\n⚠ NDVI 0.69 – Katamtamang fertility\n\nMaaaring itanim:\n- **Malunggay, kamote tops, Atis** – Kaya ang init at soil conditions\n\nPag-aalaga:\n1. Soil amendment para sa pH\n2. Regular watering at mulching\n3. Fertilization tuwing planting season"
+  },
+  {
+    "prompt": "Soil pH: 6.2, Rainfall: 0.61mm/3h, Temp: 27°C, NDVI: 0.75\nUser: Ano ang pinakamagandang pananim sa fertile soil at sapat ang ulan?",
+    "response": "Suriin ang kondisyon:\n\n✓ pH 6.2 – Sakto\n✓ Rainfall 0.61mm/3h – Sapat\n✓ Temp 27°C – Ideal\n✓ NDVI 0.75 – Fertile\n\nMaaaring itanim:\n- **Durian, Mangosteen, Rambutan** – Lahat ay bagay sa fertile soil at sapat na ulan\n\nPag-aalaga:\n1. Mulching at compost\n2. Fertilizer application sa planting season\n3. Proteksyon sa peste"
+  },
+  {
+    "prompt": "Soil pH: 5.9, Rainfall: 0.54mm/3h, Temp: 29°C, NDVI: 0.68\nUser: Paano ko aalagaan ang mga pananim sa mainit at medyo mababang pH?",
+    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.9 – Medyo mababa\n⚠ Rainfall 0.54mm/3h – Katamtaman\n✓ Temp 29°C – Mainit\n⚠ NDVI 0.68 – Katamtamang fertility\n\nMaaaring itanim:\n- **Malunggay, kamote tops** – Kaya ang soil at temp\n\nPag-aalaga:\n1. Soil amendment para sa pH\n2. Mulching at regular watering\n3. Fertilization para sa fertility boost"
+  },
+  {
+    "prompt": "Soil pH: 6.1, Rainfall: 0.63mm/3h, Temp: 28°C, NDVI: 0.72\nUser: Ano ang puwede kong itanim sa fertile soil at medyo mataas ang rainfall?",
+    "response": "Suriin ang kondisyon:\n\n✓ pH 6.1 – Sakto\n✓ Rainfall 0.63mm/3h – Medyo mataas\n✓ Temp 28°C – Ideal\n✓ NDVI 0.72 – Fertile\n\nMaaaring itanim:\n- **Rambutan, Durian, Guyabano** – Lahat ay bagay sa fertile soil at medyo mataas ang ulan\n\nPag-aalaga:\n1. Mulching at compost\n2. Fertilization tuwing planting season\n3. Proteksyon sa peste at sakit\n4. Regular watering sa dry periods"
+  },
+  {
+    "prompt": "Soil pH: 6.0, Rainfall: 0.58mm/3h, Temp: 30°C, NDVI: 0.69\nUser: Anong pananim ang pinakaangkop sa mainit na lugar na medyo mababa ang fertility?",
+    "response": "Suriin ang kondisyon:\n\n✓ pH 6.0 – Sakto\n⚠ Rainfall 0.58mm/3h – Katamtaman, dagdagan kung kailangan\n✓ Temp 30°C – Mainit, kaya ng tropical crops\n⚠ NDVI 0.69 – Katamtamang fertility\n\nMaaaring itanim:\n- **Malunggay, kamote tops, Atis** – Resilient sa init at soil conditions\n\nPag-aalaga:\n1. Soil amendment para sa pH\n2. Mulching at regular watering\n3. Fertilization tuwing planting season"
+  },
+  {
+    "prompt": "Soil pH: 5.9, Rainfall: 0.52mm/3h, Temp: 28°C, NDVI: 0.67\nUser: Gusto kong magtanim sa lupa na ito, anong crops ang kaya tumubo?",
+    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.9 – Medyo mababa\n⚠ Rainfall 0.52mm/3h – Katamtaman\n✓ Temp 28°C – Mainit at ideal para sa tropical crops\n⚠ NDVI 0.67 – Katamtamang fertility\n\nMaaaring itanim:\n- **Malunggay, kamote tops** – Kaya ang soil at temp\n\nPag-aalaga:\n1. Soil amendment para sa pH\n2. Regular watering at mulching\n3. Fertilization para sa fertility boost"
+  },
+  {
+    "prompt": "Soil pH: 6.2, Rainfall: 0.61mm/3h, Temp: 27°C, NDVI: 0.74\nUser: Paano ko mapapalaki ang yield ng pananim sa fertile soil na medyo basa?",
+    "response": "Suriin ang kondisyon:\n\n✓ pH 6.2 – Sakto\n✓ Rainfall 0.61mm/3h – Sapat\n✓ Temp 27°C – Ideal\n✓ NDVI 0.74 – Fertile\n\nMaaaring itanim:\n- **Durian, Mangosteen, Rambutan** – Angkop sa fertile at wet soil\n\nPag-aalaga:\n1. Mulching at compost\n2. Fertilizer application tuwing planting season\n3. Proteksyon sa peste at sakit\n4. Regular watering sa dry periods"
+  },
+  {
+    "prompt": "Soil pH: 5.8, Rainfall: 0.55mm/3h, Temp: 29°C, NDVI: 0.68\nUser: Ano ang pinakamagandang pananim at paano aalagaan ang lupa sa ganitong init?",
+    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.8 – Medyo mababa\n✓ Rainfall 0.55mm/3h – Katamtaman\n✓ Temp 29°C – Mainit pero kaya ng tropical crops\n⚠ NDVI 0.68 – Katamtamang fertility\n\nMaaaring itanim:\n- **Malunggay, kamote tops, Atis** – Resilient sa mainit at medyo mababang pH\n\nPag-aalaga:\n1. Soil amendment para sa pH\n2. Mulching at regular watering\n3. Fertilization tuwing planting season"
+  },
+  {
+    "prompt": "Soil pH: 6.1, Rainfall: 0.63mm/3h, Temp: 28°C, NDVI: 0.72\nUser: May sapat bang tubig para sa fruit trees dito at ano ang puwede itanim?",
+    "response": "Suriin ang kondisyon:\n\n✓ pH 6.1 – Sakto\n✓ Rainfall 0.63mm/3h – Medyo mataas\n✓ Temp 28°C – Ideal\n✓ NDVI 0.72 – Fertile\n\nMaaaring itanim:\n- **Rambutan, Durian, Guyabano** – Angkop sa fertile soil at medyo mataas ang ulan\n\nPag-aalaga:\n1. Mulching at compost\n2. Fertilization tuwing planting season\n3. Proteksyon sa peste at sakit\n4. Regular watering kung may dry spells"
+  },
+  {
+    "prompt": "Soil pH: 6.0, Rainfall: 0.56mm/3h, Temp: 30°C, NDVI: 0.70\nUser: Ano ang crops na kaya sa mainit at katamtamang fertility na lupa?",
+    "response": "Suriin ang kondisyon:\n\n✓ pH 6.0 – Sakto\n✓ Rainfall 0.56mm/3h – Katamtaman\n✓ Temp 30°C – Mainit\n✓ NDVI 0.70 – Fertile\n\nMaaaring itanim:\n- **Malunggay, kamote tops, Atis** – Kaya ang soil at temp\n\nPag-aalaga:\n1. Regular watering at mulching\n2. Soil amendment kung kinakailangan\n3. Fertilization sa planting season"
+  },
+  {
+    "prompt": "Soil pH: 5.9, Rainfall: 0.53mm/3h, Temp: 29°C, NDVI: 0.66\nUser: Gusto kong alamin kung anong crops ang bagay sa medyo mababa ang pH at katamtamang ulan?",
+    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.9 – Medyo mababa\n⚠ Rainfall 0.53mm/3h – Katamtaman\n✓ Temp 29°C – Mainit at kaya ng tropical crops\n⚠ NDVI 0.66 – Katamtamang fertility\n\nMaaaring itanim:\n- **Malunggay, kamote tops** – Resilient sa soil at temp conditions\n\nPag-aalaga:\n1. Soil amendment para sa pH\n2. Regular watering at mulching\n3. Fertilization sa planting season"
+  },
+  {
+    "prompt": "Soil pH: 6.2, Rainfall: 0.60mm/3h, Temp: 27°C, NDVI: 0.75\nUser: Anong pananim ang puwede sa fertile at medyo basa na lupa?",
+    "response": "Suriin ang kondisyon:\n\n✓ pH 6.2 – Sakto\n✓ Rainfall 0.60mm/3h – Sapat\n✓ Temp 27°C – Ideal\n✓ NDVI 0.75 – Fertile\n\nMaaaring itanim:\n- **Durian, Mangosteen, Rambutan** – Angkop sa fertile at wet soil\n\nPag-aalaga:\n1. Mulching at compost\n2. Fertilization sa planting season\n3. Proteksyon sa peste"
+  },
+  {
+    "prompt": "Soil pH: 5.8, Rainfall: 0.54mm/3h, Temp: 28°C, NDVI: 0.68\nUser: Paano ko mapapalaki ang yield sa medyo mababa ang pH at fertility?",
+    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.8 – Medyo mababa\n⚠ Rainfall 0.54mm/3h – Katamtaman\n✓ Temp 28°C – Mainit at ideal\n⚠ NDVI 0.68 – Katamtamang fertility\n\nMaaaring itanim:\n- **Malunggay, kamote tops** – Kaya ang soil at temperature\n\nPag-aalaga:\n1. Soil amendment para sa pH\n2. Mulching at regular watering\n3. Fertilization tuwing planting season"
+  },
+  {
+    "prompt": "Soil pH: 5.8, Rainfall: 0.54mm/3h, Temp: 28°C, NDVI: 0.68\nUser: Ano ang puwede kong itanim dito?",
+    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.8 – Medyo mababa, bagay sa acid-tolerant crops\n⚠ Rainfall 0.54mm/3h – Katamtaman, kailangan ng dagdag na watering kung tag-init\n✓ Temp 28°C – Mainit, ideal para sa tropical crops\n⚠ NDVI 0.68 – Katamtamang fertility, maaaring dagdagan ng compost\n\nMga pananim na puwede:\n1. **Malunggay** – Matibay sa init at medyo acidic na lupa\n2. **kamote tops** – Kaya ang moderate fertility at katamtamang rainfall\n3. **Atis** – Tumutubo sa mainit at medyo basang lupa"
+  },
+  {
+    "prompt": "Soil pH: 5.8, Rainfall: 0.54mm/3h, Temp: 28°C, NDVI: 0.68\nUser: Paano ko malalaman ang pinakamainam na kondisyon para sa pananim sa lupa ko?",
+    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.8 – Medyo mababa\n⚠ Rainfall 0.54mm/3h – Katamtaman\n✓ Temp 28°C – Mainit at kaya ng tropical crops\n⚠ NDVI 0.68 – Katamtamang fertility\n\nPinakamainam na kondisyon para sa pananim:\n- **Malunggay:** full sun, well-drained soil\n- **kamote tops:** sandy to loamy soil, moderate watering\n- **Atis:** partial shade, well-drained soil, mulching para retain moisture"
+  },
+  {
+    "prompt": "Soil pH: 5.8, Rainfall: 0.54mm/3h, Temp: 28°C, NDVI: 0.68\nUser: Paano ko aalagaan ang lupa at pananim ko para sa mas mataas na ani?",
+    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.8 – Medyo mababa, maaaring kailanganin ng soil amendment\n⚠ Rainfall 0.54mm/3h – Katamtaman, dagdagan ng watering sa dry season\n✓ Temp 28°C – Mainit at kaya ng tropical crops\n⚠ NDVI 0.68 – Katamtamang fertility, dagdagan ng compost\n\nPag-aalaga para sa mas mataas na ani:\n1. Soil amendment gamit ang compost o organic fertilizer bago pagtatanim\n2. Mulching para sa moisture retention\n3. Regular watering lalo na sa tag-init\n4. Protektahan sa peste at sakit"
+  },
+  {
+    "prompt": "Soil pH: 5.8, Rainfall: 0.54mm/3h, Temp: 28°C, NDVI: 0.68\nUser: Ano ang puwede kong itanim dito?",
+    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.8 – Medyo mababa, bagay sa acid-tolerant crops\n⚠ Rainfall 0.54mm/3h – Katamtaman, dagdagan ang watering sa tag-init\n✓ Temp 28°C – Mainit, ideal para sa tropical crops\n⚠ NDVI 0.68 – Katamtamang fertility\n\nMga pananim na puwede:\n1. **Malunggay**\n2. **kamote tops**\n3. **Atis**"
+  },
+  {
+    "prompt": "Soil pH: 5.8, Rainfall: 0.54mm/3h, Temp: 28°C, NDVI: 0.68\nUser: Ano ang iba pang pananim na pwede sa ganitong lupa?",
+    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.8 – Medyo mababa\n⚠ Rainfall 0.54mm/3h – Katamtaman\n✓ Temp 28°C – Mainit\n⚠ NDVI 0.68 – Katamtamang fertility\n\nMga pananim na puwede:\n1. **Upo [Bottle gourd]**\n2. **Sitao [Stringbeans]**\n3. **Pechay**"
+  },
+  {
+    "prompt": "Soil pH: 5.8, Rainfall: 0.54mm/3h, Temp: 28°C, NDVI: 0.68\nUser: Wala pa akong tiyak na pananim, ano ang best choices?",
+    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.8 – Medyo mababa\n⚠ Rainfall 0.54mm/3h – Katamtaman\n✓ Temp 28°C – Mainit, tropical climate\n⚠ NDVI 0.68 – Katamtamang fertility\n\nMga pananim na puwede:\n1. **Malunggay**\n2. **kamote tops**\n3. **Atis**"
+  },
+  {
+    "prompt": "Soil pH: 5.8, Rainfall: 0.54mm/3h, Temp: 28°C, NDVI: 0.68\nUser: Ano ang pinakamainam na kondisyon para sa pananim sa ganitong lupa?",
+    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.8 – Medyo mababa\n⚠ Rainfall 0.54mm/3h – Katamtaman\n✓ Temp 28°C – Mainit\n⚠ NDVI 0.68 – Katamtamang fertility\n\nPinakamainam na kondisyon:\n- **Malunggay:** full sun, well-drained soil\n- **kamote tops:** sandy-loamy soil, moderate watering\n- **Atis:** partial shade, mulching para retain moisture"
+  },
+  {
+    "prompt": "Soil pH: 5.8, Rainfall: 0.54mm/3h, Temp: 28°C, NDVI: 0.68\nUser: Ano ang mga best environment conditions para tumubo nang maayos ang pananim ko?",
+    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.8 – Medyo mababa\n⚠ Rainfall 0.54mm/3h – Katamtaman\n✓ Temp 28°C – Mainit\n⚠ NDVI 0.68 – Katamtamang fertility\n\nPinakamainam na kondisyon:\n- Well-drained soil, partial shade para sa sensitive crops\n- Regular watering kapag dry season\n- Compost o organic fertilizer bago pagtatanim"
+  },
+  {
+    "prompt": "Soil pH: 5.8, Rainfall: 0.54mm/3h, Temp: 28°C, NDVI: 0.68\nUser: Ano ang mga best practices para sa pananim sa ganitong lupa?",
+    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.8 – Medyo mababa\n⚠ Rainfall 0.54mm/3h – Katamtaman\n✓ Temp 28°C – Mainit\n⚠ NDVI 0.68 – Katamtamang fertility\n\nPag-aalaga:\n1. Soil amendment gamit ang compost o organic fertilizer\n2. Mulching para sa moisture retention\n3. Regular watering lalo na sa dry season\n4. Proteksyon sa peste at sakit"
+  },
+  {
+    "prompt": "Soil pH: 5.8, Rainfall: 0.54mm/3h, Temp: 28°C, NDVI: 0.68\nUser: Paano ko aalagaan ang mga pananim para mas mataas ang ani?",
+    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.8 – Medyo mababa\n⚠ Rainfall 0.54mm/3h – Katamtaman\n✓ Temp 28°C – Mainit\n⚠ NDVI 0.68 – Katamtamang fertility\n\nPag-aalaga:\n1. Regular compost o organic fertilizer\n2. Mulching para ma-retain ang moisture\n3. Pagwatering kapag dry season\n4. Protektahan sa peste at sakit"
+  },
+  {
+    "prompt": "Soil pH: 5.8, Rainfall: 0.54mm/3h, Temp: 28°C, NDVI: 0.68\nUser: Ano ang mga maintenance tips para sa pananim ko sa ganitong klima?",
+    "response": "Suriin ang kondisyon:\n\n⚠ pH 5.8 – Medyo mababa\n⚠ Rainfall 0.54mm/3h – Katamtaman\n✓ Temp 28°C – Mainit\n⚠ NDVI 0.68 – Katamtamang fertility\n\nPag-aalaga:\n1. Soil amendment gamit ang compost\n2. Mulching para sa moisture retention\n3. Regular watering sa tag-init\n4. Pest at disease control"
+  }
+  
+]

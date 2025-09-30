@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "426991657435",
+    "project_id": "agriangat-ai",
+    "storage_bucket": "agriangat-ai.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:426991657435:android:d4aa67c24b97ce38f347fe",
+        "android_client_info": {
+          "package_name": "com.AgriAngatProject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "426991657435-ejmdqghp6bncvfnmhei0vkcbomd6abcs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmgV3f1JMSMYKQyNOjOPxesYYfmuqobtU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "426991657435-ejmdqghp6bncvfnmhei0vkcbomd6abcs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

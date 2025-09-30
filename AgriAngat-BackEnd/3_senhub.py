@@ -8,9 +8,9 @@ from ph_cities import CITY_CENTERS
 
 
 config = SHConfig()
-config.instance_id = "7553c14d-859d-4185-8759-b8f933e393d7"
-config.sh_client_id = "218f1c16-327a-4d94-9e7f-d60a774ceb6f"
-config.sh_client_secret = "SrWOl5VYUh6AeuzxOTjMTwHWuLcUCCpj"
+config.instance_id = ""
+config.sh_client_id = ""
+config.sh_client_secret = ""
 
 # Show available cities
 citylist = input("Do you want to see all the Philippine Cities? (y/n) ").strip().lower()

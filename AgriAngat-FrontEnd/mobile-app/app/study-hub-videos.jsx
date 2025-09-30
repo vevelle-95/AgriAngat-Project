@@ -60,7 +60,7 @@ export default function StudyHubScreen() {
   if (!fontsLoaded) return null;
 
   // Chat functions
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (message.trim() === "") return;
 
     const newUserMessage = {
@@ -71,19 +71,45 @@ export default function StudyHubScreen() {
     };
 
     setMessages(prev => [...prev, newUserMessage]);
+    const userInput = message;
     setMessage("");
 
-    // Simulate bot response
-    setTimeout(() => {
-      const botResponse = generateBotResponse(message);
+    try {
+      // Call Python API - Use your computer's IP instead of localhost for Android
+      const API_URL = __DEV__ ? 'http://192.168.50.114:5000/chat' : 'http://localhost:5000/chat';
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: userInput }),
+      });
+
+      const data = await response.json();
+      
+      if (data.success) {
+        const newBotMessage = {
+          id: messages.length + 2,
+          text: data.response,
+          sender: "bot",
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        };
+        setMessages(prev => [...prev, newBotMessage]);
+      } else {
+        throw new Error(data.error || 'API request failed');
+      }
+    } catch (error) {
+      console.error('Error calling API:', error);
+      // Fallback to local response
+      const fallbackResponse = generateBotResponse(userInput);
       const newBotMessage = {
         id: messages.length + 2,
-        text: botResponse,
+        text: `[Offline] ${fallbackResponse}`,
         sender: "bot",
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       };
       setMessages(prev => [...prev, newBotMessage]);
-    }, 1000);
+    }
   };
 
   const generateBotResponse = (userMessage) => {
@@ -350,7 +376,7 @@ const styles = StyleSheet.create({
     color: "#333",
   },
   backText: {
-    fontSize: 16,
+    fontSize: 10,
     color: "#333",
     fontFamily: "Poppins-SemiBold",
   },
