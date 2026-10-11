@@ -26,6 +26,39 @@ const Dashboard = () => {
   const [activeMenuItem, setActiveMenuItem] = useState('overview');
   const [searchValue, setSearchValue] = useState('');
   const [tooltip, setTooltip] = useState({ visible: false, x: 0, y: 0, content: '' });
+  const [hoveredSeries, setHoveredSeries] = useState(null);
+  const [visibleSeries, setVisibleSeries] = useState({ approved: true, submitted: true });
+
+  // Chart data with more detailed information
+  const loanChartData = [
+    { month: 'Jan', approved: 35, submitted: 25, date: 'January 2024' },
+    { month: 'Feb', approved: 28, submitted: 38, date: 'February 2024' },
+    { month: 'Mar', approved: 42, submitted: 35, date: 'March 2024' },
+    { month: 'Apr', approved: 38, submitted: 45, date: 'April 2024' },
+    { month: 'May', approved: 48, submitted: 40, date: 'May 2024' },
+    { month: 'Jun', approved: 42, submitted: 35, date: 'June 2024' }
+  ];
+
+  const handleSeriesToggle = (series) => {
+    setVisibleSeries(prev => ({
+      ...prev,
+      [series]: !prev[series]
+    }));
+  };
+
+  const handleDataPointHover = (e, data, series) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setTooltip({
+      visible: true,
+      x: rect.left + window.scrollX + 10,
+      y: rect.top + window.scrollY - 30,
+      content: `${data.date} • ${series === 'approved' ? 'Approved' : 'Submitted'}: ${data[series]}`
+    });
+  };
+
+  const handleDataPointLeave = () => {
+    setTooltip({ visible: false, x: 0, y: 0, content: '' });
+  };
 
 
   const overviewStats = [
@@ -215,14 +248,22 @@ const Dashboard = () => {
             <div className="chart-header">
               <h3>Loan Application Over Time</h3>
               <div className="chart-legend">
-                <div className="legend-item">
+                <button 
+                  className={`legend-item ${!visibleSeries.approved ? 'inactive' : ''}`}
+                  onClick={() => handleSeriesToggle('approved')}
+                  aria-label="Toggle approved series visibility"
+                >
                   <div className="legend-dot approved"></div>
                   <span>Approved</span>
-                </div>
-                <div className="legend-item">
+                </button>
+                <button 
+                  className={`legend-item ${!visibleSeries.submitted ? 'inactive' : ''}`}
+                  onClick={() => handleSeriesToggle('submitted')}
+                  aria-label="Toggle submitted series visibility"
+                >
                   <div className="legend-dot submitted"></div>
                   <span>Submitted</span>
-                </div>
+                </button>
               </div>
             </div>
             <div className="chart-placeholder">
@@ -257,55 +298,129 @@ const Dashboard = () => {
                   <text x="430" y="210" textAnchor="middle" fontSize="10" fill="#9ca3af">Jun</text>
                   
                   {/* Submitted Applications Area */}
-                  <path
-                    d="M 50 160 C 80 150, 120 125, 150 120 C 180 115, 220 135, 290 105 C 320 95, 360 120, 430 105 L 430 190 L 50 190 Z"
-                    fill="url(#submittedGradient)"
-                  />
+                  {visibleSeries.submitted && (
+                    <>
+                      <path
+                        d="M 50 160 C 80 150, 120 125, 150 120 C 180 115, 220 135, 290 105 C 320 95, 360 120, 430 105 L 430 190 L 50 190 Z"
+                        fill="url(#submittedGradient)"
+                        className="chart-area submitted-area"
+                      />
+                      <path
+                        d="M 50 160 C 80 150, 120 125, 150 120 C 180 115, 220 135, 290 105 C 320 95, 360 120, 430 105"
+                        stroke="#6b7280"
+                        strokeWidth={hoveredSeries === 'submitted' ? "4" : "2.5"}
+                        fill="none"
+                        strokeLinecap="round"
+                        className="chart-line submitted-line"
+                        onMouseEnter={() => setHoveredSeries('submitted')}
+                        onMouseLeave={() => setHoveredSeries(null)}
+                      />
+                    </>
+                  )}
                   
                   {/* Approved Applications Area */}
-                  <path
-                    d="M 50 170 C 80 150, 120 125, 150 85 C 180 45, 220 65, 290 75 C 320 85, 360 85, 430 70 L 430 190 L 50 190 Z"
-                    fill="url(#approvedGradient)"
-                  />
+                  {visibleSeries.approved && (
+                    <>
+                      <path
+                        d="M 50 170 C 80 150, 120 125, 150 85 C 180 45, 220 65, 290 75 C 320 85, 360 85, 430 70 L 430 190 L 50 190 Z"
+                        fill="url(#approvedGradient)"
+                        className="chart-area approved-area"
+                      />
+                      <path
+                        d="M 50 170 C 80 150, 120 125, 150 85 C 180 45, 220 65, 290 75 C 320 85, 360 85, 430 70"
+                        stroke="#ff6b81"
+                        strokeWidth={hoveredSeries === 'approved' ? "4" : "2.5"}
+                        fill="none"
+                        strokeLinecap="round"
+                        className="chart-line approved-line"
+                        onMouseEnter={() => setHoveredSeries('approved')}
+                        onMouseLeave={() => setHoveredSeries(null)}
+                      />
+                    </>
+                  )}
                   
-                  {/* Submitted Applications Line */}
-                  <path
-                    d="M 50 160 C 80 150, 120 125, 150 120 C 180 115, 220 135, 290 105 C 320 95, 360 120, 430 105"
-                    stroke="#6b7280"
-                    strokeWidth="2.5"
-                    fill="none"
-                    strokeLinecap="round"
-                  />
+                  {/* Interactive Data Points - Approved Series */}
+                  {visibleSeries.approved && (
+                    <>
+                      {/* Jan - Starting point of curve */}
+                      <circle cx="80" cy="150" r="6" fill="#ff6b81" stroke="white" strokeWidth="2" className="interactive-point approved-point" 
+                        onMouseEnter={(e) => handleDataPointHover(e, loanChartData[0], 'approved')} onMouseLeave={handleDataPointLeave} style={{ cursor: 'pointer' }} />
+                      {/* Invisible larger circle for better hit detection */}
+                      <circle cx="80" cy="150" r="12" fill="transparent" className="interactive-point-hit-area"
+                        onMouseEnter={(e) => handleDataPointHover(e, loanChartData[0], 'approved')} onMouseLeave={handleDataPointLeave} style={{ cursor: 'pointer' }} />
+                      
+                      {/* Feb */}
+                      <circle cx="150" cy="85" r="6" fill="#ff6b81" stroke="white" strokeWidth="2" className="interactive-point approved-point"
+                        onMouseEnter={(e) => handleDataPointHover(e, loanChartData[1], 'approved')} onMouseLeave={handleDataPointLeave} style={{ cursor: 'pointer' }} />
+                      <circle cx="150" cy="85" r="12" fill="transparent" className="interactive-point-hit-area"
+                        onMouseEnter={(e) => handleDataPointHover(e, loanChartData[1], 'approved')} onMouseLeave={handleDataPointLeave} style={{ cursor: 'pointer' }} />
+                      
+                      {/* Mar */}
+                      <circle cx="220" cy="65" r="6" fill="#ff6b81" stroke="white" strokeWidth="2" className="interactive-point approved-point"
+                        onMouseEnter={(e) => handleDataPointHover(e, loanChartData[2], 'approved')} onMouseLeave={handleDataPointLeave} style={{ cursor: 'pointer' }} />
+                      <circle cx="220" cy="65" r="12" fill="transparent" className="interactive-point-hit-area"
+                        onMouseEnter={(e) => handleDataPointHover(e, loanChartData[2], 'approved')} onMouseLeave={handleDataPointLeave} style={{ cursor: 'pointer' }} />
+                      
+                      {/* Apr */}
+                      <circle cx="290" cy="75" r="6" fill="#ff6b81" stroke="white" strokeWidth="2" className="interactive-point approved-point"
+                        onMouseEnter={(e) => handleDataPointHover(e, loanChartData[3], 'approved')} onMouseLeave={handleDataPointLeave} style={{ cursor: 'pointer' }} />
+                      <circle cx="290" cy="75" r="12" fill="transparent" className="interactive-point-hit-area"
+                        onMouseEnter={(e) => handleDataPointHover(e, loanChartData[3], 'approved')} onMouseLeave={handleDataPointLeave} style={{ cursor: 'pointer' }} />
+                      
+                      {/* May */}
+                      <circle cx="360" cy="85" r="6" fill="#ff6b81" stroke="white" strokeWidth="2" className="interactive-point approved-point"
+                        onMouseEnter={(e) => handleDataPointHover(e, loanChartData[4], 'approved')} onMouseLeave={handleDataPointLeave} style={{ cursor: 'pointer' }} />
+                      <circle cx="360" cy="85" r="12" fill="transparent" className="interactive-point-hit-area"
+                        onMouseEnter={(e) => handleDataPointHover(e, loanChartData[4], 'approved')} onMouseLeave={handleDataPointLeave} style={{ cursor: 'pointer' }} />
+                      
+                      {/* Jun */}
+                      <circle cx="430" cy="70" r="6" fill="#ff6b81" stroke="white" strokeWidth="2" className="interactive-point approved-point"
+                        onMouseEnter={(e) => handleDataPointHover(e, loanChartData[5], 'approved')} onMouseLeave={handleDataPointLeave} style={{ cursor: 'pointer' }} />
+                      <circle cx="430" cy="70" r="12" fill="transparent" className="interactive-point-hit-area"
+                        onMouseEnter={(e) => handleDataPointHover(e, loanChartData[5], 'approved')} onMouseLeave={handleDataPointLeave} style={{ cursor: 'pointer' }} />
+                    </>
+                  )}
                   
-                  {/* Approved Applications Line */}
-                  <path
-                    d="M 50 170 C 80 150, 120 125, 150 85 C 180 45, 220 65, 290 75 C 320 85, 360 85, 430 70"
-                    stroke="#ff6b81"
-                    strokeWidth="2.5"
-                    fill="none"
-                    strokeLinecap="round"
-                  />
-                  
-                  {/* Interactive Data Points */}
-                  <circle 
-                    cx="430" 
-                    cy="70" 
-                    r="5" 
-                    fill="#ff6b81" 
-                    stroke="white" 
-                    strokeWidth="2" 
-                    className="interactive-point"
-                    onMouseEnter={(e) => {
-                      const rect = e.currentTarget.getBoundingClientRect();
-                      setTooltip({
-                        visible: true,
-                        x: rect.left + 10,
-                        y: rect.top - 30,
-                        content: 'June • 42'
-                      });
-                    }}
-                    onMouseLeave={() => setTooltip({ visible: false, x: 0, y: 0, content: '' })}
-                  />
+                  {/* Interactive Data Points - Submitted Series */}
+                  {visibleSeries.submitted && (
+                    <>
+                      {/* Jan */}
+                      <circle cx="80" cy="150" r="6" fill="#6b7280" stroke="white" strokeWidth="2" className="interactive-point submitted-point"
+                        onMouseEnter={(e) => handleDataPointHover(e, loanChartData[0], 'submitted')} onMouseLeave={handleDataPointLeave} style={{ cursor: 'pointer' }} />
+                      <circle cx="80" cy="150" r="12" fill="transparent" className="interactive-point-hit-area"
+                        onMouseEnter={(e) => handleDataPointHover(e, loanChartData[0], 'submitted')} onMouseLeave={handleDataPointLeave} style={{ cursor: 'pointer' }} />
+                      
+                      {/* Feb */}
+                      <circle cx="150" cy="120" r="6" fill="#6b7280" stroke="white" strokeWidth="2" className="interactive-point submitted-point"
+                        onMouseEnter={(e) => handleDataPointHover(e, loanChartData[1], 'submitted')} onMouseLeave={handleDataPointLeave} style={{ cursor: 'pointer' }} />
+                      <circle cx="150" cy="120" r="12" fill="transparent" className="interactive-point-hit-area"
+                        onMouseEnter={(e) => handleDataPointHover(e, loanChartData[1], 'submitted')} onMouseLeave={handleDataPointLeave} style={{ cursor: 'pointer' }} />
+                      
+                      {/* Mar */}
+                      <circle cx="220" cy="135" r="6" fill="#6b7280" stroke="white" strokeWidth="2" className="interactive-point submitted-point"
+                        onMouseEnter={(e) => handleDataPointHover(e, loanChartData[2], 'submitted')} onMouseLeave={handleDataPointLeave} style={{ cursor: 'pointer' }} />
+                      <circle cx="220" cy="135" r="12" fill="transparent" className="interactive-point-hit-area"
+                        onMouseEnter={(e) => handleDataPointHover(e, loanChartData[2], 'submitted')} onMouseLeave={handleDataPointLeave} style={{ cursor: 'pointer' }} />
+                      
+                      {/* Apr */}
+                      <circle cx="290" cy="105" r="6" fill="#6b7280" stroke="white" strokeWidth="2" className="interactive-point submitted-point"
+                        onMouseEnter={(e) => handleDataPointHover(e, loanChartData[3], 'submitted')} onMouseLeave={handleDataPointLeave} style={{ cursor: 'pointer' }} />
+                      <circle cx="290" cy="105" r="12" fill="transparent" className="interactive-point-hit-area"
+                        onMouseEnter={(e) => handleDataPointHover(e, loanChartData[3], 'submitted')} onMouseLeave={handleDataPointLeave} style={{ cursor: 'pointer' }} />
+                      
+                      {/* May */}
+                      <circle cx="360" cy="120" r="6" fill="#6b7280" stroke="white" strokeWidth="2" className="interactive-point submitted-point"
+                        onMouseEnter={(e) => handleDataPointHover(e, loanChartData[4], 'submitted')} onMouseLeave={handleDataPointLeave} style={{ cursor: 'pointer' }} />
+                      <circle cx="360" cy="120" r="12" fill="transparent" className="interactive-point-hit-area"
+                        onMouseEnter={(e) => handleDataPointHover(e, loanChartData[4], 'submitted')} onMouseLeave={handleDataPointLeave} style={{ cursor: 'pointer' }} />
+                      
+                      {/* Jun */}
+                      <circle cx="430" cy="105" r="6" fill="#6b7280" stroke="white" strokeWidth="2" className="interactive-point submitted-point"
+                        onMouseEnter={(e) => handleDataPointHover(e, loanChartData[5], 'submitted')} onMouseLeave={handleDataPointLeave} style={{ cursor: 'pointer' }} />
+                      <circle cx="430" cy="105" r="12" fill="transparent" className="interactive-point-hit-area"
+                        onMouseEnter={(e) => handleDataPointHover(e, loanChartData[5], 'submitted')} onMouseLeave={handleDataPointLeave} style={{ cursor: 'pointer' }} />
+                    </>
+                  )}
                 </svg>
                 
                 {/* Tooltip */}
@@ -400,6 +515,16 @@ const Dashboard = () => {
                     strokeWidth="1.5"
                     fill="none"
                     opacity="0.7"
+                    className="chart-line esg-line-blue"
+                    style={{ cursor: 'pointer' }}
+                    onMouseEnter={(e) => {
+                      e.target.style.strokeWidth = "3";
+                      e.target.style.opacity = "1";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.strokeWidth = "1.5";
+                      e.target.style.opacity = "0.7";
+                    }}
                   />
                   
                   <path
@@ -408,6 +533,16 @@ const Dashboard = () => {
                     strokeWidth="1.5"
                     fill="none"
                     opacity="0.7"
+                    className="chart-line esg-line-green"
+                    style={{ cursor: 'pointer' }}
+                    onMouseEnter={(e) => {
+                      e.target.style.strokeWidth = "3";
+                      e.target.style.opacity = "1";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.strokeWidth = "1.5";
+                      e.target.style.opacity = "0.7";
+                    }}
                   />
                   
                   <path
@@ -416,6 +551,16 @@ const Dashboard = () => {
                     strokeWidth="1.5"
                     fill="none"
                     opacity="0.7"
+                    className="chart-line esg-line-yellow"
+                    style={{ cursor: 'pointer' }}
+                    onMouseEnter={(e) => {
+                      e.target.style.strokeWidth = "3";
+                      e.target.style.opacity = "1";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.strokeWidth = "1.5";
+                      e.target.style.opacity = "0.7";
+                    }}
                   />
                 </svg>
               </div>

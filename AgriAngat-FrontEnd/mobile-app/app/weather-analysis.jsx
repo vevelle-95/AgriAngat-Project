@@ -29,7 +29,7 @@ export default function WeatherAnalysisScreen() {
               const API_URLS = __DEV__ ? [
                 ...(overrideBase ? [overrideBase.endsWith('/api') ? overrideBase : `${overrideBase.replace(/\/$/, '')}/api`] : []),
                 Platform.OS === 'android' ? 'http://10.0.2.2:5000/api' : 'http://localhost:5000/api', // Emulator/Simulator
-                'http://192.168.254.205:5000/api',  // Windows machine IP on local network (updated)
+                'http://192.168.254.200:5000/api',  // Windows machine IP on local network (updated)
                 'http://127.0.0.1:5000/api'         // Local loopback
               ] : [overrideBase ? (overrideBase.endsWith('/api') ? overrideBase : `${overrideBase.replace(/\/$/, '')}/api`) : 'http://localhost:5000/api'];
               let response;
@@ -95,7 +95,7 @@ export default function WeatherAnalysisScreen() {
         // Try to get cities from Flask API
         const API_URLS = __DEV__ ? [
           Platform.OS === 'android' ? 'http://10.0.2.2:5000' : 'http://localhost:5000',
-          'http://192.168.254.205:5000',  // Updated to match Flask server IP
+          'http://172.20.10.11:5000',  // Updated to match Flask server IP
           'http://127.0.0.1:5000'
         ] : ['http://localhost:5000'];
 
@@ -157,7 +157,7 @@ export default function WeatherAnalysisScreen() {
       // Try multiple API endpoints
       const API_URLS = __DEV__ ? [
         Platform.OS === 'android' ? 'http://10.0.2.2:5000' : 'http://localhost:5000',
-        'http://192.168.254.205:5000',  // Updated to match Flask server IP
+        'http://192.168.254.200:5000',  // Updated to match Flask server IP
         'http://127.0.0.1:5000'
       ] : ['http://localhost:5000'];
 
@@ -245,7 +245,7 @@ export default function WeatherAnalysisScreen() {
       // Try multiple API endpoints
       const API_URLS = __DEV__ ? [
         Platform.OS === 'android' ? 'http://10.0.2.2:5000' : 'http://localhost:5000',
-        'http://192.168.254.205:5000',  // Updated to match Flask server IP
+        'http://192.168.254.200:5000',  // Updated to match Flask server IP
         'http://127.0.0.1:5000'
       ] : ['http://localhost:5000'];
 
